@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PT. Rumah Mampet Indonesia</title>
 
-    <!-- ================= GOOGLE SITE KIT (G-TAG) ================= -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KB1J1X1JSF"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-KB1J1X1JSF');
-    </script>
-    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -43,7 +34,12 @@
         .img-hover-zoom { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .group:hover .img-hover-zoom { transform: scale(1.08); }
         .admin-tab-btn { transition: all 0.3s ease; }
-        .admin-tab-btn.active { background-color: #f0fdf4; color: #0f766e; font-weight: 600; }
+        .admin-tab-btn.active { color: #0f766e; font-weight: 700; }
+        .admin-tab-btn.active svg { color: #0f766e; stroke-width: 2.5; }
+        
+        .floating-menu-btn { padding: 12px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-radius: 8px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .floating-menu-btn:hover { background-color: #f1f5f9; color: #0f766e; }
+        .floating-menu-btn.active { background-color: #f0fdf4; color: #0f766e; }
     </style>
 </head>
 <body class="antialiased selection:bg-teal-100 selection:text-teal-900">
@@ -51,14 +47,12 @@
     <!-- ================= PUBLIC NAVBAR ================= -->
     <nav id="publicNavbar" class="fixed w-full z-[100] glass-nav shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 flex justify-between items-center h-20">
-            <!-- Area Logo -->
             <div class="flex items-center gap-3 relative z-20 cursor-pointer" onclick="window.scrollTo(0,0)">
                 <div id="fallbackLogo" class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md">RM</div>
                 <img id="pubLogoImg" src="" alt="Logo" class="hidden h-10 w-auto object-contain">
                 <span class="font-bold text-xl tracking-tight text-slate-800 hidden sm:block">Rumah Mampet</span>
             </div>
             
-            <!-- Menu Desktop -->
             <div class="hidden md:flex space-x-8 items-center text-[13px] font-semibold uppercase tracking-wider">
                 <a href="#" class="text-brand">Home</a>
                 <a href="#services" class="text-slate-500 hover:text-brand transition-colors">Layanan</a>
@@ -66,19 +60,20 @@
                 <a href="#legal" class="text-slate-500 hover:text-brand transition-colors">Legalitas</a>
                 <a href="#about" class="text-slate-500 hover:text-brand transition-colors">Tentang Kami</a>
                 
-                <!-- FITUR RAHASIA: Kolom Pencarian sebagai Pintu Masuk Admin -->
                 <div class="relative ml-4">
                     <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <input type="text" id="secretSearchDesktop" placeholder="Cari..." class="w-32 lg:w-40 bg-slate-100/50 border border-slate-200 rounded-full pl-9 pr-4 py-2 text-xs outline-none focus:w-48 focus:ring-2 focus:ring-teal-500 focus:bg-white transition-all duration-300">
+                    <input type="text" id="secretSearchDesktop" placeholder="Pencarian..." class="w-32 lg:w-40 bg-slate-100/50 border border-slate-200 rounded-full pl-9 pr-4 py-2 text-xs outline-none focus:w-48 focus:ring-2 focus:ring-teal-500 focus:bg-white transition-all duration-300">
                 </div>
             </div>
             
             <button id="mobileMenuBtn" class="md:hidden text-slate-600 focus:outline-none"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
         </div>
         
-        <!-- Menu Mobile -->
         <div id="mobileMenu" class="hidden absolute w-full bg-white/95 backdrop-blur-xl border-b shadow-2xl px-6 py-8 space-y-5 z-[90]">
-            <input type="text" id="secretSearchMobile" placeholder="Cari rahasia (ADM1N)..." class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-teal-500 mb-4">
+            <div class="relative">
+                <svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" id="secretSearchMobile" placeholder="Pencarian..." class="w-full bg-slate-100 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-teal-500 mb-4 transition-all">
+            </div>
             <a href="#" class="mobile-link block font-bold text-brand text-lg">Home</a>
             <a href="#services" class="mobile-link block font-medium text-slate-600">Layanan</a>
             <a href="#proyek" class="mobile-link block font-medium text-slate-600">Portofolio</a>
@@ -87,9 +82,30 @@
         </div>
     </nav>
 
+    <!-- ================= MODAL LOGIN ADMIN ================= -->
+    <div id="loginModal" class="fixed inset-0 z-[500] hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm relative animate-[fadeIn_0.3s]">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <div class="w-12 h-12 bg-brand rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-md mx-auto mb-6">RM</div>
+            <h3 class="text-xl font-bold text-center text-slate-800 mb-2">Akses Admin</h3>
+            <p class="text-xs text-center text-slate-500 mb-6">Silakan masuk menggunakan kredensial Anda.</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[11px] font-bold text-slate-500 uppercase">Email</label>
+                    <input type="email" id="loginEmail" class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand text-sm" placeholder="admin@rumahmampet.com">
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-slate-500 uppercase">Password</label>
+                    <input type="password" id="loginPassword" class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand text-sm" placeholder="••••••••">
+                </div>
+                <button id="btnLoginSubmit" class="w-full py-3 bg-brand hover:bg-teal-700 text-white text-sm font-bold rounded-xl shadow-md transition-all mt-4">Masuk</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= PUBLIC VIEW ================= -->
     <div id="publicView" class="pt-24 pb-12 transition-opacity duration-500 relative z-10">
-        
         <!-- HERO SECTION -->
         <main class="max-w-7xl mx-auto px-6 lg:px-8 mt-8 md:mt-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             <div class="lg:w-1/2 w-full pt-10">
@@ -139,16 +155,14 @@
                     <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-2">Jasa Populer Kita</h2>
                     <p class="text-slate-500 text-sm">Dokumentasi hasil pengerjaan tim kami di lapangan</p>
                 </div>
-                <!-- Tombol ini akan otomatis memanggil JS untuk membuka semua list -->
                 <div id="pubProjectBtnContainer" class="hidden">
                     <button onclick="toggleAllProjects()" class="text-sm font-semibold text-brand bg-teal-50 border border-teal-100 px-6 py-2.5 rounded-full hover:bg-teal-100 transition-all shadow-sm">Lihat Semua Proyek</button>
                 </div>
             </div>
-            <!-- Grid Proyek Publik -->
             <div id="pubProjectGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </section>
 
-        <!-- BANNER TERBAIK (Tanpa Border Image) -->
+        <!-- BANNER TERBAIK -->
         <section class="bg-banner mt-32 md:mt-40 relative">
             <div class="max-w-6xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/3 flex justify-center md:justify-end relative">
@@ -173,7 +187,7 @@
             </div>
         </section>
 
-        <!-- ABOUT SECTION (TEKS PANJANG DIPISAH DARI FOOTER) -->
+        <!-- ABOUT SECTION -->
         <section id="about" class="bg-white py-24 border-b border-slate-100">
             <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
                 <div class="lg:col-span-4">
@@ -221,11 +235,6 @@
                             <div><p class="text-xs text-slate-400 font-medium">Email</p><p id="pubFooterEmail" class="text-sm font-semibold text-slate-700">...</p></div>
                         </div>
                     </div>
-                    <h4 class="font-bold text-slate-900 mb-4">Informasi</h4>
-                    <div class="text-sm text-slate-500 space-y-2 flex flex-col">
-                        <a href="#" class="hover:text-brand transition-colors w-max">Syarat & Ketentuan</a>
-                        <a href="#" class="hover:text-brand transition-colors w-max">Kebijakan Privasi</a>
-                    </div>
                 </div>
             </div>
             <div class="max-w-7xl mx-auto px-6 lg:px-8 mt-16 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400 font-medium">
@@ -235,7 +244,7 @@
         </footer>
     </div>
 
-    <!-- ================= MODALS ================= -->
+    <!-- ================= MODALS POST & IMAGE ================= -->
     <div id="postModal" class="fixed inset-0 z-[200] hidden bg-white/98 backdrop-blur-md overflow-y-auto">
         <div class="max-w-4xl mx-auto p-6 md:p-12 pt-24 relative min-h-screen flex flex-col bg-white shadow-2xl">
             <button onclick="closePost()" class="absolute top-6 right-6 bg-slate-100 hover:bg-red-500 hover:text-white text-slate-800 px-5 py-2.5 rounded-full text-sm font-bold transition-colors shadow-sm flex items-center gap-2">✕ Tutup Artikel</button>
@@ -250,183 +259,228 @@
         <p class="absolute bottom-10 text-white/50 text-sm font-medium">Klik sembarang area untuk menutup</p>
     </div>
 
-    <!-- WA Floating -->
     <a id="pubFloatingWaBtn" href="#" target="_blank" class="fixed bottom-6 right-6 bg-brand text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 z-50">
         <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.614-.087-.112-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.098.824z"></path></svg>
     </a>
 
     <!-- ================= ADMIN CMS VIEW ================= -->
-    <div id="adminView" class="hidden min-h-screen bg-slate-50 flex flex-col md:flex-row relative z-[150]">
+    <div id="adminView" class="hidden min-h-screen bg-slate-50 flex flex-col relative z-[150] pb-24">
         
-        <aside class="w-full md:w-64 bg-white border-r border-slate-200 flex flex-col md:h-screen md:sticky md:top-0 z-40 shadow-sm">
-            <div class="p-6 md:p-8 flex items-center gap-3 border-b border-slate-100">
-                <div class="w-10 h-10 bg-brand rounded-lg flex items-center justify-center text-white font-bold shadow-md text-xl">R</div>
-                <div><h2 class="text-slate-800 font-bold text-lg leading-none">Admin Panel</h2><p class="text-[10px] text-slate-400 mt-1">Modern CMS v7</p></div>
+        <!-- HEADER ADMIN & TOMBOL SIMPAN -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-40 shadow-sm">
+            <div class="flex items-center gap-3">
+                <button id="btnLogout" class="text-red-400 hover:text-red-600 bg-red-50 p-2 rounded-full transition-colors" title="Logout"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></button>
+                <h1 class="text-lg font-bold text-slate-800">Admin Panel</h1>
             </div>
-            <nav class="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
-                <button onclick="switchTab('tabAwal')" id="btnTabAwal" class="admin-tab-btn active w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Pengaturan Dasar</button>
-                <button onclick="switchTab('tabUtama')" id="btnTabUtama" class="admin-tab-btn w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg> Hero & Profil</button>
-                <button onclick="switchTab('tabJasa')" id="btnTabJasa" class="admin-tab-btn w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg> Layanan Jasa</button>
-                <button onclick="switchTab('tabProyek')" id="btnTabProyek" class="admin-tab-btn w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Portofolio Proyek</button>
-                <button onclick="switchTab('tabLegal')" id="btnTabLegal" class="admin-tab-btn w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Dokumen Legal</button>
-                <button onclick="switchTab('tabOrganisasi')" id="btnTabOrganisasi" class="admin-tab-btn w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tim & Banner</button>
-                <button onclick="switchTab('tabFooter')" id="btnTabFooter" class="admin-tab-btn w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Footer / Kontak</button>
-            </nav>
-            <div class="p-6 border-t border-slate-100">
-                <button onclick="window.location.hash=''" class="w-full text-left flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-brand transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Pratinjau Web</button>
-            </div>
-        </aside>
+            <!-- TOMBOL SIMPAN -->
+            <button id="btnUpdateData" class="px-5 py-2 bg-brand hover:bg-teal-700 text-white text-sm font-bold rounded-full shadow-md shadow-teal-500/30 transition-all flex items-center gap-2">
+                <svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                Simpan
+            </button>
+        </header>
 
         <!-- Area Form Admin -->
-        <main class="flex-1 flex flex-col bg-slate-50/50 relative">
-            <header class="hidden md:flex h-20 bg-white border-b border-slate-200 items-center justify-between px-8 sticky top-0 z-30 shadow-sm">
-                <h1 class="text-xl font-bold text-slate-800">Manajemen Konten</h1>
-                <div class="px-4 py-1.5 bg-green-50 text-brand text-xs font-bold rounded-full border border-green-100">Status: Online</div>
-            </header>
-            
-            <div class="flex-1 p-6 md:p-10 overflow-y-auto">
-                <div class="max-w-4xl mx-auto pb-32">
+        <main class="flex-1 p-6 md:p-10 overflow-y-auto" onclick="closeMoreMenu()">
+            <div class="max-w-4xl mx-auto">
+                <!-- TAB 1: PENGATURAN DASAR -->
+                <div id="tabAwal" class="admin-tab-content block space-y-6 animate-[fadeIn_0.3s]">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                        <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b">Logo Website</h4>
+                        <input type="text" id="formLogoImg" placeholder="Link Logo GDrive/Postimage" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                        <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b">Konfigurasi WhatsApp</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div><label class="text-[11px] font-bold text-slate-500 uppercase">Nomor WA</label><input type="text" id="formWaNumber" placeholder="Contoh: 628..." class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></div>
+                            <div><label class="text-[11px] font-bold text-slate-500 uppercase">Pesan Pembuka</label><input type="text" id="formWaMessage" placeholder="Template pesan..." class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: HERO & PROFIL -->
+                <div id="tabUtama" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                        <h4 class="font-bold text-slate-800 mb-2 border-b border-slate-100 pb-2">Seksi Hero (Header)</h4>
+                        <input type="text" id="formHeroTitle" placeholder="Judul Utama" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                        <textarea id="formHeroDesc" rows="2" placeholder="Deskripsi pendek" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></textarea>
+                        <input type="text" id="formHeroImg" placeholder="Link Gambar Hero" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                        <h4 class="font-bold text-slate-800 mb-2 border-b border-slate-100 pb-2">Profil Perusahaan & Artikel Panjang</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <input type="text" id="formAboutTitle" placeholder="Judul (Cth: Profil Perusahaan)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                            <input type="text" id="formAboutMapLink" placeholder="Link G-Maps (Arahkan Tombol)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                        </div>
+                        <textarea id="formAboutAddress" rows="2" placeholder="Alamat lengkap (Tampil di kiri)" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></textarea>
+                        <label class="block text-[11px] font-bold text-slate-500 mt-2 uppercase tracking-widest">Konten Cerita Profil (Gunakan Tag HTML)</label>
+                        <textarea id="formAboutContent" rows="6" class="w-full px-4 py-4 bg-slate-900 text-teal-300 font-mono text-sm rounded-xl outline-none shadow-inner"></textarea>
+                    </div>
+                </div>
+
+                <!-- TAB 3: JASA -->
+                <div id="tabJasa" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 grid md:grid-cols-2 gap-4">
+                        <input type="text" id="formSvcMainTitle" placeholder="Judul Seksi Jasa" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                        <input type="text" id="formSvcSubTitle" placeholder="Sub-judul Seksi" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                    </div>
                     
-                    <!-- TAB 1: PENGATURAN -->
-                    <div id="tabAwal" class="admin-tab-content block space-y-6">
-                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b">Logo Website</h4>
-                            <input type="text" id="formLogoImg" placeholder="Link Logo GDrive/Postimage" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                    <div id="adminSvcListArea" class="space-y-4">
+                        <div id="adminServicesContainer" class="flex flex-col gap-4"></div>
+                        <button onclick="addSvc()" class="mt-4 px-6 py-3 bg-brand text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all">+ Tambah Jasa Baru</button>
+                    </div>
+
+                    <div id="adminSvcEditArea" class="hidden bg-white p-8 rounded-2xl border border-slate-200 shadow-xl relative animate-[fadeIn_0.3s]">
+                        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                            <h3 class="text-xl font-bold text-slate-800">Edit Layanan Jasa</h3>
+                            <button onclick="closeEditSvc()" class="px-5 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-slate-200 shadow-sm transition-colors">← Kembali ke List</button>
                         </div>
-                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b">Konfigurasi WhatsApp</h4>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div><label class="text-[11px] font-bold text-slate-500 uppercase">Nomor WA</label><input type="text" id="formWaNumber" placeholder="Contoh: 628..." class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></div>
-                                <div><label class="text-[11px] font-bold text-slate-500 uppercase">Pesan Pembuka</label><input type="text" id="formWaMessage" placeholder="Template pesan..." class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></div>
+                        <div id="adminSvcEditForm"></div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: PROYEK -->
+                <div id="tabProyek" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <p class="text-sm text-slate-500">Kelola portofolio pekerjaan. Checklist pada fitur <b>"Tampil"</b> untuk menampilkan proyek tersebut di halaman depan (Maks. 6 proyek direkomendasikan).</p>
+                    </div>
+                    <div id="adminProjectListArea" class="space-y-4">
+                        <div id="adminProjectListContainer" class="flex flex-col gap-4"></div>
+                        <button onclick="addProject()" class="mt-4 px-6 py-3 bg-brand text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all">+ Buat Postingan Baru</button>
+                    </div>
+                    <div id="adminProjectEditArea" class="hidden bg-white p-8 rounded-2xl border border-slate-200 shadow-xl relative animate-[fadeIn_0.3s]">
+                        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                            <h3 class="text-xl font-bold text-slate-800">Edit Postingan</h3>
+                            <button onclick="closeEditProj()" class="px-5 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-slate-200 shadow-sm transition-colors">← Kembali ke List</button>
+                        </div>
+                        <div id="adminProjectEditForm"></div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: LEGALITAS -->
+                <div id="tabLegal" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4 mb-6">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <input type="text" id="formLegalTagline" placeholder="Tagline (Cth: LEGAL & TERPERCAYA)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                            <input type="text" id="formLegalTitle" placeholder="Judul Utama" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                        </div>
+                        <textarea id="formLegalDesc" placeholder="Deskripsi pendek" rows="2" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></textarea>
+                    </div>
+                    <div id="adminLegalContainer" class="grid md:grid-cols-2 gap-6"></div>
+                    <button onclick="addLegal()" class="mt-2 px-6 py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl shadow-sm hover:bg-slate-50 transition-all">+ Tambah Dokumen</button>
+                </div>
+
+                <!-- TAB 6: TIM & BANNER -->
+                <div id="tabOrganisasi" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                        <h4 class="font-bold border-b pb-2">Banner Section</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <input type="text" id="formBannerTitle" placeholder="Judul Banner" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                            <input type="text" id="formBannerImg" placeholder="Link Gambar Maskot (Tanpa Border)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                        </div>
+                        <textarea id="formBannerDesc" placeholder="Deskripsi Banner" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand" rows="2"></textarea>
+                        <input type="text" id="formBannerSig" placeholder="Tanda Tangan (Cth: - MEICI)" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 grid md:grid-cols-2 gap-4">
+                        <input type="text" id="formOrgTitle" placeholder="Judul Organisasi" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                        <input type="text" id="formOrgSub" placeholder="Sub-judul" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                    </div>
+                    <div id="adminTeamContainer" class="grid md:grid-cols-2 gap-6"></div>
+                    <button onclick="addTeam()" class="mt-2 px-6 py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl shadow-sm hover:bg-slate-50">+ Tambah Tim</button>
+                </div>
+
+                <!-- TAB 7: FOOTER -->
+                <div id="tabFooter" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                        <h4 class="font-bold border-b pb-2">Footer & Kontak</h4>
+                        <textarea id="formFooterAbout" placeholder="Teks Singkat Tentang Kami di Footer" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand" rows="3"></textarea>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <input type="text" id="formFooterPhone" placeholder="Telepon (Tampil di Footer)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                            <input type="text" id="formFooterEmail" placeholder="Email Perusahaan" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                        </div>
+                        <label class="block text-[11px] font-bold text-slate-500 mt-2 uppercase tracking-widest">Link Embed Google Maps (Ambil dari atribut SRC)</label>
+                        <input type="text" id="formFooterMapEmbed" placeholder="https://www.google.com/maps/embed?..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                        
+                        <h4 class="font-bold border-b pb-2 pt-4 mt-6">Link Social Media</h4>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div><label class="text-[11px] font-bold text-slate-500 uppercase">Facebook</label><input type="text" id="formLinkFb" placeholder="Link FB" class="mt-1 w-full border border-slate-200 px-4 py-3 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-brand"></div>
+                            <div><label class="text-[11px] font-bold text-slate-500 uppercase">Instagram</label><input type="text" id="formLinkIg" placeholder="Link IG" class="mt-1 w-full border border-slate-200 px-4 py-3 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-brand"></div>
+                            <div><label class="text-[11px] font-bold text-slate-500 uppercase">TikTok</label><input type="text" id="formLinkTt" placeholder="Link TT" class="mt-1 w-full border border-slate-200 px-4 py-3 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-brand"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 8: INTEGRASI GOOGLE -->
+                <div id="tabIntegrasi" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                        <div class="flex items-center gap-3 mb-6 border-b pb-4">
+                            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 2: HERO & PROFIL -->
-                    <div id="tabUtama" class="admin-tab-content hidden space-y-6">
-                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                            <h4 class="font-bold text-slate-800 mb-2 border-b border-slate-100 pb-2">Seksi Hero (Header)</h4>
-                            <input type="text" id="formHeroTitle" placeholder="Judul Utama" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                            <textarea id="formHeroDesc" rows="2" placeholder="Deskripsi pendek" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></textarea>
-                            <input type="text" id="formHeroImg" placeholder="Link Gambar Hero" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                        </div>
-                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                            <h4 class="font-bold text-slate-800 mb-2 border-b border-slate-100 pb-2">Profil Perusahaan & Artikel Panjang</h4>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <input type="text" id="formAboutTitle" placeholder="Judul (Cth: Profil Perusahaan)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                                <input type="text" id="formAboutMapLink" placeholder="Link G-Maps (Arahkan Tombol)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                            <div>
+                                <h4 class="font-bold text-slate-800">Integrasi Google (Analytics / Tag Manager)</h4>
+                                <p class="text-[11px] text-slate-500">Kosongkan jika tidak digunakan.</p>
                             </div>
-                            <textarea id="formAboutAddress" rows="2" placeholder="Alamat lengkap (Tampil di kiri)" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></textarea>
-                            <label class="block text-[11px] font-bold text-slate-500 mt-2 uppercase tracking-widest">Konten Cerita Profil (Gunakan Tag HTML)</label>
-                            <textarea id="formAboutContent" rows="6" class="w-full px-4 py-4 bg-slate-900 text-teal-300 font-mono text-sm rounded-xl outline-none shadow-inner"></textarea>
-                        </div>
-                    </div>
-
-                    <!-- TAB 3: JASA -->
-                    <div id="tabJasa" class="admin-tab-content hidden space-y-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 grid md:grid-cols-2 gap-4">
-                            <input type="text" id="formSvcMainTitle" placeholder="Judul Seksi Jasa" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                            <input type="text" id="formSvcSubTitle" placeholder="Sub-judul Seksi" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                        </div>
-                        <div id="adminServicesContainer" class="grid md:grid-cols-2 gap-6"></div>
-                        <button onclick="addSvc()" class="mt-2 px-6 py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl shadow-sm hover:bg-slate-50">+ Tambah Jasa</button>
-                    </div>
-
-                    <!-- ================= TAB 4: PROYEK (LIST VIEW & EDIT VIEW) ================= -->
-                    <div id="tabProyek" class="admin-tab-content hidden space-y-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                            <p class="text-sm text-slate-500">Kelola portofolio pekerjaan. Checklist pada fitur <b>"Tampil"</b> untuk menampilkan proyek tersebut di halaman depan (Maks. 6 proyek direkomendasikan).</p>
                         </div>
                         
-                        <!-- List View Area -->
-                        <div id="adminProjectListArea" class="space-y-4">
-                            <div id="adminProjectListContainer" class="flex flex-col gap-4"></div>
-                            <button onclick="addProject()" class="mt-4 px-6 py-3 bg-brand text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all">+ Buat Postingan Baru</button>
-                        </div>
-
-                        <!-- Edit View Area -->
-                        <div id="adminProjectEditArea" class="hidden bg-white p-8 rounded-2xl border border-slate-200 shadow-xl relative animate-[fadeIn_0.3s]">
-                            <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
-                                <h3 class="text-xl font-bold text-slate-800">Edit Postingan</h3>
-                                <button onclick="closeEditProj()" class="px-5 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-slate-200 shadow-sm transition-colors">← Kembali ke List</button>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase">Google Analytics (GA4) Measurement ID</label>
+                                <input type="text" id="formGaId" placeholder="Contoh: G-XXXXXXXXXX" class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                                <p class="text-[10px] text-slate-400 mt-1">Digunakan untuk melacak pengunjung website.</p>
                             </div>
-                            <!-- Form input inject via JS -->
-                            <div id="adminProjectEditForm"></div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 5: LEGALITAS -->
-                    <div id="tabLegal" class="admin-tab-content hidden space-y-6">
-                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4 mb-6">
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <input type="text" id="formLegalTagline" placeholder="Tagline (Cth: LEGAL & TERPERCAYA)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                                <input type="text" id="formLegalTitle" placeholder="Judul Utama" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                            </div>
-                            <textarea id="formLegalDesc" placeholder="Deskripsi pendek" rows="2" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand"></textarea>
-                        </div>
-                        <div id="adminLegalContainer" class="grid md:grid-cols-2 gap-6"></div>
-                        <button onclick="addLegal()" class="mt-2 px-6 py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl shadow-sm hover:bg-slate-50 transition-all">+ Tambah Dokumen</button>
-                    </div>
-
-                    <!-- TAB 6: TIM & BANNER -->
-                    <div id="tabOrganisasi" class="admin-tab-content hidden space-y-6">
-                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                            <h4 class="font-bold border-b pb-2">Banner Section</h4>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <input type="text" id="formBannerTitle" placeholder="Judul Banner" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                                <input type="text" id="formBannerImg" placeholder="Link Gambar Maskot (Tanpa Border)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                            </div>
-                            <textarea id="formBannerDesc" placeholder="Deskripsi Banner" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand" rows="2"></textarea>
-                            <input type="text" id="formBannerSig" placeholder="Tanda Tangan (Cth: - MEICI)" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                        </div>
-                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 grid md:grid-cols-2 gap-4">
-                            <input type="text" id="formOrgTitle" placeholder="Judul Organisasi" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                            <input type="text" id="formOrgSub" placeholder="Sub-judul" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                        </div>
-                        <div id="adminTeamContainer" class="grid md:grid-cols-2 gap-6"></div>
-                        <button onclick="addTeam()" class="mt-2 px-6 py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl shadow-sm hover:bg-slate-50">+ Tambah Tim</button>
-                    </div>
-
-                    <!-- TAB 7: FOOTER -->
-                    <div id="tabFooter" class="admin-tab-content hidden space-y-6">
-                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                            <h4 class="font-bold border-b pb-2">Footer & Kontak</h4>
-                            <textarea id="formFooterAbout" placeholder="Teks Singkat Tentang Kami di Footer" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand" rows="3"></textarea>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <input type="text" id="formFooterPhone" placeholder="Telepon (Tampil di Footer)" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                                <input type="text" id="formFooterEmail" placeholder="Email Perusahaan" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                            </div>
-                            <label class="block text-[11px] font-bold text-slate-500 mt-2 uppercase tracking-widest">Link Embed Google Maps (Ambil dari atribut SRC)</label>
-                            <input type="text" id="formFooterMapEmbed" placeholder="https://www.google.com/maps/embed?..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
-                            
-                            <h4 class="font-bold border-b pb-2 pt-4 mt-6">Link Social Media</h4>
-                            <div class="grid grid-cols-3 gap-4">
-                                <div><label class="text-[11px] font-bold text-slate-500 uppercase">Facebook</label><input type="text" id="formLinkFb" placeholder="Link FB" class="mt-1 w-full border border-slate-200 px-4 py-3 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-brand"></div>
-                                <div><label class="text-[11px] font-bold text-slate-500 uppercase">Instagram</label><input type="text" id="formLinkIg" placeholder="Link IG" class="mt-1 w-full border border-slate-200 px-4 py-3 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-brand"></div>
-                                <div><label class="text-[11px] font-bold text-slate-500 uppercase">TikTok</label><input type="text" id="formLinkTt" placeholder="Link TT" class="mt-1 w-full border border-slate-200 px-4 py-3 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-brand"></div>
+                            <div class="pt-2">
+                                <label class="text-[11px] font-bold text-slate-500 uppercase">Google Tag Manager (GTM) Container ID</label>
+                                <input type="text" id="formGtmId" placeholder="Contoh: GTM-XXXXXXX" class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                                <p class="text-[10px] text-slate-400 mt-1">Digunakan untuk tracking events custom/ads conversion.</p>
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </div>
 
-            <!-- TOMBOL SIMPAN -->
-            <div class="fixed bottom-0 right-0 left-0 md:left-64 bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 md:p-6 flex justify-center z-50 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
-                <button id="btnUpdateData" class="w-full max-w-2xl py-4 bg-brand hover:bg-teal-700 text-white text-base font-bold rounded-xl shadow-lg shadow-teal-500/30 transition-all flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                    Simpan Semua Perubahan
-                </button>
             </div>
         </main>
+
+        <!-- FLOATING MENU UNTUK "LAINNYA" -->
+        <div id="moreAdminMenu" class="hidden absolute bottom-20 right-4 bg-white rounded-xl shadow-2xl border border-slate-200 p-2 flex flex-col w-56 z-[200] transform transition-all origin-bottom-right">
+            <button onclick="switchTab('tabLegal'); closeMoreMenu()" id="btnTabLegal" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Legalitas</button>
+            <button onclick="switchTab('tabOrganisasi'); closeMoreMenu()" id="btnTabOrganisasi" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tim & Banner</button>
+            <button onclick="switchTab('tabFooter'); closeMoreMenu()" id="btnTabFooter" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Kontak Footer</button>
+            <div class="h-px bg-slate-100 my-1"></div>
+            <button onclick="switchTab('tabIntegrasi'); closeMoreMenu()" id="btnTabIntegrasi" class="floating-menu-btn"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg> Google Tags</button>
+        </div>
+
+        <!-- BOTTOM NAV BAR IG-STYLE -->
+        <nav class="fixed bottom-0 w-full bg-white/95 backdrop-blur-md border-t border-slate-200 flex justify-between px-2 sm:justify-center sm:gap-4 z-[160] shadow-[0_-5px_15px_rgba(0,0,0,0.02)]">
+            <button onclick="switchTab('tabAwal')" id="btnTabAwal" class="admin-tab-btn active flex flex-col items-center justify-center w-[70px] h-[64px] text-slate-400 hover:text-brand">
+                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> 
+                <span class="text-[10px] whitespace-nowrap tracking-wide">Dasar</span>
+            </button>
+            <button onclick="switchTab('tabUtama')" id="btnTabUtama" class="admin-tab-btn flex flex-col items-center justify-center w-[70px] h-[64px] text-slate-400 hover:text-brand">
+                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="text-[10px] whitespace-nowrap tracking-wide">Profil</span>
+            </button>
+            <button onclick="switchTab('tabJasa')" id="btnTabJasa" class="admin-tab-btn flex flex-col items-center justify-center w-[70px] h-[64px] text-slate-400 hover:text-brand">
+                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg>
+                <span class="text-[10px] whitespace-nowrap tracking-wide">Jasa</span>
+            </button>
+            <button onclick="switchTab('tabProyek')" id="btnTabProyek" class="admin-tab-btn flex flex-col items-center justify-center w-[70px] h-[64px] text-slate-400 hover:text-brand">
+                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                <span class="text-[10px] whitespace-nowrap tracking-wide">Proyek</span>
+            </button>
+            <button onclick="toggleMoreMenu(event)" id="btnMoreMenu" class="admin-tab-btn flex flex-col items-center justify-center w-[70px] h-[64px] text-slate-400 hover:text-brand">
+                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <span class="text-[10px] whitespace-nowrap tracking-wide">Lainnya</span>
+            </button>
+        </nav>
     </div>
 
     <!-- ================= LOGIC JAVASCRIPT & FIREBASE ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        // TAMBAHAN IMPORT AUTHENTICATION
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyB6_2VDndfMX_97eNlAGpc1_upfemCHyzA",
             authDomain: "company-profile-2fdb8.firebaseapp.com",
@@ -438,13 +492,14 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const auth = getAuth(app); // INISIALISASI AUTH
 
         // State Manager
         let adminSvc = [], adminLegal = [], adminTeam = [], adminProj = [];
-        let showAllProjectsPublic = false; // State untuk Load More publik
-        let editingProjIndex = -1; // State untuk Edit Proyek di Admin
+        let showAllProjectsPublic = false; 
+        let editingProjIndex = -1;
+        let editingSvcIndex = -1;
 
-        // Utilities Defensif
         const safeSetVal = (id, v) => { try { const el = document.getElementById(id); if(el) el.value = v || ''; } catch(e){} };
         const safeSetText = (id, v) => { try { const el = document.getElementById(id); if(el) el.innerText = v || ''; } catch(e){} };
         const safeSetHtml = (id, v) => { try { const el = document.getElementById(id); if(el) el.innerHTML = v || ''; } catch(e){} };
@@ -460,17 +515,67 @@
             return url;
         }
 
+        // --- GOOGLE TAG DYNAMIC INJECTOR ---
+        let gaInjected = false;
+        function injectGoogleTags(gaId, gtmId) {
+            if (gaId && gaId.trim() !== "" && !gaInjected) {
+                const scriptGA = document.createElement('script'); scriptGA.async = true; scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`; document.head.appendChild(scriptGA);
+                window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', gaId);
+                gaInjected = true;
+            }
+            if (gtmId && gtmId.trim() !== "") {
+                if(!document.getElementById('gtm-script-dynamic')) {
+                    const scriptGTM = document.createElement('script'); scriptGTM.id = 'gtm-script-dynamic';
+                    scriptGTM.innerHTML = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`;
+                    document.head.appendChild(scriptGTM);
+                }
+            }
+        }
+
         // ==========================================
-        // FITUR RAHASIA: ADMIN VIA SEARCH
+        // SISTEM AUTENTIKASI (LOGIN & LOGOUT)
         // ==========================================
+        
+        // Pengecekan Status Login Realtime
+        onAuthStateChanged(auth, (user) => {
+            const isAdmHash = window.location.hash === '#admin';
+            if (user) {
+                // User sedang login
+                if (isAdmHash) {
+                    document.getElementById('publicNavbar').classList.add('hidden');
+                    document.getElementById('publicView').classList.add('hidden');
+                    document.getElementById('adminView').classList.remove('hidden');
+                }
+                closeLoginModal();
+            } else {
+                // User tidak login
+                document.getElementById('adminView').classList.add('hidden');
+                if (isAdmHash) {
+                    // Jika mencoba akses #admin tapi belum login, kembalikan ke public
+                    window.location.hash = ''; 
+                    Swal.fire({ icon: 'error', title: 'Akses Ditolak', text: 'Anda harus login terlebih dahulu!' });
+                } else {
+                    document.getElementById('publicNavbar').classList.remove('hidden');
+                    document.getElementById('publicView').classList.remove('hidden');
+                }
+            }
+        });
+
+        // Trigger Buka Form Login lewat Search
         const setupSecretLogin = (inputId) => {
             const inputEl = document.getElementById(inputId);
             if(inputEl) {
                 inputEl.addEventListener('input', function(e) {
                     if(e.target.value === 'ADM1N') {
                         e.target.value = '';
-                        window.location.hash = '#admin';
                         if(document.getElementById('mobileMenu')) document.getElementById('mobileMenu').classList.add('hidden');
+                        
+                        // Cek apakah sudah login atau belum
+                        if (auth.currentUser) {
+                            window.location.hash = '#admin';
+                        } else {
+                            window.openLoginModal();
+                        }
                     }
                 });
             }
@@ -478,27 +583,64 @@
         setupSecretLogin('secretSearchDesktop');
         setupSecretLogin('secretSearchMobile');
 
-        // ==========================================
-        // TAB SYSTEM ADMIN
-        // ==========================================
-        window.switchTab = (id) => {
-            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.admin-tab-btn').forEach(el => {
-                el.classList.remove('active', 'bg-teal-50', 'text-brand');
-                el.classList.add('text-slate-500');
+        window.openLoginModal = () => document.getElementById('loginModal').classList.remove('hidden');
+        window.closeLoginModal = () => document.getElementById('loginModal').classList.add('hidden');
+
+        // Fungsi Submit Login
+        document.getElementById('btnLoginSubmit').onclick = () => {
+            const e = getVal('loginEmail'); const p = getVal('loginPassword');
+            if(!e || !p) return Swal.fire({icon: 'warning', title: 'Oops', text: 'Email dan password harus diisi.'});
+            
+            const btn = document.getElementById('btnLoginSubmit');
+            btn.innerHTML = 'Memeriksa...'; btn.classList.add('opacity-50', 'cursor-wait');
+
+            signInWithEmailAndPassword(auth, e, p)
+                .then(() => {
+                    Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Login sukses!', timer: 1500, showConfirmButton: false});
+                    window.location.hash = '#admin';
+                })
+                .catch((error) => {
+                    Swal.fire({ icon: 'error', title: 'Gagal Login', text: 'Kredensial salah atau tidak ditemukan.'});
+                })
+                .finally(() => {
+                    btn.innerHTML = 'Masuk'; btn.classList.remove('opacity-50', 'cursor-wait');
+                });
+        };
+
+        // Fungsi Logout
+        document.getElementById('btnLogout').onclick = () => {
+            Swal.fire({ title:'Keluar Admin?', text: "Anda akan dikembalikan ke halaman depan.", icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', cancelButtonColor:'#64748b', confirmButtonText:'Ya, Keluar' }).then((res) => {
+                if (res.isConfirmed) {
+                    signOut(auth).then(() => {
+                        window.location.hash = ''; // Otomatis trigger onAuthStateChanged
+                    });
+                }
             });
-            document.getElementById(id)?.classList.remove('hidden');
-            const btn = document.getElementById('btn' + id.charAt(0).toUpperCase() + id.slice(1));
-            if(btn) { btn.classList.add('active', 'bg-teal-50', 'text-brand'); btn.classList.remove('text-slate-500'); }
         };
 
         // ==========================================
-        // RENDER PORTOFOLIO DI PUBLIC (LIMIT 6)
+        // UI INTERACTION (TABS, MODALS, ETC)
         // ==========================================
-        window.renderPublicProjects = () => {
-            const frontProjects = adminProj.filter(p => p.showOnFront !== false); // Default True jika tidak ada property
-            const displayedProjects = showAllProjectsPublic ? frontProjects : frontProjects.slice(0, 6);
+        window.toggleMoreMenu = (e) => { if(e) e.stopPropagation(); document.getElementById('moreAdminMenu').classList.toggle('hidden'); };
+        window.closeMoreMenu = () => { document.getElementById('moreAdminMenu').classList.add('hidden'); };
+
+        window.switchTab = (id) => {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.admin-tab-btn').forEach(el => { el.classList.remove('active', 'text-brand'); el.classList.add('text-slate-400'); });
+            document.querySelectorAll('.floating-menu-btn').forEach(el => { el.classList.remove('active'); });
             
+            document.getElementById(id)?.classList.remove('hidden');
+            const btnMain = document.getElementById('btn' + id.charAt(0).toUpperCase() + id.slice(1));
+            if(btnMain && btnMain.classList.contains('admin-tab-btn')) { 
+                btnMain.classList.add('active', 'text-brand'); btnMain.classList.remove('text-slate-400'); 
+            } else if(btnMain && btnMain.classList.contains('floating-menu-btn')) {
+                btnMain.classList.add('active'); document.getElementById('btnMoreMenu').classList.add('active', 'text-brand'); document.getElementById('btnMoreMenu').classList.remove('text-slate-400');
+            }
+        };
+
+        window.renderPublicProjects = () => {
+            const frontProjects = adminProj.filter(p => p.showOnFront !== false);
+            const displayedProjects = showAllProjectsPublic ? frontProjects : frontProjects.slice(0, 6);
             safeSetHtml('pubProjectGrid', displayedProjects.map((p, i)=>`
                 <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col">
                     <div class="h-48 overflow-hidden cursor-pointer" onclick="openPost(${i})">
@@ -510,26 +652,17 @@
                         <button onclick="openPost(${i})" class="mt-auto text-[11px] font-bold text-slate-400 text-left hover:text-brand transition-colors uppercase tracking-widest flex items-center gap-1">Read More <span class="text-lg leading-none">&rarr;</span></button>
                     </div>
                 </div>`).join(''));
-                
             const btnContainer = document.getElementById('pubProjectBtnContainer');
             if (frontProjects.length > 6) {
                 btnContainer.classList.remove('hidden');
                 btnContainer.innerHTML = showAllProjectsPublic 
                     ? `<button onclick="toggleAllProjects()" class="text-sm font-semibold text-slate-600 bg-slate-100 border border-slate-200 px-6 py-2.5 rounded-full hover:bg-slate-200 transition-all shadow-sm">Sembunyikan Sebagian</button>`
                     : `<button onclick="toggleAllProjects()" class="text-sm font-semibold text-brand bg-teal-50 border border-teal-100 px-6 py-2.5 rounded-full hover:bg-teal-100 transition-all shadow-sm">Load More (${frontProjects.length - 6} Lagi)</button>`;
-            } else {
-                btnContainer.classList.add('hidden');
-            }
+            } else { btnContainer.classList.add('hidden'); }
         };
 
-        window.toggleAllProjects = () => {
-            showAllProjectsPublic = !showAllProjectsPublic;
-            window.renderPublicProjects();
-        };
+        window.toggleAllProjects = () => { showAllProjectsPublic = !showAllProjectsPublic; window.renderPublicProjects(); };
 
-        // ==========================================
-        // MODAL SYSTEM (LIGHTBOX & POST)
-        // ==========================================
         window.openModal = function(src) {
             const m = document.getElementById('imageModal'); const mImg = document.getElementById('modalImage');
             if(mImg) mImg.src = src; 
@@ -537,8 +670,7 @@
         }
         window.closeModal = function() {
             const m = document.getElementById('imageModal'); const mImg = document.getElementById('modalImage');
-            if(m) m.classList.add('opacity-0');
-            if(mImg) { mImg.classList.remove('scale-100'); mImg.classList.add('scale-95'); }
+            if(m) m.classList.add('opacity-0'); if(mImg) { mImg.classList.remove('scale-100'); mImg.classList.add('scale-95'); }
             setTimeout(() => { if(m) m.classList.add('hidden'); }, 300);
         }
 
@@ -553,37 +685,43 @@
         };
         window.closePost = () => { document.getElementById('postModal')?.classList.add('hidden'); document.body.style.overflow = 'auto'; };
 
-        // ==========================================
-        // CRUD RENDERERS (ADMIN)
-        // ==========================================
-        
-        // 1. JASA RENDERER
-        window.remSvc = (i) => { adminSvc.splice(i,1); renderSvc(); };
-        function renderSvc() {
+        // --- RENDER JASA ---
+        function renderSvcList() {
+            document.getElementById('adminSvcListArea').classList.remove('hidden');
+            document.getElementById('adminSvcEditArea').classList.add('hidden');
             safeSetHtml('adminServicesContainer', adminSvc.map((s,i)=>`
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 relative shadow-sm group">
-                    <button onclick="remSvc(${i})" class="absolute -top-3 -right-3 bg-red-100 text-red-600 w-8 h-8 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white shadow-md">✕</button>
-                    <input type="text" id="aSvcImg_${i}" value="${s.img||''}" placeholder="Link Gambar" class="w-full p-2.5 mb-3 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-1 focus:ring-brand">
-                    <input type="text" id="aSvcT_${i}" value="${s.title||''}" placeholder="Judul Jasa" class="w-full p-2.5 mb-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold outline-none focus:ring-1 focus:ring-brand">
-                    <textarea id="aSvcD_${i}" placeholder="Deskripsi Singkat" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-1 focus:ring-brand" rows="2">${s.desc||''}</textarea>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between shadow-sm gap-4">
+                    <div class="flex items-center gap-4">
+                        <img src="${fixD(s.img)}" class="w-16 h-16 object-contain rounded-xl bg-slate-50 border border-slate-100 p-1">
+                        <div><h4 class="font-bold text-slate-800 text-sm">${s.title || 'Tanpa Judul'}</h4><p class="text-xs text-slate-500 line-clamp-1 max-w-xs">${s.desc || '-'}</p></div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="openEditSvc(${i})" class="px-4 py-1.5 bg-teal-50 text-brand rounded-lg text-xs font-bold hover:bg-teal-100 transition-colors">Edit</button>
+                        <button onclick="remSvc(${i})" class="px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors">Hapus</button>
+                    </div>
                 </div>`).join(''));
         }
-        window.addSvc = () => { adminSvc.push({title:"",desc:"",img:""}); renderSvc(); };
-
-        // 2. PROJECT / PORTOFOLIO RENDERER (LIST & EDIT MODE)
-        window.toggleFront = (i) => { adminProj[i].showOnFront = !adminProj[i].showOnFront; renderProjList(); };
-        window.remProj = (i) => { 
-            Swal.fire({ title:'Hapus Postingan?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', cancelButtonColor:'#64748b', confirmButtonText:'Ya, Hapus!' }).then((res) => {
-                if (res.isConfirmed) { adminProj.splice(i,1); renderProjList(); }
-            });
+        window.openEditSvc = (i) => {
+            editingSvcIndex = i; const s = adminSvc[i];
+            document.getElementById('adminSvcListArea').classList.add('hidden'); document.getElementById('adminSvcEditArea').classList.remove('hidden');
+            safeSetHtml('adminSvcEditForm', `
+                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                    <input type="text" value="${s.title||''}" placeholder="Judul Jasa" class="w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand" oninput="adminSvc[${i}].title = this.value">
+                    <input type="text" value="${s.img||''}" placeholder="Link Gambar Icon/Thumbnail" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:ring-1 focus:ring-brand" oninput="adminSvc[${i}].img = this.value">
+                </div>
+                <textarea placeholder="Deskripsi Jasa" class="w-full p-3 border border-slate-200 rounded-xl mt-4 bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-brand" rows="3" oninput="adminSvc[${i}].desc = this.value">${s.desc||''}</textarea>
+            `);
         };
+        window.closeEditSvc = () => { editingSvcIndex = -1; renderSvcList(); };
+        window.remSvc = (i) => { Swal.fire({ title:'Hapus Jasa?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', confirmButtonText:'Ya, Hapus!' }).then((res) => { if (res.isConfirmed) { adminSvc.splice(i,1); renderSvcList(); } }); };
+        window.addSvc = () => { adminSvc.unshift({title:"", desc:"", img:""}); openEditSvc(0); };
+
+        // --- RENDER PROYEK ---
+        window.toggleFront = (i) => { adminProj[i].showOnFront = !adminProj[i].showOnFront; renderProjList(); };
+        window.remProj = (i) => { Swal.fire({ title:'Hapus Postingan?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', confirmButtonText:'Ya, Hapus!' }).then((res) => { if (res.isConfirmed) { adminProj.splice(i,1); renderProjList(); } }); };
         window.openEditProj = (i) => {
-            editingProjIndex = i;
-            const p = adminProj[i];
-            document.getElementById('adminProjectListArea').classList.add('hidden');
-            const editArea = document.getElementById('adminProjectEditArea');
-            editArea.classList.remove('hidden');
-            
+            editingProjIndex = i; const p = adminProj[i];
+            document.getElementById('adminProjectListArea').classList.add('hidden'); document.getElementById('adminProjectEditArea').classList.remove('hidden');
             safeSetHtml('adminProjectEditForm', `
                 <div class="grid md:grid-cols-2 gap-4 mt-4">
                     <input type="text" value="${p.title||''}" placeholder="Judul Proyek" class="w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand" oninput="adminProj[${i}].title = this.value">
@@ -597,24 +735,16 @@
             `);
         };
         window.closeEditProj = () => { editingProjIndex = -1; renderProjList(); };
-        
         function renderProjList() {
-            document.getElementById('adminProjectListArea').classList.remove('hidden');
-            document.getElementById('adminProjectEditArea').classList.add('hidden');
+            document.getElementById('adminProjectListArea').classList.remove('hidden'); document.getElementById('adminProjectEditArea').classList.add('hidden');
             safeSetHtml('adminProjectListContainer', adminProj.map((p,i)=>`
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between shadow-sm gap-4">
                     <div class="flex items-center gap-4">
                         <img src="${fixD(p.coverImg)}" class="w-16 h-16 object-cover rounded-xl bg-slate-100 border border-slate-100">
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm">${p.title || 'Tanpa Judul'}</h4>
-                            <p class="text-xs text-slate-500 line-clamp-1 max-w-xs">${p.shortDesc || '-'}</p>
-                        </div>
+                        <div><h4 class="font-bold text-slate-800 text-sm">${p.title || 'Tanpa Judul'}</h4><p class="text-xs text-slate-500 line-clamp-1 max-w-xs">${p.shortDesc || '-'}</p></div>
                     </div>
                     <div class="flex items-center gap-3">
-                        <label class="flex items-center gap-2 text-xs font-bold text-slate-600 cursor-pointer bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
-                            <input type="checkbox" onchange="toggleFront(${i})" ${p.showOnFront !== false ? 'checked' : ''} class="w-4 h-4 text-brand rounded focus:ring-brand">
-                            Tampil
-                        </label>
+                        <label class="flex items-center gap-2 text-xs font-bold text-slate-600 cursor-pointer bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200"><input type="checkbox" onchange="toggleFront(${i})" ${p.showOnFront !== false ? 'checked' : ''} class="w-4 h-4 text-brand rounded focus:ring-brand"> Tampil</label>
                         <button onclick="openEditProj(${i})" class="px-4 py-1.5 bg-teal-50 text-brand rounded-lg text-xs font-bold hover:bg-teal-100 transition-colors">Edit</button>
                         <button onclick="remProj(${i})" class="px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors">Hapus</button>
                     </div>
@@ -622,7 +752,7 @@
         }
         window.addProject = () => { adminProj.unshift({title:"", shortDesc:"", coverImg:"", content:"", gallery:"", showOnFront: true}); openEditProj(0); };
 
-        // 3. LEGAL RENDERER
+        // --- RENDER LEGAL & TEAM ---
         window.remLegal = (i) => { adminLegal.splice(i,1); renderLegal(); };
         function renderLegal() {
             safeSetHtml('adminLegalContainer', adminLegal.map((l,i)=>`
@@ -634,7 +764,6 @@
         }
         window.addLegal = () => { adminLegal.push({title:"",img:""}); renderLegal(); };
 
-        // 4. TEAM RENDERER
         window.remTeam = (i) => { adminTeam.splice(i,1); renderTeam(); };
         function renderTeam() {
             safeSetHtml('adminTeamContainer', adminTeam.map((t,i)=>`
@@ -647,9 +776,6 @@
         }
         window.addTeam = () => { adminTeam.push({name:"",role:"",img:""}); renderTeam(); };
 
-        // ==========================================
-        // MAIN LOAD DATA 
-        // ==========================================
         const svgFb = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" /></svg>`;
         const svgIg = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.058 3.252.148 4.771 1.691 4.919 4.919.046 1.265.058 1.646.058 4.85s-.012 3.584-.058 4.85c-.148 3.227-1.664 4.771-4.919 4.919-1.266.046-1.646.058-4.85.058s-3.584-.012-4.85-.058c-3.254-.148-4.771-1.691-4.919-4.919-.046-1.265-.058-1.646-.058-4.85s.012-3.584.058-4.85c.148-3.227 1.664-4.771 4.919-4.919 1.266-.046 1.646-.058 4.85-.058zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
         const svgTt = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 2.22-.76 4.41-2.11 6.14-1.4 1.83-3.43 3.03-5.74 3.32-2.22.28-4.52-.07-6.38-1.3-1.84-1.22-3.13-3.15-3.52-5.33-.39-2.18-.08-4.49 1.1-6.4 1.25-2.02 3.34-3.41 5.71-3.83 2.05-.36 4.19-.07 6.07.87v4.11c-1.41-.83-3.21-1.04-4.75-.49-1.48.53-2.6 1.82-3.03 3.34-.41 1.44-.19 3.05.69 4.29 1.05 1.48 2.94 2.15 4.67 1.78 1.63-.35 2.89-1.57 3.34-3.18.15-.55.2-1.12.2-1.69V.02z"/></svg>`;
@@ -659,115 +785,65 @@
                 const snap = await get(child(ref(db), 'website/content'));
                 let data = snap.exists() ? snap.val() : {};
 
-                // 1. Safe parsing arrays
                 const safeSvc = Array.isArray(data.services) ? data.services.filter(Boolean) : [];
                 const safeLegal = Array.isArray(data.legal) ? data.legal.filter(Boolean) : [];
                 const safeTeam = Array.isArray(data.team) ? data.team.filter(Boolean) : [];
                 const safeProj = Array.isArray(data.proyek) ? data.proyek.filter(Boolean) : [];
-                
-                // Add showOnFront prop if missing
                 safeProj.forEach(p => { if(p.showOnFront === undefined) p.showOnFront = true; });
 
-                // 2. Render UI Publik
+                injectGoogleTags(data.gaId, data.gtmId);
+
                 try {
                     const logo = fixD(data.logoImg);
-                    if (logo) { 
-                        safeSetImg('pubLogoImg', logo); 
-                        document.getElementById('pubLogoImg')?.classList.remove('hidden'); 
-                        document.getElementById('fallbackLogo')?.classList.add('hidden'); 
-                    } else {
-                        document.getElementById('pubLogoImg')?.classList.add('hidden'); 
-                        document.getElementById('fallbackLogo')?.classList.remove('hidden'); 
-                    }
+                    if (logo) { safeSetImg('pubLogoImg', logo); document.getElementById('pubLogoImg')?.classList.remove('hidden'); document.getElementById('fallbackLogo')?.classList.add('hidden'); 
+                    } else { document.getElementById('pubLogoImg')?.classList.add('hidden'); document.getElementById('fallbackLogo')?.classList.remove('hidden'); }
                 } catch(e){}
 
                 try {
-                    safeSetText('pubHeroTitle', data.heroTitle || "PT. Rumah Mampet Indonesia");
-                    safeSetText('pubHeroDesc', data.heroDesc || "Layanan plumbing dan cleaning profesional.");
+                    safeSetText('pubHeroTitle', data.heroTitle || "PT. Rumah Mampet Indonesia"); safeSetText('pubHeroDesc', data.heroDesc || "Layanan plumbing dan cleaning profesional.");
                     const hImg = fixD(data.heroImg); if(hImg) safeSetImg('pubHeroImg', hImg);
                 } catch(e){}
 
                 try {
-                    safeSetText('pubSvcMainTitle', data.svcMainTitle || "Layanan Kami"); 
-                    safeSetText('pubSvcSubTitle', data.svcSubTitle || "Berbagai solusi untuk Anda");
-                    safeSetHtml('pubServicesGrid', safeSvc.map(s=>`
-                        <div class="bg-white p-8 rounded-[2.5rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group">
-                            <img src="${fixD(s.img)}" class="h-28 w-28 object-contain mb-8 drop-shadow-md img-hover-zoom">
-                            <h3 class="text-xl font-bold text-slate-800 mb-4 font-serif">${s.title}</h3>
-                            <p class="text-sm text-slate-500 leading-relaxed">${s.desc}</p>
-                        </div>`).join(''));
+                    safeSetText('pubSvcMainTitle', data.svcMainTitle || "Layanan Kami"); safeSetText('pubSvcSubTitle', data.svcSubTitle || "Berbagai solusi untuk Anda");
+                    safeSetHtml('pubServicesGrid', safeSvc.map(s=>`<div class="bg-white p-8 rounded-[2.5rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group"><img src="${fixD(s.img)}" class="h-28 w-28 object-contain mb-8 drop-shadow-md img-hover-zoom"><h3 class="text-xl font-bold text-slate-800 mb-4 font-serif">${s.title}</h3><p class="text-sm text-slate-500 leading-relaxed">${s.desc}</p></div>`).join(''));
+                } catch(e){}
+
+                try { adminProj = safeProj; window.renderPublicProjects(); } catch(e){}
+
+                try {
+                    safeSetText('pubLegalTagline', data.legalTagline || "LEGAL & TERPERCAYA"); safeSetText('pubLegalTitle', data.legalTitle || "Sudah Berbadan Usaha"); safeSetText('pubLegalDesc', data.legalDesc || "Kami beroperasi secara resmi.");
+                    safeSetHtml('pubLegalGrid', safeLegal.map(l=>`<div class="bg-slate-800/80 rounded-3xl p-6 shadow-xl border border-slate-700 flex flex-col items-center backdrop-blur-md"><div onclick="openModal('${fixD(l.img)}')" class="w-full aspect-[4/3] bg-white rounded-2xl mb-6 overflow-hidden flex items-center justify-center p-2 cursor-pointer group border border-slate-600 relative"><div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10"><span class="text-white font-bold bg-black/80 px-4 py-2 rounded-full shadow-lg text-xs uppercase tracking-wider">🔍 Perbesar</span></div><img src="${fixD(l.img)}" class="max-h-full max-w-full object-contain img-hover-zoom"></div><h4 class="text-lg font-bold text-white font-serif tracking-wide">${l.title}</h4></div>`).join(''));
                 } catch(e){}
 
                 try {
-                    adminProj = safeProj;
-                    window.renderPublicProjects(); // Render using limit function
+                    safeSetText('pubBannerTitle', data.bannerTitle || "Kita adalah yang TERBAIK"); safeSetText('pubBannerDesc', data.bannerDesc || "PT Rumah Mampet Indonesia adalah solusi terpercaya..."); safeSetText('pubBannerSig', data.bannerSig || "- RM");
+                    const bImg = fixD(data.bannerImg); if(bImg) { const bannerEl = document.getElementById('pubBannerImg'); if (bannerEl) bannerEl.src = bImg; }
                 } catch(e){}
 
                 try {
-                    safeSetText('pubLegalTagline', data.legalTagline || "LEGAL & TERPERCAYA"); 
-                    safeSetText('pubLegalTitle', data.legalTitle || "Sudah Berbadan Usaha"); 
-                    safeSetText('pubLegalDesc', data.legalDesc || "Kami beroperasi secara resmi.");
-                    safeSetHtml('pubLegalGrid', safeLegal.map(l=>`
-                        <div class="bg-slate-800/80 rounded-3xl p-6 shadow-xl border border-slate-700 flex flex-col items-center backdrop-blur-md">
-                            <div onclick="openModal('${fixD(l.img)}')" class="w-full aspect-[4/3] bg-white rounded-2xl mb-6 overflow-hidden flex items-center justify-center p-2 cursor-pointer group border border-slate-600 relative">
-                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10"><span class="text-white font-bold bg-black/80 px-4 py-2 rounded-full shadow-lg text-xs uppercase tracking-wider">🔍 Perbesar</span></div>
-                                <img src="${fixD(l.img)}" class="max-h-full max-w-full object-contain img-hover-zoom">
-                            </div>
-                            <h4 class="text-lg font-bold text-white font-serif tracking-wide">${l.title}</h4>
-                        </div>`).join(''));
+                    safeSetText('pubOrgTitle', data.orgTitle || "Struktur Organisasi"); safeSetText('pubOrgSub', data.orgSub || "Berikut adalah tim kami");
+                    safeSetHtml('pubTeamGrid', safeTeam.map(t=>`<div class="flex flex-col items-center text-center group"><div class="w-full aspect-[3/4] bg-white rounded-[2.5rem] mb-6 overflow-hidden shadow-md border border-slate-100 flex items-center justify-center p-2 relative"><img src="${fixD(t.img)}" class="max-w-full max-h-full object-contain img-hover-zoom"></div><p class="text-[11px] font-bold text-brand uppercase tracking-widest mb-1">${t.role}</p><h4 class="text-xl font-serif font-bold text-slate-800">${t.name}</h4></div>`).join(''));
                 } catch(e){}
 
                 try {
-                    safeSetText('pubBannerTitle', data.bannerTitle || "Kita adalah yang TERBAIK"); 
-                    safeSetText('pubBannerDesc', data.bannerDesc || "PT Rumah Mampet Indonesia adalah solusi terpercaya..."); 
-                    safeSetText('pubBannerSig', data.bannerSig || "- RM");
-                    const bImg = fixD(data.bannerImg); 
-                    if(bImg) {
-                        const bannerEl = document.getElementById('pubBannerImg');
-                        if (bannerEl) bannerEl.src = bImg;
-                    }
-                } catch(e){}
-
-                try {
-                    safeSetText('pubOrgTitle', data.orgTitle || "Struktur Organisasi"); 
-                    safeSetText('pubOrgSub', data.orgSub || "Berikut adalah tim kami");
-                    safeSetHtml('pubTeamGrid', safeTeam.map(t=>`
-                        <div class="flex flex-col items-center text-center group">
-                            <div class="w-full aspect-[3/4] bg-white rounded-[2.5rem] mb-6 overflow-hidden shadow-md border border-slate-100 flex items-center justify-center p-2 relative">
-                                <img src="${fixD(t.img)}" class="max-w-full max-h-full object-contain img-hover-zoom">
-                            </div>
-                            <p class="text-[11px] font-bold text-brand uppercase tracking-widest mb-1">${t.role}</p>
-                            <h4 class="text-xl font-serif font-bold text-slate-800">${t.name}</h4>
-                        </div>`).join(''));
-                } catch(e){}
-
-                try {
-                    safeSetText('pubAboutTitle', data.aboutTitle || "Profil Perusahaan"); 
-                    safeSetText('pubAboutAddress', data.aboutAddress || "Alamat belum diisi");
+                    safeSetText('pubAboutTitle', data.aboutTitle || "Profil Perusahaan"); safeSetText('pubAboutAddress', data.aboutAddress || "Alamat belum diisi");
                     const al = document.getElementById('pubAboutMapLink'); if(al) al.href = data.aboutMapLink || "#";
                     safeSetHtml('pubAboutContent', data.aboutContent || "<p>Silakan isi profil di admin.</p>");
                 } catch(e){}
 
                 try {
-                    const waNum = data.waNumber || "6289606357045";
-                    const waMsg = encodeURIComponent(data.waMessage || "Halo Rumah Mampet");
+                    const waNum = data.waNumber || "6289606357045"; const waMsg = encodeURIComponent(data.waMessage || "Halo Rumah Mampet");
                     const waLnk = `https://wa.me/${waNum}?text=${waMsg}`;
                     const fBtn = document.getElementById('pubFloatingWaBtn'); if(fBtn) fBtn.href = waLnk; 
                     const hBtn = document.getElementById('pubHeroWaBtn'); if(hBtn) hBtn.href = waLnk;
 
-                    safeSetHtml('pubFooterAbout', data.footerAbout || ""); 
-                    safeSetText('pubFooterPhone', data.footerPhone || ""); 
-                    safeSetText('pubFooterEmail', data.footerEmail || "");
+                    safeSetHtml('pubFooterAbout', data.footerAbout || ""); safeSetText('pubFooterPhone', data.footerPhone || ""); safeSetText('pubFooterEmail', data.footerEmail || "");
                     const fm = document.getElementById('pubFooterMap'); if(fm) fm.src = data.footerMapEmbed || "";
                     
-                    safeSetHtml('pubFooterSosmed', `
-                        <a href="${data.linkFb||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="Facebook">${svgFb}</a>
-                        <a href="${data.linkIg||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="Instagram">${svgIg}</a>
-                        <a href="${data.linkTt||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="TikTok">${svgTt}</a>
-                    `);
+                    safeSetHtml('pubFooterSosmed', `<a href="${data.linkFb||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="Facebook">${svgFb}</a><a href="${data.linkIg||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="Instagram">${svgIg}</a><a href="${data.linkTt||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="TikTok">${svgTt}</a>`);
                 } catch(e){}
 
-                // 3. Populate Admin Forms
                 safeSetVal('formLogoImg', data.logoImg); safeSetVal('formWaNumber', data.waNumber); safeSetVal('formWaMessage', data.waMessage);
                 safeSetVal('formHeroTitle', data.heroTitle); safeSetVal('formHeroDesc', data.heroDesc); safeSetVal('formHeroImg', data.heroImg);
                 safeSetVal('formSvcMainTitle', data.svcMainTitle); safeSetVal('formSvcSubTitle', data.svcSubTitle);
@@ -777,27 +853,23 @@
                 safeSetVal('formAboutTitle', data.aboutTitle); safeSetVal('formAboutMapLink', data.aboutMapLink); safeSetVal('formAboutAddress', data.aboutAddress); safeSetVal('formAboutContent', data.aboutContent);
                 safeSetVal('formFooterAbout', data.footerAbout); safeSetVal('formFooterPhone', data.footerPhone); safeSetVal('formFooterEmail', data.footerEmail); safeSetVal('formFooterMapEmbed', data.footerMapEmbed);
                 safeSetVal('formLinkFb', data.linkFb); safeSetVal('formLinkIg', data.linkIg); safeSetVal('formLinkTt', data.linkTt);
+                safeSetVal('formGaId', data.gaId); safeSetVal('formGtmId', data.gtmId);
 
                 adminSvc = safeSvc; adminLegal = safeLegal; adminTeam = safeTeam;
-                renderSvc(); renderProjList(); renderLegal(); renderTeam();
+                renderSvcList(); renderProjList(); renderLegal(); renderTeam();
 
             } catch (error) { 
-                console.error("Critical Load Error:", error); 
-                safeSetText('pubHeroDesc', "Terjadi kesalahan sistem memuat data.");
+                console.error("Critical Load Error:", error); safeSetText('pubHeroDesc', "Terjadi kesalahan sistem memuat data.");
             }
         }
 
-        // ==========================================
-        // SAVE DATA WITH SWEETALERT2
-        // ==========================================
         const btnU = document.getElementById('btnUpdateData');
         if(btnU) {
             btnU.onclick = async () => {
-                btnU.innerHTML = `⏳ MENYIMPAN...`; btnU.classList.add('cursor-wait', 'opacity-80');
-                
+                btnU.innerHTML = `⏳...`; btnU.classList.add('cursor-wait', 'opacity-80');
                 try {
-                    // Pastikan yang di save adalah array adminProj, bukan renderan textarea nya
                     const cleanProj = adminProj.filter(p => p.title && p.title.trim() !== "");
+                    const cleanSvc = adminSvc.filter(s => s.title && s.title.trim() !== "");
 
                     const payload = {
                         logoImg: getVal('formLogoImg'), waNumber: getVal('formWaNumber'), waMessage: getVal('formWaMessage'),
@@ -808,8 +880,9 @@
                         bannerImg: getVal('formBannerImg'), bannerTitle: getVal('formBannerTitle'), bannerDesc: getVal('formBannerDesc'), bannerSig: getVal('formBannerSig'),
                         orgTitle: getVal('formOrgTitle'), orgSub: getVal('formOrgSub'),
                         footerAbout: getVal('formFooterAbout'), footerPhone: getVal('formFooterPhone'), footerEmail: getVal('formFooterEmail'), footerMapEmbed: getVal('formFooterMapEmbed'), linkFb: getVal('formLinkFb'), linkIg: getVal('formLinkIg'), linkTt: getVal('formLinkTt'),
-                        
-                        services: adminSvc.map((_, i) => ({ img: getVal(`aSvcImg_${i}`), title: getVal(`aSvcT_${i}`), desc: getVal(`aSvcD_${i}`) })).filter(s => s.title !== ""),
+                        gaId: getVal('formGaId'), gtmId: getVal('formGtmId'),
+
+                        services: cleanSvc,
                         legal: adminLegal.map((_, i) => ({ img: getVal(`aLglImg_${i}`), title: getVal(`aLglT_${i}`) })).filter(l => l.title !== ""),
                         team: adminTeam.map((_, i) => ({ img: getVal(`aTmImg_${i}`), name: getVal(`aTmN_${i}`), role: getVal(`aTmR_${i}`) })).filter(t => t.name !== ""),
                         proyek: cleanProj
@@ -821,27 +894,40 @@
                 } catch (e) {
                     Swal.fire({ icon: 'error', title: 'Gagal', text: 'Terjadi kesalahan saat menyimpan data: ' + e.message }); 
                 } finally {
-                    btnU.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Simpan Semua Perubahan`; 
+                    btnU.innerHTML = `<svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Simpan`; 
                     btnU.classList.remove('cursor-wait', 'opacity-80');
                 }
             };
         }
 
-        // ==========================================
-        // INIT ROUTING & MOBILE NAV
-        // ==========================================
         const mmBtn = document.getElementById('mobileMenuBtn'); const mMenu = document.getElementById('mobileMenu');
         if(mmBtn) mmBtn.onclick = () => mMenu.classList.toggle('hidden');
         document.querySelectorAll('.mobile-link').forEach(l => l.onclick = () => { if(mMenu) mMenu.classList.add('hidden'); });
 
         window.onhashchange = () => {
             const isAdm = window.location.hash === '#admin';
-            const nav = document.getElementById('publicNavbar'); if(nav) nav.classList.toggle('hidden', isAdm);
-            const pub = document.getElementById('publicView'); if(pub) pub.classList.toggle('hidden', isAdm);
-            const adm = document.getElementById('adminView'); if(adm) adm.classList.toggle('hidden', !isAdm);
-            window.scrollTo(0,0);
+            // Pengecekan keamanan manual jika user memaksa mengetik #admin di URL
+            if (isAdm) {
+                if (!auth.currentUser) {
+                    window.location.hash = ''; // Tendang keluar jika tidak ada session
+                    window.openLoginModal();
+                } else {
+                    document.getElementById('publicNavbar').classList.add('hidden');
+                    document.getElementById('publicView').classList.add('hidden');
+                    document.getElementById('adminView').classList.remove('hidden');
+                    window.scrollTo(0,0);
+                }
+            } else {
+                document.getElementById('publicNavbar').classList.remove('hidden');
+                document.getElementById('publicView').classList.remove('hidden');
+                document.getElementById('adminView').classList.add('hidden');
+                window.scrollTo(0,0);
+            }
         };
-        window.onhashchange(); loadData();
+        
+        // Initial load
+        loadData();
+        // hash dihandle oleh onAuthStateChanged saat pertama kali load agar tidak bypass form login
     </script>
 </body>
 </html>
