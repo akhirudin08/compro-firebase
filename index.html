@@ -57,7 +57,7 @@
                 <a href="#" class="text-brand">Home</a>
                 <a href="#services" class="text-slate-500 hover:text-brand transition-colors">Layanan</a>
                 <a href="#proyek" class="text-slate-500 hover:text-brand transition-colors">Portofolio</a>
-                <a href="#legal" class="text-slate-500 hover:text-brand transition-colors">Legalitas</a>
+                <a href="#ulasan_sec" class="text-slate-500 hover:text-brand transition-colors">Ulasan</a>
                 <a href="#about" class="text-slate-500 hover:text-brand transition-colors">Tentang Kami</a>
                 
                 <div class="relative ml-4">
@@ -77,7 +77,7 @@
             <a href="#" class="mobile-link block font-bold text-brand text-lg">Home</a>
             <a href="#services" class="mobile-link block font-medium text-slate-600">Layanan</a>
             <a href="#proyek" class="mobile-link block font-medium text-slate-600">Portofolio</a>
-            <a href="#legal" class="mobile-link block font-medium text-slate-600">Legalitas</a>
+            <a href="#ulasan_sec" class="mobile-link block font-medium text-slate-600">Ulasan</a>
             <a href="#about" class="mobile-link block font-medium text-slate-600">Tentang Kami</a>
         </div>
     </nav>
@@ -162,8 +162,20 @@
             <div id="pubProjectGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </section>
 
+        <!-- ULASAN PELANGGAN (TESTIMONI) -->
+        <section id="ulasan_sec" class="bg-slate-50 py-24 mt-32 md:mt-40 border-y border-slate-200">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <p class="text-brand font-bold tracking-widest text-xs uppercase mb-3">Apa Kata Mereka</p>
+                    <h2 id="pubRevMainTitle" class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-4">Ulasan Pelanggan</h2>
+                    <p id="pubRevSubTitle" class="text-slate-500 text-sm md:text-base">Kepercayaan Anda adalah prioritas kami</p>
+                </div>
+                <div id="pubReviewGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </section>
+
         <!-- BANNER TERBAIK -->
-        <section class="bg-banner mt-32 md:mt-40 relative">
+        <section class="bg-banner relative">
             <div class="max-w-6xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/3 flex justify-center md:justify-end relative">
                     <img id="pubBannerImg" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="w-64 md:w-80 object-contain drop-shadow-2xl -mt-20 md:-mt-32 relative z-10 hover:scale-105 transition-transform duration-500">
@@ -231,7 +243,7 @@
                             <div><p class="text-xs text-slate-400 font-medium">Telepon</p><p id="pubFooterPhone" class="text-sm font-semibold text-slate-700">...</p></div>
                         </div>
                         <div class="flex items-start gap-3">
-                            <div class="mt-0.5 text-brand"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
+                            <div class="mt-0.5 text-brand"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z"></path></svg></div>
                             <div><p class="text-xs text-slate-400 font-medium">Email</p><p id="pubFooterEmail" class="text-sm font-semibold text-slate-700">...</p></div>
                         </div>
                     </div>
@@ -437,11 +449,33 @@
                     </div>
                 </div>
 
+                <!-- TAB 9: ULASAN PELANGGAN (BARU) -->
+                <div id="tabUlasan" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 grid md:grid-cols-2 gap-4">
+                        <input type="text" id="formRevMainTitle" placeholder="Judul Seksi Ulasan" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                        <input type="text" id="formRevSubTitle" placeholder="Sub-judul Seksi" class="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand">
+                    </div>
+                    
+                    <div id="adminRevListArea" class="space-y-4">
+                        <div id="adminRevListContainer" class="flex flex-col gap-4"></div>
+                        <button onclick="addRev()" class="mt-4 px-6 py-3 bg-brand text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all">+ Tambah Ulasan Baru</button>
+                    </div>
+
+                    <div id="adminRevEditArea" class="hidden bg-white p-8 rounded-2xl border border-slate-200 shadow-xl relative animate-[fadeIn_0.3s]">
+                        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                            <h3 class="text-xl font-bold text-slate-800">Edit Ulasan</h3>
+                            <button onclick="closeEditRev()" class="px-5 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-slate-200 shadow-sm transition-colors">← Kembali ke List</button>
+                        </div>
+                        <div id="adminRevEditForm"></div>
+                    </div>
+                </div>
+
             </div>
         </main>
 
         <!-- FLOATING MENU UNTUK "LAINNYA" -->
         <div id="moreAdminMenu" class="hidden absolute bottom-20 right-4 bg-white rounded-xl shadow-2xl border border-slate-200 p-2 flex flex-col w-56 z-[200] transform transition-all origin-bottom-right">
+            <button onclick="switchTab('tabUlasan'); closeMoreMenu()" id="btnTabUlasan" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg> Testimoni</button>
             <button onclick="switchTab('tabLegal'); closeMoreMenu()" id="btnTabLegal" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Legalitas</button>
             <button onclick="switchTab('tabOrganisasi'); closeMoreMenu()" id="btnTabOrganisasi" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tim & Banner</button>
             <button onclick="switchTab('tabFooter'); closeMoreMenu()" id="btnTabFooter" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Kontak Footer</button>
@@ -478,7 +512,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-        // TAMBAHAN IMPORT AUTHENTICATION
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -492,13 +525,13 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const auth = getAuth(app); // INISIALISASI AUTH
+        const auth = getAuth(app); 
 
-        // State Manager
-        let adminSvc = [], adminLegal = [], adminTeam = [], adminProj = [];
+        let adminSvc = [], adminLegal = [], adminTeam = [], adminProj = [], adminRev = [];
         let showAllProjectsPublic = false; 
         let editingProjIndex = -1;
         let editingSvcIndex = -1;
+        let editingRevIndex = -1;
 
         const safeSetVal = (id, v) => { try { const el = document.getElementById(id); if(el) el.value = v || ''; } catch(e){} };
         const safeSetText = (id, v) => { try { const el = document.getElementById(id); if(el) el.innerText = v || ''; } catch(e){} };
@@ -508,175 +541,95 @@
         
         function fixD(url) {
             if (!url || typeof url !== 'string') return url;
-            if (url.includes('drive.google.com')) {
-                const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-                if (m && m[1]) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000`;
-            }
-            return url;
+            if (url.includes('drive.google.com')) { const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/); if (m && m[1]) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000`; } return url;
         }
 
-        // --- GOOGLE TAG DYNAMIC INJECTOR ---
+        const parseFBList = (node) => {
+            if (!node) return [];
+            if (Array.isArray(node)) return node.filter(Boolean);
+            return Object.values(node).filter(Boolean);
+        };
+
+        const renderStars = (rating) => {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) stars += `<svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>`;
+                else stars += `<svg class="w-5 h-5 text-slate-300 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>`;
+            }
+            return stars;
+        };
+
         let gaInjected = false;
         function injectGoogleTags(gaId, gtmId) {
-            if (gaId && gaId.trim() !== "" && !gaInjected) {
-                const scriptGA = document.createElement('script'); scriptGA.async = true; scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`; document.head.appendChild(scriptGA);
-                window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', gaId);
-                gaInjected = true;
-            }
-            if (gtmId && gtmId.trim() !== "") {
-                if(!document.getElementById('gtm-script-dynamic')) {
-                    const scriptGTM = document.createElement('script'); scriptGTM.id = 'gtm-script-dynamic';
-                    scriptGTM.innerHTML = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`;
-                    document.head.appendChild(scriptGTM);
-                }
-            }
+            if (gaId && gaId.trim() !== "" && !gaInjected) { const scriptGA = document.createElement('script'); scriptGA.async = true; scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`; document.head.appendChild(scriptGA); window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', gaId); gaInjected = true; }
+            if (gtmId && gtmId.trim() !== "") { if(!document.getElementById('gtm-script-dynamic')) { const scriptGTM = document.createElement('script'); scriptGTM.id = 'gtm-script-dynamic'; scriptGTM.innerHTML = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`; document.head.appendChild(scriptGTM); } }
         }
 
-        // ==========================================
-        // SISTEM AUTENTIKASI (LOGIN & LOGOUT)
-        // ==========================================
-        
-        // Pengecekan Status Login Realtime
         onAuthStateChanged(auth, (user) => {
             const isAdmHash = window.location.hash === '#admin';
             if (user) {
-                // User sedang login
-                if (isAdmHash) {
-                    document.getElementById('publicNavbar').classList.add('hidden');
-                    document.getElementById('publicView').classList.add('hidden');
-                    document.getElementById('adminView').classList.remove('hidden');
-                }
+                if (isAdmHash) { document.getElementById('publicNavbar').classList.add('hidden'); document.getElementById('publicView').classList.add('hidden'); document.getElementById('adminView').classList.remove('hidden'); }
                 closeLoginModal();
             } else {
-                // User tidak login
                 document.getElementById('adminView').classList.add('hidden');
-                if (isAdmHash) {
-                    // Jika mencoba akses #admin tapi belum login, kembalikan ke public
-                    window.location.hash = ''; 
-                    Swal.fire({ icon: 'error', title: 'Akses Ditolak', text: 'Anda harus login terlebih dahulu!' });
-                } else {
-                    document.getElementById('publicNavbar').classList.remove('hidden');
-                    document.getElementById('publicView').classList.remove('hidden');
-                }
+                if (isAdmHash) { window.location.hash = ''; Swal.fire({ icon: 'error', title: 'Akses Ditolak', text: 'Anda harus login terlebih dahulu!' }); } else { document.getElementById('publicNavbar').classList.remove('hidden'); document.getElementById('publicView').classList.remove('hidden'); }
             }
         });
 
-        // Trigger Buka Form Login lewat Search
         const setupSecretLogin = (inputId) => {
             const inputEl = document.getElementById(inputId);
             if(inputEl) {
                 inputEl.addEventListener('input', function(e) {
                     if(e.target.value === 'ADM1N') {
-                        e.target.value = '';
-                        if(document.getElementById('mobileMenu')) document.getElementById('mobileMenu').classList.add('hidden');
-                        
-                        // Cek apakah sudah login atau belum
-                        if (auth.currentUser) {
-                            window.location.hash = '#admin';
-                        } else {
-                            window.openLoginModal();
-                        }
+                        e.target.value = ''; if(document.getElementById('mobileMenu')) document.getElementById('mobileMenu').classList.add('hidden');
+                        if (auth.currentUser) { window.location.hash = '#admin'; } else { window.openLoginModal(); }
                     }
                 });
             }
         };
-        setupSecretLogin('secretSearchDesktop');
-        setupSecretLogin('secretSearchMobile');
+        setupSecretLogin('secretSearchDesktop'); setupSecretLogin('secretSearchMobile');
 
         window.openLoginModal = () => document.getElementById('loginModal').classList.remove('hidden');
         window.closeLoginModal = () => document.getElementById('loginModal').classList.add('hidden');
 
-        // Fungsi Submit Login
         document.getElementById('btnLoginSubmit').onclick = () => {
             const e = getVal('loginEmail'); const p = getVal('loginPassword');
             if(!e || !p) return Swal.fire({icon: 'warning', title: 'Oops', text: 'Email dan password harus diisi.'});
-            
-            const btn = document.getElementById('btnLoginSubmit');
-            btn.innerHTML = 'Memeriksa...'; btn.classList.add('opacity-50', 'cursor-wait');
-
+            const btn = document.getElementById('btnLoginSubmit'); btn.innerHTML = 'Memeriksa...'; btn.classList.add('opacity-50', 'cursor-wait');
             signInWithEmailAndPassword(auth, e, p)
-                .then(() => {
-                    Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Login sukses!', timer: 1500, showConfirmButton: false});
-                    window.location.hash = '#admin';
-                })
-                .catch((error) => {
-                    Swal.fire({ icon: 'error', title: 'Gagal Login', text: 'Kredensial salah atau tidak ditemukan.'});
-                })
-                .finally(() => {
-                    btn.innerHTML = 'Masuk'; btn.classList.remove('opacity-50', 'cursor-wait');
-                });
+                .then(() => { Swal.fire({ icon: 'success', title: 'Berhasil', text: 'Login sukses!', timer: 1500, showConfirmButton: false}); window.location.hash = '#admin'; })
+                .catch(() => { Swal.fire({ icon: 'error', title: 'Gagal Login', text: 'Kredensial salah atau tidak ditemukan.'}); })
+                .finally(() => { btn.innerHTML = 'Masuk'; btn.classList.remove('opacity-50', 'cursor-wait'); });
         };
 
-        // Fungsi Logout
         document.getElementById('btnLogout').onclick = () => {
-            Swal.fire({ title:'Keluar Admin?', text: "Anda akan dikembalikan ke halaman depan.", icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', cancelButtonColor:'#64748b', confirmButtonText:'Ya, Keluar' }).then((res) => {
-                if (res.isConfirmed) {
-                    signOut(auth).then(() => {
-                        window.location.hash = ''; // Otomatis trigger onAuthStateChanged
-                    });
-                }
-            });
+            Swal.fire({ title:'Keluar Admin?', text: "Anda akan dikembalikan ke halaman depan.", icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', cancelButtonColor:'#64748b', confirmButtonText:'Ya, Keluar' }).then((res) => { if (res.isConfirmed) { signOut(auth).then(() => { window.location.hash = ''; }); } });
         };
 
-        // ==========================================
-        // UI INTERACTION (TABS, MODALS, ETC)
-        // ==========================================
         window.toggleMoreMenu = (e) => { if(e) e.stopPropagation(); document.getElementById('moreAdminMenu').classList.toggle('hidden'); };
         window.closeMoreMenu = () => { document.getElementById('moreAdminMenu').classList.add('hidden'); };
 
         window.switchTab = (id) => {
-            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.admin-tab-btn').forEach(el => { el.classList.remove('active', 'text-brand'); el.classList.add('text-slate-400'); });
-            document.querySelectorAll('.floating-menu-btn').forEach(el => { el.classList.remove('active'); });
-            
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden')); document.querySelectorAll('.admin-tab-btn').forEach(el => { el.classList.remove('active', 'text-brand'); el.classList.add('text-slate-400'); }); document.querySelectorAll('.floating-menu-btn').forEach(el => { el.classList.remove('active'); });
             document.getElementById(id)?.classList.remove('hidden');
             const btnMain = document.getElementById('btn' + id.charAt(0).toUpperCase() + id.slice(1));
-            if(btnMain && btnMain.classList.contains('admin-tab-btn')) { 
-                btnMain.classList.add('active', 'text-brand'); btnMain.classList.remove('text-slate-400'); 
-            } else if(btnMain && btnMain.classList.contains('floating-menu-btn')) {
-                btnMain.classList.add('active'); document.getElementById('btnMoreMenu').classList.add('active', 'text-brand'); document.getElementById('btnMoreMenu').classList.remove('text-slate-400');
-            }
+            if(btnMain && btnMain.classList.contains('admin-tab-btn')) { btnMain.classList.add('active', 'text-brand'); btnMain.classList.remove('text-slate-400'); } else if(btnMain && btnMain.classList.contains('floating-menu-btn')) { btnMain.classList.add('active'); document.getElementById('btnMoreMenu').classList.add('active', 'text-brand'); document.getElementById('btnMoreMenu').classList.remove('text-slate-400'); }
         };
 
+        // --- PUBLIC RENDERERS ---
         window.renderPublicProjects = () => {
-            const frontProjects = adminProj.filter(p => p.showOnFront !== false);
-            const displayedProjects = showAllProjectsPublic ? frontProjects : frontProjects.slice(0, 6);
-            safeSetHtml('pubProjectGrid', displayedProjects.map((p, i)=>`
-                <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col">
-                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openPost(${i})">
-                        <img src="${fixD(p.coverImg)}" class="w-full h-full object-cover img-hover-zoom">
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h4 class="font-bold text-slate-800 text-lg mb-2 cursor-pointer hover:text-brand transition-colors font-serif" onclick="openPost(${i})">${p.title}</h4>
-                        <p class="text-[13px] text-slate-500 line-clamp-2 mb-6 leading-relaxed">${p.shortDesc}</p>
-                        <button onclick="openPost(${i})" class="mt-auto text-[11px] font-bold text-slate-400 text-left hover:text-brand transition-colors uppercase tracking-widest flex items-center gap-1">Read More <span class="text-lg leading-none">&rarr;</span></button>
-                    </div>
-                </div>`).join(''));
+            const frontProjects = adminProj.filter(p => p.showOnFront !== false); const displayedProjects = showAllProjectsPublic ? frontProjects : frontProjects.slice(0, 6);
+            safeSetHtml('pubProjectGrid', displayedProjects.map((p, i)=>`<div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col"><div class="h-48 overflow-hidden cursor-pointer" onclick="openPost(${i})"><img src="${fixD(p.coverImg)}" class="w-full h-full object-cover img-hover-zoom"></div><div class="p-6 flex-1 flex flex-col"><h4 class="font-bold text-slate-800 text-lg mb-2 cursor-pointer hover:text-brand transition-colors font-serif" onclick="openPost(${i})">${p.title}</h4><p class="text-[13px] text-slate-500 line-clamp-2 mb-6 leading-relaxed">${p.shortDesc}</p><button onclick="openPost(${i})" class="mt-auto text-[11px] font-bold text-slate-400 text-left hover:text-brand transition-colors uppercase tracking-widest flex items-center gap-1">Read More <span class="text-lg leading-none">&rarr;</span></button></div></div>`).join(''));
             const btnContainer = document.getElementById('pubProjectBtnContainer');
-            if (frontProjects.length > 6) {
-                btnContainer.classList.remove('hidden');
-                btnContainer.innerHTML = showAllProjectsPublic 
-                    ? `<button onclick="toggleAllProjects()" class="text-sm font-semibold text-slate-600 bg-slate-100 border border-slate-200 px-6 py-2.5 rounded-full hover:bg-slate-200 transition-all shadow-sm">Sembunyikan Sebagian</button>`
-                    : `<button onclick="toggleAllProjects()" class="text-sm font-semibold text-brand bg-teal-50 border border-teal-100 px-6 py-2.5 rounded-full hover:bg-teal-100 transition-all shadow-sm">Load More (${frontProjects.length - 6} Lagi)</button>`;
-            } else { btnContainer.classList.add('hidden'); }
+            if (frontProjects.length > 6) { btnContainer.classList.remove('hidden'); btnContainer.innerHTML = showAllProjectsPublic ? `<button onclick="toggleAllProjects()" class="text-sm font-semibold text-slate-600 bg-slate-100 border border-slate-200 px-6 py-2.5 rounded-full hover:bg-slate-200 transition-all shadow-sm">Sembunyikan Sebagian</button>` : `<button onclick="toggleAllProjects()" class="text-sm font-semibold text-brand bg-teal-50 border border-teal-100 px-6 py-2.5 rounded-full hover:bg-teal-100 transition-all shadow-sm">Load More (${frontProjects.length - 6} Lagi)</button>`; } else { btnContainer.classList.add('hidden'); }
         };
-
         window.toggleAllProjects = () => { showAllProjectsPublic = !showAllProjectsPublic; window.renderPublicProjects(); };
 
-        window.openModal = function(src) {
-            const m = document.getElementById('imageModal'); const mImg = document.getElementById('modalImage');
-            if(mImg) mImg.src = src; 
-            if(m) { m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); mImg.classList.remove('scale-95'); mImg.classList.add('scale-100'); }, 10); }
-        }
-        window.closeModal = function() {
-            const m = document.getElementById('imageModal'); const mImg = document.getElementById('modalImage');
-            if(m) m.classList.add('opacity-0'); if(mImg) { mImg.classList.remove('scale-100'); mImg.classList.add('scale-95'); }
-            setTimeout(() => { if(m) m.classList.add('hidden'); }, 300);
-        }
+        window.openModal = function(src) { const m = document.getElementById('imageModal'); const mImg = document.getElementById('modalImage'); if(mImg) mImg.src = src; if(m) { m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); mImg.classList.remove('scale-95'); mImg.classList.add('scale-100'); }, 10); } }
+        window.closeModal = function() { const m = document.getElementById('imageModal'); const mImg = document.getElementById('modalImage'); if(m) m.classList.add('opacity-0'); if(mImg) { mImg.classList.remove('scale-100'); mImg.classList.add('scale-95'); } setTimeout(() => { if(m) m.classList.add('hidden'); }, 300); }
 
         window.openPost = (i) => {
-            const p = adminProj[i]; if(!p) return;
-            const modal = document.getElementById('postModal'); document.body.style.overflow = 'hidden';
+            const p = adminProj[i]; if(!p) return; const modal = document.getElementById('postModal'); document.body.style.overflow = 'hidden';
             const htmlContent = (p.content||"").split('\n').filter(l => l.trim() !== '').map(l => `<p>${l}</p>`).join('');
             safeSetHtml('postContentArea', `<h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-8 border-b border-slate-100 pb-6">${p.title}</h2>${htmlContent}`);
             const links = (p.gallery || "").split(',').map(l => l.trim()).filter(Boolean);
@@ -685,168 +638,149 @@
         };
         window.closePost = () => { document.getElementById('postModal')?.classList.add('hidden'); document.body.style.overflow = 'auto'; };
 
-        // --- RENDER JASA ---
-        function renderSvcList() {
-            document.getElementById('adminSvcListArea').classList.remove('hidden');
-            document.getElementById('adminSvcEditArea').classList.add('hidden');
-            safeSetHtml('adminServicesContainer', adminSvc.map((s,i)=>`
+        // --- RENDER ULASAN PELANGGAN ---
+        function renderRevList() {
+            document.getElementById('adminRevListArea').classList.remove('hidden'); document.getElementById('adminRevEditArea').classList.add('hidden');
+            safeSetHtml('adminRevListContainer', adminRev.map((r,i)=>`
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between shadow-sm gap-4">
                     <div class="flex items-center gap-4">
-                        <img src="${fixD(s.img)}" class="w-16 h-16 object-contain rounded-xl bg-slate-50 border border-slate-100 p-1">
-                        <div><h4 class="font-bold text-slate-800 text-sm">${s.title || 'Tanpa Judul'}</h4><p class="text-xs text-slate-500 line-clamp-1 max-w-xs">${s.desc || '-'}</p></div>
+                        <div class="w-12 h-12 rounded-full bg-slate-100 flex-shrink-0 overflow-hidden flex items-center justify-center border border-slate-200">${r.img ? `<img src="${fixD(r.img)}" class="w-full h-full object-cover">` : `<span class="text-slate-400 font-bold text-xs">Foto</span>`}</div>
+                        <div><h4 class="font-bold text-slate-800 text-sm">${r.name || '<span class="text-red-500 font-bold">Nama Kosong!</span>'} <span class="text-amber-500 text-xs ml-2">★ ${r.rating||5}</span></h4><p class="text-xs text-slate-500 line-clamp-1 max-w-xs">${r.comment || '-'}</p></div>
                     </div>
                     <div class="flex items-center gap-3">
-                        <button onclick="openEditSvc(${i})" class="px-4 py-1.5 bg-teal-50 text-brand rounded-lg text-xs font-bold hover:bg-teal-100 transition-colors">Edit</button>
-                        <button onclick="remSvc(${i})" class="px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors">Hapus</button>
+                        <label class="flex items-center gap-2 text-xs font-bold text-slate-600 cursor-pointer bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200"><input type="checkbox" onchange="toggleFrontRev(${i})" ${r.showOnFront !== false ? 'checked' : ''} class="w-4 h-4 text-brand rounded focus:ring-brand"> Tampil</label>
+                        <button onclick="openEditRev(${i})" class="px-4 py-1.5 bg-teal-50 text-brand rounded-lg text-xs font-bold hover:bg-teal-100 transition-colors">Edit</button>
+                        <button onclick="remRev(${i})" class="px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors">Hapus</button>
                     </div>
                 </div>`).join(''));
         }
+        window.toggleFrontRev = (i) => { adminRev[i].showOnFront = !adminRev[i].showOnFront; renderRevList(); };
+        window.openEditRev = (i) => {
+            editingRevIndex = i; const r = adminRev[i];
+            const safeName = (r.name || '').replace(/"/g, '&quot;'); const safeRole = (r.role || '').replace(/"/g, '&quot;'); const safeImg = (r.img || '').replace(/"/g, '&quot;');
+            document.getElementById('adminRevListArea').classList.add('hidden'); document.getElementById('adminRevEditArea').classList.remove('hidden');
+            safeSetHtml('adminRevEditForm', `
+                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                    <input type="text" id="editRevName" value="${safeName}" placeholder="Nama Pelanggan (Wajib)" class="w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
+                    <input type="text" id="editRevRole" value="${safeRole}" placeholder="Perusahaan / Lokasi" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                    <input type="text" id="editRevImg" value="${safeImg}" placeholder="Link Foto Profil (Opsional)" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
+                    <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <label class="text-[11px] font-bold text-slate-500 uppercase whitespace-nowrap">Rating Bintang</label>
+                        <input type="number" id="editRevRating" value="${r.rating || 5}" min="1" max="5" class="w-full bg-transparent outline-none font-bold text-brand">
+                    </div>
+                </div>
+                <textarea id="editRevComment" placeholder="Komentar atau ulasan dari pelanggan..." class="w-full p-3 border border-slate-200 rounded-xl mt-4 bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-brand" rows="4">${r.comment||''}</textarea>
+                <button onclick="document.getElementById('btnUpdateData').click()" class="mt-6 w-full py-3 bg-brand text-white font-bold text-sm rounded-xl shadow-md hover:bg-teal-700 transition-all">✅ Simpan Ulasan ke Database</button>
+            `);
+        };
+        window.closeEditRev = () => { if (editingRevIndex !== -1 && (!adminRev[editingRevIndex].name || adminRev[editingRevIndex].name.trim() === "")) { adminRev.splice(editingRevIndex, 1); } editingRevIndex = -1; renderRevList(); };
+        window.remRev = (i) => { Swal.fire({ title:'Hapus Ulasan?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', confirmButtonText:'Ya, Hapus!' }).then((res) => { if (res.isConfirmed) { adminRev.splice(i,1); renderRevList(); } }); };
+        window.addRev = () => { adminRev.unshift({name:"", role:"", img:"", comment:"", rating: 5, showOnFront: true}); openEditRev(0); };
+
+        // --- RENDER JASA ---
+        function renderSvcList() {
+            document.getElementById('adminSvcListArea').classList.remove('hidden'); document.getElementById('adminSvcEditArea').classList.add('hidden');
+            safeSetHtml('adminServicesContainer', adminSvc.map((s,i)=>`<div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between shadow-sm gap-4"><div class="flex items-center gap-4"><img src="${fixD(s.img)}" class="w-16 h-16 object-contain rounded-xl bg-slate-50 border border-slate-100 p-1"><div><h4 class="font-bold text-slate-800 text-sm">${s.title || '<span class="text-red-500 font-bold">Judul Kosong!</span>'}</h4><p class="text-xs text-slate-500 line-clamp-1 max-w-xs">${s.desc || '-'}</p></div></div><div class="flex items-center gap-3"><button onclick="openEditSvc(${i})" class="px-4 py-1.5 bg-teal-50 text-brand rounded-lg text-xs font-bold hover:bg-teal-100 transition-colors">Edit</button><button onclick="remSvc(${i})" class="px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors">Hapus</button></div></div>`).join(''));
+        }
         window.openEditSvc = (i) => {
             editingSvcIndex = i; const s = adminSvc[i];
+            const safeTitle = (s.title || '').replace(/"/g, '&quot;'); const safeImg = (s.img || '').replace(/"/g, '&quot;');
             document.getElementById('adminSvcListArea').classList.add('hidden'); document.getElementById('adminSvcEditArea').classList.remove('hidden');
             safeSetHtml('adminSvcEditForm', `
                 <div class="grid md:grid-cols-2 gap-4 mt-4">
-                    <input type="text" value="${s.title||''}" placeholder="Judul Jasa" class="w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand" oninput="adminSvc[${i}].title = this.value">
-                    <input type="text" value="${s.img||''}" placeholder="Link Gambar Icon/Thumbnail" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:ring-1 focus:ring-brand" oninput="adminSvc[${i}].img = this.value">
+                    <input type="text" id="editSvcTitle" value="${safeTitle}" placeholder="Judul Jasa (Wajib Diisi)" class="w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
+                    <input type="text" id="editSvcImg" value="${safeImg}" placeholder="Link Gambar Icon/Thumbnail" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
                 </div>
-                <textarea placeholder="Deskripsi Jasa" class="w-full p-3 border border-slate-200 rounded-xl mt-4 bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-brand" rows="3" oninput="adminSvc[${i}].desc = this.value">${s.desc||''}</textarea>
+                <textarea id="editSvcDesc" placeholder="Deskripsi Jasa" class="w-full p-3 border border-slate-200 rounded-xl mt-4 bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-brand" rows="3">${s.desc||''}</textarea>
+                <button onclick="document.getElementById('btnUpdateData').click()" class="mt-6 w-full py-3 bg-brand text-white font-bold text-sm rounded-xl shadow-md hover:bg-teal-700 transition-all">✅ Simpan Layanan ke Database</button>
             `);
         };
-        window.closeEditSvc = () => { editingSvcIndex = -1; renderSvcList(); };
+        window.closeEditSvc = () => { if (editingSvcIndex !== -1 && (!adminSvc[editingSvcIndex].title || adminSvc[editingSvcIndex].title.trim() === "")) { adminSvc.splice(editingSvcIndex, 1); } editingSvcIndex = -1; renderSvcList(); };
         window.remSvc = (i) => { Swal.fire({ title:'Hapus Jasa?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', confirmButtonText:'Ya, Hapus!' }).then((res) => { if (res.isConfirmed) { adminSvc.splice(i,1); renderSvcList(); } }); };
         window.addSvc = () => { adminSvc.unshift({title:"", desc:"", img:""}); openEditSvc(0); };
 
         // --- RENDER PROYEK ---
+        function renderProjList() {
+            document.getElementById('adminProjectListArea').classList.remove('hidden'); document.getElementById('adminProjectEditArea').classList.add('hidden');
+            safeSetHtml('adminProjectListContainer', adminProj.map((p,i)=>`<div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between shadow-sm gap-4"><div class="flex items-center gap-4"><img src="${fixD(p.coverImg)}" class="w-16 h-16 object-cover rounded-xl bg-slate-100 border border-slate-100"><div><h4 class="font-bold text-slate-800 text-sm">${p.title || '<span class="text-red-500 font-bold">Judul Kosong!</span>'}</h4><p class="text-xs text-slate-500 line-clamp-1 max-w-xs">${p.shortDesc || '-'}</p></div></div><div class="flex items-center gap-3"><label class="flex items-center gap-2 text-xs font-bold text-slate-600 cursor-pointer bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200"><input type="checkbox" onchange="toggleFront(${i})" ${p.showOnFront !== false ? 'checked' : ''} class="w-4 h-4 text-brand rounded focus:ring-brand"> Tampil</label><button onclick="openEditProj(${i})" class="px-4 py-1.5 bg-teal-50 text-brand rounded-lg text-xs font-bold hover:bg-teal-100 transition-colors">Edit</button><button onclick="remProj(${i})" class="px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors">Hapus</button></div></div>`).join(''));
+        }
         window.toggleFront = (i) => { adminProj[i].showOnFront = !adminProj[i].showOnFront; renderProjList(); };
         window.remProj = (i) => { Swal.fire({ title:'Hapus Postingan?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', confirmButtonText:'Ya, Hapus!' }).then((res) => { if (res.isConfirmed) { adminProj.splice(i,1); renderProjList(); } }); };
         window.openEditProj = (i) => {
             editingProjIndex = i; const p = adminProj[i];
+            const safeTitle = (p.title || '').replace(/"/g, '&quot;'); const safeCover = (p.coverImg || '').replace(/"/g, '&quot;');
             document.getElementById('adminProjectListArea').classList.add('hidden'); document.getElementById('adminProjectEditArea').classList.remove('hidden');
             safeSetHtml('adminProjectEditForm', `
                 <div class="grid md:grid-cols-2 gap-4 mt-4">
-                    <input type="text" value="${p.title||''}" placeholder="Judul Proyek" class="w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand" oninput="adminProj[${i}].title = this.value">
-                    <input type="text" value="${p.coverImg||''}" placeholder="Link Cover Image" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:ring-1 focus:ring-brand" oninput="adminProj[${i}].coverImg = this.value">
+                    <input type="text" id="editProjTitle" value="${safeTitle}" placeholder="Judul Proyek (Wajib Diisi)" class="w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
+                    <input type="text" id="editProjCover" value="${safeCover}" placeholder="Link Cover Image" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
                 </div>
-                <textarea placeholder="Deskripsi pendek kartu (Maks 2 kalimat)" class="w-full p-3 border border-slate-200 rounded-xl mt-4 bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-brand" rows="2" oninput="adminProj[${i}].shortDesc = this.value">${p.shortDesc||''}</textarea>
+                <textarea id="editProjDesc" placeholder="Deskripsi pendek kartu (Maks 2 kalimat)" class="w-full p-3 border border-slate-200 rounded-xl mt-4 bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-brand" rows="2">${p.shortDesc||''}</textarea>
                 <label class="block text-[11px] font-bold text-slate-500 mt-5 mb-2 uppercase">Konten Lengkap di Dalam Modal</label>
-                <textarea class="w-full p-4 border border-slate-200 rounded-xl bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-brand leading-relaxed" rows="5" oninput="adminProj[${i}].content = this.value">${p.content||''}</textarea>
+                <textarea id="editProjContent" class="w-full p-4 border border-slate-200 rounded-xl bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-brand leading-relaxed" rows="5">${p.content||''}</textarea>
                 <label class="block text-[11px] font-bold text-slate-500 mt-5 mb-2 uppercase">Galeri Modal (Pisahkan dengan koma)</label>
-                <textarea class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none text-xs font-mono focus:ring-1 focus:ring-brand" rows="3" oninput="adminProj[${i}].gallery = this.value">${p.gallery||''}</textarea>
+                <textarea id="editProjGallery" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none text-xs font-mono focus:ring-1 focus:ring-brand" rows="3">${p.gallery||''}</textarea>
+                <button onclick="document.getElementById('btnUpdateData').click()" class="mt-6 w-full py-3 bg-brand text-white font-bold text-sm rounded-xl shadow-md hover:bg-teal-700 transition-all">✅ Simpan Postingan ke Database</button>
             `);
         };
-        window.closeEditProj = () => { editingProjIndex = -1; renderProjList(); };
-        function renderProjList() {
-            document.getElementById('adminProjectListArea').classList.remove('hidden'); document.getElementById('adminProjectEditArea').classList.add('hidden');
-            safeSetHtml('adminProjectListContainer', adminProj.map((p,i)=>`
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between shadow-sm gap-4">
-                    <div class="flex items-center gap-4">
-                        <img src="${fixD(p.coverImg)}" class="w-16 h-16 object-cover rounded-xl bg-slate-100 border border-slate-100">
-                        <div><h4 class="font-bold text-slate-800 text-sm">${p.title || 'Tanpa Judul'}</h4><p class="text-xs text-slate-500 line-clamp-1 max-w-xs">${p.shortDesc || '-'}</p></div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <label class="flex items-center gap-2 text-xs font-bold text-slate-600 cursor-pointer bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200"><input type="checkbox" onchange="toggleFront(${i})" ${p.showOnFront !== false ? 'checked' : ''} class="w-4 h-4 text-brand rounded focus:ring-brand"> Tampil</label>
-                        <button onclick="openEditProj(${i})" class="px-4 py-1.5 bg-teal-50 text-brand rounded-lg text-xs font-bold hover:bg-teal-100 transition-colors">Edit</button>
-                        <button onclick="remProj(${i})" class="px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors">Hapus</button>
-                    </div>
-                </div>`).join(''));
-        }
+        window.closeEditProj = () => { if (editingProjIndex !== -1 && (!adminProj[editingProjIndex].title || adminProj[editingProjIndex].title.trim() === "")) { adminProj.splice(editingProjIndex, 1); } editingProjIndex = -1; renderProjList(); };
         window.addProject = () => { adminProj.unshift({title:"", shortDesc:"", coverImg:"", content:"", gallery:"", showOnFront: true}); openEditProj(0); };
 
         // --- RENDER LEGAL & TEAM ---
         window.remLegal = (i) => { adminLegal.splice(i,1); renderLegal(); };
-        function renderLegal() {
-            safeSetHtml('adminLegalContainer', adminLegal.map((l,i)=>`
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 relative shadow-sm group">
-                    <button onclick="remLegal(${i})" class="absolute -top-3 -right-3 bg-red-100 text-red-600 w-8 h-8 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white shadow-md">✕</button>
-                    <input type="text" id="aLglImg_${i}" value="${l.img||''}" placeholder="Link Gambar" class="w-full p-2.5 border border-slate-200 mb-3 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
-                    <input type="text" id="aLglT_${i}" value="${l.title||''}" placeholder="Nama Dokumen" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
-                </div>`).join(''));
-        }
+        function renderLegal() { safeSetHtml('adminLegalContainer', adminLegal.map((l,i)=>`<div class="bg-white p-5 rounded-2xl border border-slate-200 relative shadow-sm group"><button onclick="remLegal(${i})" class="absolute -top-3 -right-3 bg-red-100 text-red-600 w-8 h-8 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white shadow-md">✕</button><input type="text" id="aLglImg_${i}" value="${l.img||''}" placeholder="Link Gambar" class="w-full p-2.5 border border-slate-200 mb-3 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand"><input type="text" id="aLglT_${i}" value="${l.title||''}" placeholder="Nama Dokumen" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand"></div>`).join('')); }
         window.addLegal = () => { adminLegal.push({title:"",img:""}); renderLegal(); };
 
         window.remTeam = (i) => { adminTeam.splice(i,1); renderTeam(); };
-        function renderTeam() {
-            safeSetHtml('adminTeamContainer', adminTeam.map((t,i)=>`
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 relative shadow-sm group">
-                    <button onclick="remTeam(${i})" class="absolute -top-3 -right-3 bg-red-100 text-red-600 w-8 h-8 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white shadow-md">✕</button>
-                    <input type="text" id="aTmImg_${i}" value="${t.img||''}" placeholder="Link Foto" class="w-full p-2.5 border border-slate-200 mb-3 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
-                    <input type="text" id="aTmN_${i}" value="${t.name||''}" placeholder="Nama" class="w-full p-2.5 border border-slate-200 mb-3 rounded-xl text-sm font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
-                    <input type="text" id="aTmR_${i}" value="${t.role||''}" placeholder="Jabatan" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 outline-none text-brand focus:ring-1 focus:ring-brand">
-                </div>`).join(''));
-        }
+        function renderTeam() { safeSetHtml('adminTeamContainer', adminTeam.map((t,i)=>`<div class="bg-white p-5 rounded-2xl border border-slate-200 relative shadow-sm group"><button onclick="remTeam(${i})" class="absolute -top-3 -right-3 bg-red-100 text-red-600 w-8 h-8 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white shadow-md">✕</button><input type="text" id="aTmImg_${i}" value="${t.img||''}" placeholder="Link Foto" class="w-full p-2.5 border border-slate-200 mb-3 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand"><input type="text" id="aTmN_${i}" value="${t.name||''}" placeholder="Nama" class="w-full p-2.5 border border-slate-200 mb-3 rounded-xl text-sm font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand"><input type="text" id="aTmR_${i}" value="${t.role||''}" placeholder="Jabatan" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 outline-none text-brand focus:ring-1 focus:ring-brand"></div>`).join('')); }
         window.addTeam = () => { adminTeam.push({name:"",role:"",img:""}); renderTeam(); };
-
-        const svgFb = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" /></svg>`;
-        const svgIg = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.058 3.252.148 4.771 1.691 4.919 4.919.046 1.265.058 1.646.058 4.85s-.012 3.584-.058 4.85c-.148 3.227-1.664 4.771-4.919 4.919-1.266.046-1.646.058-4.85.058s-3.584-.012-4.85-.058c-3.254-.148-4.771-1.691-4.919-4.919-.046-1.265-.058-1.646-.058-4.85s.012-3.584.058-4.85c.148-3.227 1.664-4.771 4.919-4.919 1.266-.046 1.646-.058 4.85-.058zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
-        const svgTt = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 2.22-.76 4.41-2.11 6.14-1.4 1.83-3.43 3.03-5.74 3.32-2.22.28-4.52-.07-6.38-1.3-1.84-1.22-3.13-3.15-3.52-5.33-.39-2.18-.08-4.49 1.1-6.4 1.25-2.02 3.34-3.41 5.71-3.83 2.05-.36 4.19-.07 6.07.87v4.11c-1.41-.83-3.21-1.04-4.75-.49-1.48.53-2.6 1.82-3.03 3.34-.41 1.44-.19 3.05.69 4.29 1.05 1.48 2.94 2.15 4.67 1.78 1.63-.35 2.89-1.57 3.34-3.18.15-.55.2-1.12.2-1.69V.02z"/></svg>`;
 
         async function loadData() {
             try {
                 const snap = await get(child(ref(db), 'website/content'));
                 let data = snap.exists() ? snap.val() : {};
 
-                const safeSvc = Array.isArray(data.services) ? data.services.filter(Boolean) : [];
-                const safeLegal = Array.isArray(data.legal) ? data.legal.filter(Boolean) : [];
-                const safeTeam = Array.isArray(data.team) ? data.team.filter(Boolean) : [];
-                const safeProj = Array.isArray(data.proyek) ? data.proyek.filter(Boolean) : [];
-                safeProj.forEach(p => { if(p.showOnFront === undefined) p.showOnFront = true; });
+                const safeSvc = parseFBList(data.services); const safeLegal = parseFBList(data.legal); const safeTeam = parseFBList(data.team); const safeProj = parseFBList(data.proyek); const safeRev = parseFBList(data.reviews);
+                safeProj.forEach(p => { if(p.showOnFront === undefined) p.showOnFront = true; }); safeRev.forEach(r => { if(r.showOnFront === undefined) r.showOnFront = true; });
 
                 injectGoogleTags(data.gaId, data.gtmId);
 
-                try {
-                    const logo = fixD(data.logoImg);
-                    if (logo) { safeSetImg('pubLogoImg', logo); document.getElementById('pubLogoImg')?.classList.remove('hidden'); document.getElementById('fallbackLogo')?.classList.add('hidden'); 
-                    } else { document.getElementById('pubLogoImg')?.classList.add('hidden'); document.getElementById('fallbackLogo')?.classList.remove('hidden'); }
-                } catch(e){}
-
-                try {
-                    safeSetText('pubHeroTitle', data.heroTitle || "PT. Rumah Mampet Indonesia"); safeSetText('pubHeroDesc', data.heroDesc || "Layanan plumbing dan cleaning profesional.");
-                    const hImg = fixD(data.heroImg); if(hImg) safeSetImg('pubHeroImg', hImg);
-                } catch(e){}
-
-                try {
-                    safeSetText('pubSvcMainTitle', data.svcMainTitle || "Layanan Kami"); safeSetText('pubSvcSubTitle', data.svcSubTitle || "Berbagai solusi untuk Anda");
-                    safeSetHtml('pubServicesGrid', safeSvc.map(s=>`<div class="bg-white p-8 rounded-[2.5rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group"><img src="${fixD(s.img)}" class="h-28 w-28 object-contain mb-8 drop-shadow-md img-hover-zoom"><h3 class="text-xl font-bold text-slate-800 mb-4 font-serif">${s.title}</h3><p class="text-sm text-slate-500 leading-relaxed">${s.desc}</p></div>`).join(''));
-                } catch(e){}
-
+                try { const logo = fixD(data.logoImg); if (logo) { safeSetImg('pubLogoImg', logo); document.getElementById('pubLogoImg')?.classList.remove('hidden'); document.getElementById('fallbackLogo')?.classList.add('hidden'); } else { document.getElementById('pubLogoImg')?.classList.add('hidden'); document.getElementById('fallbackLogo')?.classList.remove('hidden'); } } catch(e){}
+                try { safeSetText('pubHeroTitle', data.heroTitle || "PT. Rumah Mampet Indonesia"); safeSetText('pubHeroDesc', data.heroDesc || "Layanan plumbing dan cleaning profesional."); const hImg = fixD(data.heroImg); if(hImg) safeSetImg('pubHeroImg', hImg); } catch(e){}
+                try { safeSetText('pubSvcMainTitle', data.svcMainTitle || "Layanan Kami"); safeSetText('pubSvcSubTitle', data.svcSubTitle || "Berbagai solusi untuk Anda"); safeSetHtml('pubServicesGrid', safeSvc.map(s=>`<div class="bg-white p-8 rounded-[2.5rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group"><img src="${fixD(s.img)}" class="h-28 w-28 object-contain mb-8 drop-shadow-md img-hover-zoom"><h3 class="text-xl font-bold text-slate-800 mb-4 font-serif">${s.title}</h3><p class="text-sm text-slate-500 leading-relaxed">${s.desc}</p></div>`).join('')); } catch(e){}
                 try { adminProj = safeProj; window.renderPublicProjects(); } catch(e){}
-
-                try {
-                    safeSetText('pubLegalTagline', data.legalTagline || "LEGAL & TERPERCAYA"); safeSetText('pubLegalTitle', data.legalTitle || "Sudah Berbadan Usaha"); safeSetText('pubLegalDesc', data.legalDesc || "Kami beroperasi secara resmi.");
-                    safeSetHtml('pubLegalGrid', safeLegal.map(l=>`<div class="bg-slate-800/80 rounded-3xl p-6 shadow-xl border border-slate-700 flex flex-col items-center backdrop-blur-md"><div onclick="openModal('${fixD(l.img)}')" class="w-full aspect-[4/3] bg-white rounded-2xl mb-6 overflow-hidden flex items-center justify-center p-2 cursor-pointer group border border-slate-600 relative"><div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10"><span class="text-white font-bold bg-black/80 px-4 py-2 rounded-full shadow-lg text-xs uppercase tracking-wider">🔍 Perbesar</span></div><img src="${fixD(l.img)}" class="max-h-full max-w-full object-contain img-hover-zoom"></div><h4 class="text-lg font-bold text-white font-serif tracking-wide">${l.title}</h4></div>`).join(''));
+                
+                try { 
+                    safeSetText('pubRevMainTitle', data.revMainTitle || "Ulasan Pelanggan"); safeSetText('pubRevSubTitle', data.revSubTitle || "Kepercayaan Anda adalah prioritas kami"); 
+                    safeSetHtml('pubReviewGrid', safeRev.filter(r => r.showOnFront !== false).map(r => `
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+                            <div class="flex items-center gap-1 mb-5">${renderStars(r.rating || 5)}</div>
+                            <p class="text-slate-600 mb-8 flex-1 leading-relaxed relative z-10 font-medium">"${r.comment}"</p>
+                            <div class="flex items-center gap-4 mt-auto pt-6 border-t border-slate-50">
+                                <div class="w-12 h-12 rounded-full bg-slate-100 overflow-hidden border-2 border-white shadow-md flex-shrink-0 flex items-center justify-center">${r.img ? `<img src="${fixD(r.img)}" class="w-full h-full object-cover">` : `<span class="text-slate-400 font-bold text-sm text-center truncate">${(r.name||'A')[0].toUpperCase()}</span>`}</div>
+                                <div><h4 class="font-bold text-slate-800 text-sm font-serif group-hover:text-brand transition-colors">${r.name}</h4><p class="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">${r.role || 'Pelanggan'}</p></div>
+                            </div>
+                        </div>
+                    `).join('')); 
                 } catch(e){}
 
+                try { safeSetText('pubLegalTagline', data.legalTagline || "LEGAL & TERPERCAYA"); safeSetText('pubLegalTitle', data.legalTitle || "Sudah Berbadan Usaha"); safeSetText('pubLegalDesc', data.legalDesc || "Kami beroperasi secara resmi."); safeSetHtml('pubLegalGrid', safeLegal.map(l=>`<div class="bg-slate-800/80 rounded-3xl p-6 shadow-xl border border-slate-700 flex flex-col items-center backdrop-blur-md"><div onclick="openModal('${fixD(l.img)}')" class="w-full aspect-[4/3] bg-white rounded-2xl mb-6 overflow-hidden flex items-center justify-center p-2 cursor-pointer group border border-slate-600 relative"><div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10"><span class="text-white font-bold bg-black/80 px-4 py-2 rounded-full shadow-lg text-xs uppercase tracking-wider">🔍 Perbesar</span></div><img src="${fixD(l.img)}" class="max-h-full max-w-full object-contain img-hover-zoom"></div><h4 class="text-lg font-bold text-white font-serif tracking-wide">${l.title}</h4></div>`).join('')); } catch(e){}
+                try { safeSetText('pubBannerTitle', data.bannerTitle || "Kita adalah yang TERBAIK"); safeSetText('pubBannerDesc', data.bannerDesc || "PT Rumah Mampet Indonesia adalah solusi terpercaya..."); safeSetText('pubBannerSig', data.bannerSig || "- RM"); const bImg = fixD(data.bannerImg); if(bImg) { const bannerEl = document.getElementById('pubBannerImg'); if (bannerEl) bannerEl.src = bImg; } } catch(e){}
+                try { safeSetText('pubOrgTitle', data.orgTitle || "Struktur Organisasi"); safeSetText('pubOrgSub', data.orgSub || "Berikut adalah tim kami"); safeSetHtml('pubTeamGrid', safeTeam.map(t=>`<div class="flex flex-col items-center text-center group"><div class="w-full aspect-[3/4] bg-white rounded-[2.5rem] mb-6 overflow-hidden shadow-md border border-slate-100 flex items-center justify-center p-2 relative"><img src="${fixD(t.img)}" class="max-w-full max-h-full object-contain img-hover-zoom"></div><p class="text-[11px] font-bold text-brand uppercase tracking-widest mb-1">${t.role}</p><h4 class="text-xl font-serif font-bold text-slate-800">${t.name}</h4></div>`).join('')); } catch(e){}
+                try { safeSetText('pubAboutTitle', data.aboutTitle || "Profil Perusahaan"); safeSetText('pubAboutAddress', data.aboutAddress || "Alamat belum diisi"); const al = document.getElementById('pubAboutMapLink'); if(al) al.href = data.aboutMapLink || "#"; safeSetHtml('pubAboutContent', data.aboutContent || "<p>Silakan isi profil di admin.</p>"); } catch(e){}
                 try {
-                    safeSetText('pubBannerTitle', data.bannerTitle || "Kita adalah yang TERBAIK"); safeSetText('pubBannerDesc', data.bannerDesc || "PT Rumah Mampet Indonesia adalah solusi terpercaya..."); safeSetText('pubBannerSig', data.bannerSig || "- RM");
-                    const bImg = fixD(data.bannerImg); if(bImg) { const bannerEl = document.getElementById('pubBannerImg'); if (bannerEl) bannerEl.src = bImg; }
-                } catch(e){}
-
-                try {
-                    safeSetText('pubOrgTitle', data.orgTitle || "Struktur Organisasi"); safeSetText('pubOrgSub', data.orgSub || "Berikut adalah tim kami");
-                    safeSetHtml('pubTeamGrid', safeTeam.map(t=>`<div class="flex flex-col items-center text-center group"><div class="w-full aspect-[3/4] bg-white rounded-[2.5rem] mb-6 overflow-hidden shadow-md border border-slate-100 flex items-center justify-center p-2 relative"><img src="${fixD(t.img)}" class="max-w-full max-h-full object-contain img-hover-zoom"></div><p class="text-[11px] font-bold text-brand uppercase tracking-widest mb-1">${t.role}</p><h4 class="text-xl font-serif font-bold text-slate-800">${t.name}</h4></div>`).join(''));
-                } catch(e){}
-
-                try {
-                    safeSetText('pubAboutTitle', data.aboutTitle || "Profil Perusahaan"); safeSetText('pubAboutAddress', data.aboutAddress || "Alamat belum diisi");
-                    const al = document.getElementById('pubAboutMapLink'); if(al) al.href = data.aboutMapLink || "#";
-                    safeSetHtml('pubAboutContent', data.aboutContent || "<p>Silakan isi profil di admin.</p>");
-                } catch(e){}
-
-                try {
-                    const waNum = data.waNumber || "6289606357045"; const waMsg = encodeURIComponent(data.waMessage || "Halo Rumah Mampet");
-                    const waLnk = `https://wa.me/${waNum}?text=${waMsg}`;
-                    const fBtn = document.getElementById('pubFloatingWaBtn'); if(fBtn) fBtn.href = waLnk; 
-                    const hBtn = document.getElementById('pubHeroWaBtn'); if(hBtn) hBtn.href = waLnk;
-
-                    safeSetHtml('pubFooterAbout', data.footerAbout || ""); safeSetText('pubFooterPhone', data.footerPhone || ""); safeSetText('pubFooterEmail', data.footerEmail || "");
-                    const fm = document.getElementById('pubFooterMap'); if(fm) fm.src = data.footerMapEmbed || "";
-                    
+                    const waNum = data.waNumber || "6289606357045"; const waMsg = encodeURIComponent(data.waMessage || "Halo Rumah Mampet"); const waLnk = `https://wa.me/${waNum}?text=${waMsg}`;
+                    const fBtn = document.getElementById('pubFloatingWaBtn'); if(fBtn) fBtn.href = waLnk; const hBtn = document.getElementById('pubHeroWaBtn'); if(hBtn) hBtn.href = waLnk;
+                    safeSetHtml('pubFooterAbout', data.footerAbout || ""); safeSetText('pubFooterPhone', data.footerPhone || ""); safeSetText('pubFooterEmail', data.footerEmail || ""); const fm = document.getElementById('pubFooterMap'); if(fm) fm.src = data.footerMapEmbed || "";
                     safeSetHtml('pubFooterSosmed', `<a href="${data.linkFb||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="Facebook">${svgFb}</a><a href="${data.linkIg||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="Instagram">${svgIg}</a><a href="${data.linkTt||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="TikTok">${svgTt}</a>`);
                 } catch(e){}
 
                 safeSetVal('formLogoImg', data.logoImg); safeSetVal('formWaNumber', data.waNumber); safeSetVal('formWaMessage', data.waMessage);
                 safeSetVal('formHeroTitle', data.heroTitle); safeSetVal('formHeroDesc', data.heroDesc); safeSetVal('formHeroImg', data.heroImg);
                 safeSetVal('formSvcMainTitle', data.svcMainTitle); safeSetVal('formSvcSubTitle', data.svcSubTitle);
+                safeSetVal('formRevMainTitle', data.revMainTitle); safeSetVal('formRevSubTitle', data.revSubTitle);
                 safeSetVal('formLegalTagline', data.legalTagline); safeSetVal('formLegalTitle', data.legalTitle); safeSetVal('formLegalDesc', data.legalDesc);
                 safeSetVal('formBannerTitle', data.bannerTitle); safeSetVal('formBannerDesc', data.bannerDesc); safeSetVal('formBannerImg', data.bannerImg); safeSetVal('formBannerSig', data.bannerSig);
                 safeSetVal('formOrgTitle', data.orgTitle); safeSetVal('formOrgSub', data.orgSub);
@@ -855,8 +789,8 @@
                 safeSetVal('formLinkFb', data.linkFb); safeSetVal('formLinkIg', data.linkIg); safeSetVal('formLinkTt', data.linkTt);
                 safeSetVal('formGaId', data.gaId); safeSetVal('formGtmId', data.gtmId);
 
-                adminSvc = safeSvc; adminLegal = safeLegal; adminTeam = safeTeam;
-                renderSvcList(); renderProjList(); renderLegal(); renderTeam();
+                adminSvc = safeSvc; adminLegal = safeLegal; adminTeam = safeTeam; adminRev = safeRev;
+                renderSvcList(); renderProjList(); renderLegal(); renderTeam(); renderRevList();
 
             } catch (error) { 
                 console.error("Critical Load Error:", error); safeSetText('pubHeroDesc', "Terjadi kesalahan sistem memuat data.");
@@ -866,31 +800,63 @@
         const btnU = document.getElementById('btnUpdateData');
         if(btnU) {
             btnU.onclick = async () => {
+                
+                // FLUSH DOM TO STATE (AMBIL PAKSA INPUT SAAT INI)
+                if (editingProjIndex !== -1 && adminProj[editingProjIndex]) {
+                    adminProj[editingProjIndex].title = document.getElementById('editProjTitle')?.value || ''; adminProj[editingProjIndex].coverImg = document.getElementById('editProjCover')?.value || ''; adminProj[editingProjIndex].shortDesc = document.getElementById('editProjDesc')?.value || ''; adminProj[editingProjIndex].content = document.getElementById('editProjContent')?.value || ''; adminProj[editingProjIndex].gallery = document.getElementById('editProjGallery')?.value || '';
+                }
+                if (editingSvcIndex !== -1 && adminSvc[editingSvcIndex]) {
+                    adminSvc[editingSvcIndex].title = document.getElementById('editSvcTitle')?.value || ''; adminSvc[editingSvcIndex].img = document.getElementById('editSvcImg')?.value || ''; adminSvc[editingSvcIndex].desc = document.getElementById('editSvcDesc')?.value || '';
+                }
+                if (editingRevIndex !== -1 && adminRev[editingRevIndex]) {
+                    adminRev[editingRevIndex].name = document.getElementById('editRevName')?.value || ''; adminRev[editingRevIndex].role = document.getElementById('editRevRole')?.value || ''; adminRev[editingRevIndex].img = document.getElementById('editRevImg')?.value || ''; adminRev[editingRevIndex].rating = parseInt(document.getElementById('editRevRating')?.value || 5); adminRev[editingRevIndex].comment = document.getElementById('editRevComment')?.value || '';
+                }
+
+                // GHOST DRAFT BUSTER
+                adminProj = adminProj.filter(p => !( (p.title||'').trim() === '' && (p.shortDesc||'').trim() === '' && (p.content||'').trim() === '' && (p.coverImg||'').trim() === '' ) );
+                adminSvc = adminSvc.filter(s => !( (s.title||'').trim() === '' && (s.desc||'').trim() === '' && (s.img||'').trim() === '' ) );
+                adminRev = adminRev.filter(r => !( (r.name||'').trim() === '' && (r.comment||'').trim() === '' ) );
+
+                const invalidProj = adminProj.some(p => (!p.title || p.title.trim() === ""));
+                const invalidSvc = adminSvc.some(s => (!s.title || s.title.trim() === ""));
+                const invalidRev = adminRev.some(r => (!r.name || r.name.trim() === ""));
+                
+                if (invalidProj || invalidSvc || invalidRev) {
+                    Swal.fire({ icon: 'warning', title: 'Data Belum Lengkap', text: 'Terdapat Form Proyek, Jasa, atau Ulasan yang LUPA dikasih judul/nama. Tolong lengkapi form tersebut atau tekan Hapus.' });
+                    return;
+                }
+
                 btnU.innerHTML = `⏳...`; btnU.classList.add('cursor-wait', 'opacity-80');
                 try {
-                    const cleanProj = adminProj.filter(p => p.title && p.title.trim() !== "");
-                    const cleanSvc = adminSvc.filter(s => s.title && s.title.trim() !== "");
-
                     const payload = {
                         logoImg: getVal('formLogoImg'), waNumber: getVal('formWaNumber'), waMessage: getVal('formWaMessage'),
                         heroTitle: getVal('formHeroTitle'), heroDesc: getVal('formHeroDesc'), heroImg: getVal('formHeroImg'),
                         aboutTitle: getVal('formAboutTitle'), aboutAddress: getVal('formAboutAddress'), aboutMapLink: getVal('formAboutMapLink'), aboutContent: getVal('formAboutContent'),
                         svcMainTitle: getVal('formSvcMainTitle'), svcSubTitle: getVal('formSvcSubTitle'),
+                        revMainTitle: getVal('formRevMainTitle'), revSubTitle: getVal('formRevSubTitle'),
                         legalTagline: getVal('formLegalTagline'), legalTitle: getVal('formLegalTitle'), legalDesc: getVal('formLegalDesc'),
                         bannerImg: getVal('formBannerImg'), bannerTitle: getVal('formBannerTitle'), bannerDesc: getVal('formBannerDesc'), bannerSig: getVal('formBannerSig'),
                         orgTitle: getVal('formOrgTitle'), orgSub: getVal('formOrgSub'),
                         footerAbout: getVal('formFooterAbout'), footerPhone: getVal('formFooterPhone'), footerEmail: getVal('formFooterEmail'), footerMapEmbed: getVal('formFooterMapEmbed'), linkFb: getVal('formLinkFb'), linkIg: getVal('formLinkIg'), linkTt: getVal('formLinkTt'),
                         gaId: getVal('formGaId'), gtmId: getVal('formGtmId'),
-
-                        services: cleanSvc,
+                        services: adminSvc,
+                        reviews: adminRev,
                         legal: adminLegal.map((_, i) => ({ img: getVal(`aLglImg_${i}`), title: getVal(`aLglT_${i}`) })).filter(l => l.title !== ""),
                         team: adminTeam.map((_, i) => ({ img: getVal(`aTmImg_${i}`), name: getVal(`aTmN_${i}`), role: getVal(`aTmR_${i}`) })).filter(t => t.name !== ""),
-                        proyek: cleanProj
+                        proyek: adminProj
                     };
 
                     await set(ref(db, 'website/content'), payload);
+                    
                     Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Semua perubahan telah disimpan ke Cloud.', confirmButtonColor: '#0f766e', timer: 2000, showConfirmButton: false });
-                    loadData();
+                    
+                    // TUTUP SEMUA FORM EDIT SECARA OTOMATIS JIKA SUKSES
+                    editingProjIndex = -1; editingSvcIndex = -1; editingRevIndex = -1;
+                    document.getElementById('adminProjectEditArea')?.classList.add('hidden'); document.getElementById('adminProjectListArea')?.classList.remove('hidden');
+                    document.getElementById('adminSvcEditArea')?.classList.add('hidden'); document.getElementById('adminSvcListArea')?.classList.remove('hidden');
+                    document.getElementById('adminRevEditArea')?.classList.add('hidden'); document.getElementById('adminRevListArea')?.classList.remove('hidden');
+
+                    await loadData();
                 } catch (e) {
                     Swal.fire({ icon: 'error', title: 'Gagal', text: 'Terjadi kesalahan saat menyimpan data: ' + e.message }); 
                 } finally {
@@ -906,28 +872,17 @@
 
         window.onhashchange = () => {
             const isAdm = window.location.hash === '#admin';
-            // Pengecekan keamanan manual jika user memaksa mengetik #admin di URL
             if (isAdm) {
                 if (!auth.currentUser) {
-                    window.location.hash = ''; // Tendang keluar jika tidak ada session
-                    window.openLoginModal();
+                    window.location.hash = ''; window.openLoginModal();
                 } else {
-                    document.getElementById('publicNavbar').classList.add('hidden');
-                    document.getElementById('publicView').classList.add('hidden');
-                    document.getElementById('adminView').classList.remove('hidden');
-                    window.scrollTo(0,0);
+                    document.getElementById('publicNavbar').classList.add('hidden'); document.getElementById('publicView').classList.add('hidden'); document.getElementById('adminView').classList.remove('hidden'); window.scrollTo(0,0);
                 }
             } else {
-                document.getElementById('publicNavbar').classList.remove('hidden');
-                document.getElementById('publicView').classList.remove('hidden');
-                document.getElementById('adminView').classList.add('hidden');
-                window.scrollTo(0,0);
+                document.getElementById('publicNavbar').classList.remove('hidden'); document.getElementById('publicView').classList.remove('hidden'); document.getElementById('adminView').classList.add('hidden'); window.scrollTo(0,0);
             }
         };
-        
-        // Initial load
         loadData();
-        // hash dihandle oleh onAuthStateChanged saat pertama kali load agar tidak bypass form login
     </script>
 </body>
 </html>
