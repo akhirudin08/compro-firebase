@@ -17,11 +17,6 @@
     <meta property="og:description" content="Layanan profesional perbaikan pipa mampet, drain cleaning, dan plumbing terpercaya. Solusi cepat dan tepat!">
     <meta property="og:image" content="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?q=80&w=1200&auto=format&fit=crop">
 
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.rumahmampet.com/">
-    <meta property="twitter:title" content="PT. Rumah Mampet Indonesia - Solusi Saluran Mampet">
-    <meta property="twitter:description" content="Layanan profesional perbaikan pipa mampet, drain cleaning, dan plumbing terpercaya.">
-    <meta property="twitter:image" content="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?q=80&w=1200&auto=format&fit=crop">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -31,7 +26,6 @@
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; overflow-x: hidden; }
         .font-serif { font-family: 'Lora', serif; }
         
-        /* Glassmorphism Styles */
         .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
         .text-brand { color: #0f766e; }
         .bg-brand { background-color: #0f766e; }
@@ -39,7 +33,6 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Formatter Teks Profil Panjang */
         .content-formatted h3 { font-family: 'Lora', serif; font-weight: 700; font-size: 1.6rem; margin-top: 2rem; margin-bottom: 1rem; color: #1e293b; }
         .content-formatted h4 { font-family: 'Lora', serif; font-weight: 700; font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #334155; }
         .content-formatted p { color: #475569; margin-bottom: 1.2rem; line-height: 1.8; font-size: 0.95rem; }
@@ -47,24 +40,67 @@
         .content-formatted li { margin-bottom: 0.5rem; }
         .content-formatted strong { color: #1e293b; font-weight: 600; }
         
-        /* Animasi */
         .img-hover-zoom { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .group:hover .img-hover-zoom { transform: scale(1.08); }
         
-        /* Transisi Tabs */
         .desktop-tab-btn, .mobile-tab-btn, .floating-menu-btn { transition: all 0.2s ease; }
         
-        /* Khusus Untuk Mode Print (Generator Invoice) */
         @media print {
             body.printing * { visibility: hidden; }
             body.printing #invoicePrintArea, body.printing #invoicePrintArea * { visibility: visible; }
             body.printing #invoicePrintArea { position: absolute; left: 0; top: 0; width: 100%; display: block !important; padding: 20px; background: white; z-index: 9999; }
-            nav, header, aside, .fixed { display: none !important; }
+            nav, header, aside, .fixed, .floating-wa { display: none !important; }
             body { background-color: white; }
         }
     </style>
 </head>
 <body class="antialiased selection:bg-teal-100 selection:text-teal-900">
+
+    <div id="invoicePrintArea" class="hidden font-sans">
+        <div class="border-b-2 border-slate-800 pb-6 mb-8 flex justify-between items-end">
+            <div>
+                <h1 class="text-3xl font-black text-slate-900 mb-1">KUITANSI PEMBAYARAN</h1>
+                <p class="text-sm font-semibold text-slate-500">PT. Rumah Mampet Indonesia</p>
+            </div>
+            <div class="text-right">
+                <p class="text-xs text-slate-400 font-bold uppercase mb-1">No. Kuitansi</p>
+                <p class="text-lg font-mono font-bold text-slate-800" id="printInvNo">INV-000</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-8 mb-10">
+            <div><p class="text-xs text-slate-400 font-bold uppercase mb-1">Diterima Dari:</p><p class="text-base font-bold text-slate-800" id="printInvNama">-</p></div>
+            <div class="text-right"><p class="text-xs text-slate-400 font-bold uppercase mb-1">Tanggal Keluar:</p><p class="text-base font-bold text-slate-800" id="printInvTgl">-</p></div>
+        </div>
+        <div class="border border-slate-300 rounded-xl overflow-hidden mb-10 shadow-sm">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-slate-100 border-b border-slate-300">
+                    <tr class="text-xs uppercase text-slate-600 font-bold">
+                        <th class="p-4 w-12 text-center border-r border-slate-300">No</th>
+                        <th class="p-4 border-r border-slate-300">Keterangan Layanan</th>
+                        <th class="p-4 text-right">Harga</th>
+                    </tr>
+                </thead>
+                <tbody id="printInvTableBody"></tbody>
+                <tfoot>
+                    <tr class="bg-slate-50 border-t-2 border-slate-800">
+                        <td colspan="2" class="p-4 text-right font-bold text-slate-600 uppercase text-xs border-r border-slate-300">Subtotal</td>
+                        <td class="p-4 text-right font-bold text-slate-800" id="printInvSubtotal">Rp 0</td>
+                    </tr>
+                    <tr class="bg-slate-50 border-t border-slate-200" id="printInvPpnRow">
+                        <td colspan="2" class="p-4 text-right font-bold text-slate-600 uppercase text-xs border-r border-slate-300">PPN (<span id="printInvPpnPercent">0</span>%)</td>
+                        <td class="p-4 text-right font-bold text-slate-800" id="printInvPpnAmount">Rp 0</td>
+                    </tr>
+                    <tr class="bg-slate-800 text-white border-t border-slate-800">
+                        <td colspan="2" class="p-4 text-right font-bold uppercase text-xs border-r border-slate-600 text-white">Total Pembayaran</td>
+                        <td class="p-4 text-right text-lg font-bold text-white" id="printInvGrandTotal">Rp 0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="flex justify-end text-center mt-16">
+            <div><p class="text-sm text-slate-500 mb-16">Hormat Kami,</p><p class="font-bold text-slate-800 border-t border-slate-400 pt-2 px-8">Admin Rumah Mampet</p></div>
+        </div>
+    </div>
 
     <nav id="publicNavbar" class="fixed w-full z-[100] glass-nav shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 flex justify-between items-center h-20">
@@ -76,15 +112,14 @@
             
             <div class="hidden md:flex space-x-6 lg:space-x-8 items-center text-[12px] lg:text-[13px] font-semibold uppercase tracking-wider">
                 <a href="#" class="text-brand">Home</a>
-                <a href="#lacak" class="text-amber-500 hover:text-amber-600 transition-colors flex items-center gap-1">Cek Status</a>
                 <a href="#services" class="text-slate-500 hover:text-brand transition-colors">Layanan</a>
                 <a href="#proyek" class="text-slate-500 hover:text-brand transition-colors">Portofolio</a>
-                <a href="#ulasan_sec" class="text-slate-500 hover:text-brand transition-colors">Ulasan</a>
+                <a href="#artikel" class="text-slate-500 hover:text-brand transition-colors">Artikel</a>
                 <a href="#about" class="text-slate-500 hover:text-brand transition-colors">Tentang Kami</a>
                 
                 <div class="relative ml-2 lg:ml-4">
                     <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <input type="text" id="secretSearchDesktop" name="search_dummy_123" autocomplete="off" placeholder="Pencarian..." class="w-32 lg:w-40 bg-slate-100/50 border border-slate-200 rounded-full pl-9 pr-4 py-2 text-xs outline-none focus:w-48 focus:ring-2 focus:ring-teal-500 focus:bg-white transition-all duration-300">
+                    <input type="text" id="secretSearchDesktop" autocomplete="off" placeholder="Pencarian..." class="w-32 lg:w-40 bg-slate-100/50 border border-slate-200 rounded-full pl-9 pr-4 py-2 text-xs outline-none focus:w-48 focus:ring-2 focus:ring-teal-500 focus:bg-white transition-all duration-300">
                 </div>
             </div>
             
@@ -94,13 +129,12 @@
         <div id="mobileMenu" class="hidden absolute w-full bg-white/95 backdrop-blur-xl border-b shadow-2xl px-6 py-8 space-y-5 z-[90]">
             <div class="relative">
                 <svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                <input type="text" id="secretSearchMobile" name="search_dummy_mobile" autocomplete="off" placeholder="Pencarian..." class="w-full bg-slate-100 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-teal-500 mb-4 transition-all">
+                <input type="text" id="secretSearchMobile" autocomplete="off" placeholder="Pencarian..." class="w-full bg-slate-100 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-teal-500 mb-4 transition-all">
             </div>
             <a href="#" class="mobile-link block font-bold text-brand text-lg">Home</a>
-            <a href="#lacak" class="mobile-link block font-bold text-amber-500">Cek Status Pesanan</a>
             <a href="#services" class="mobile-link block font-medium text-slate-600">Layanan</a>
             <a href="#proyek" class="mobile-link block font-medium text-slate-600">Portofolio</a>
-            <a href="#ulasan_sec" class="mobile-link block font-medium text-slate-600">Ulasan</a>
+            <a href="#artikel" class="mobile-link block font-medium text-slate-600">Artikel</a>
             <a href="#about" class="mobile-link block font-medium text-slate-600">Tentang Kami</a>
         </div>
     </nav>
@@ -129,22 +163,21 @@
         <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md relative animate-[fadeIn_0.3s] max-h-[90vh] overflow-y-auto">
             <button onclick="closeWaOrder()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-50 p-2 rounded-full"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                <div class="w-10 h-10 bg-teal-50 text-brand rounded-xl flex items-center justify-center"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.614-.087-.112-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.098.824z"></path></svg></div>
-                <div><h3 class="text-lg font-bold text-slate-800 font-serif leading-tight">Pesan Layanan</h3><p class="text-xs text-slate-500">Isi form ini agar admin lebih cepat merespons.</p></div>
+                <div class="w-10 h-10 bg-green-50 text-[#25D366] rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.282-.878-.63-1.473-1.408-1.646-1.705-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </div>
+                <div><h3 class="text-lg font-bold text-slate-800 font-serif leading-tight">Pesan Layanan</h3><p class="text-xs text-slate-500">Pilih layanan yang dibutuhkan.</p></div>
             </div>
             <div class="space-y-4">
                 <div><label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Nama Anda <span class="text-red-500">*</span></label><input type="text" id="waOrderName" class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand text-sm" placeholder="Contoh: Budi Santoso"></div>
                 <div><label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Alamat Lengkap <span class="text-red-500">*</span></label><textarea id="waOrderAddress" class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand text-sm" placeholder="Contoh: Jl. Sudirman No.10, Karawang" rows="2"></textarea></div>
                 <div>
-                    <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Pilih Layanan</label>
-                    <div class="relative mt-1">
-                        <select id="waOrderService" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand text-sm appearance-none cursor-pointer"><option value="Konsultasi / Lainnya">Konsultasi / Lainnya</option></select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></div>
-                    </div>
+                    <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Pilih Layanan (Bisa Lebih Dari 1)</label>
+                    <div id="waOrderServiceList" class="space-y-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar"></div>
                 </div>
                 <div><label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Detail Keluhan (Opsional)</label><textarea id="waOrderIssue" class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand text-sm" placeholder="Ceritakan masalah yang dialami..." rows="2"></textarea></div>
-                <button onclick="submitWaOrder()" class="w-full py-3.5 bg-brand hover:bg-teal-700 text-white text-sm font-bold rounded-xl shadow-lg transition-all mt-6 flex justify-center items-center gap-2">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.614-.087-.112-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.098.824z"></path></svg>
+                <button onclick="submitWaOrder()" class="w-full py-3.5 bg-[#25D366] hover:bg-green-600 text-white text-sm font-bold rounded-xl shadow-lg transition-all mt-6 flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.282-.878-.63-1.473-1.408-1.646-1.705-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                     Kirim Pesanan ke WhatsApp
                 </button>
             </div>
@@ -180,7 +213,7 @@
                 
                 <div class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
                     <input type="text" id="cekInvoiceNo" placeholder="Contoh: INV-1715200000000" class="flex-1 px-6 py-4 rounded-xl border border-teal-200 outline-none focus:ring-2 focus:ring-brand text-sm shadow-sm">
-                    <button onclick="lacakInvoice()" class="px-8 py-4 bg-brand text-white font-bold rounded-xl hover:bg-teal-700 transition-colors shadow-md flex items-center justify-center gap-2">
+                    <button onclick="lacakInvoice()" id="btnLacak" class="px-8 py-4 bg-brand text-white font-bold rounded-xl hover:bg-teal-700 transition-colors shadow-md flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         Lacak
                     </button>
@@ -224,7 +257,23 @@
             <div id="pubProjectGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </section>
 
-        <section id="ulasan_sec" class="bg-slate-50 py-24 mt-32 md:mt-40 border-y border-slate-200">
+        <section id="artikel" class="bg-slate-50 py-24 mt-32 md:mt-40 border-y border-slate-200">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 pb-6" data-aos="fade-up">
+                    <div>
+                        <p class="text-brand font-bold tracking-widest text-xs uppercase mb-3">Informasi & Edukasi</p>
+                        <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-2">Artikel Terbaru</h2>
+                        <p class="text-slate-500 text-sm">Tips dan trik seputar plumbing dan kebersihan dari pakarnya.</p>
+                    </div>
+                    <div id="pubArticleBtnContainer" class="hidden">
+                        <button onclick="toggleAllArticles()" class="text-sm font-semibold text-slate-600 bg-white border border-slate-200 px-6 py-2.5 rounded-full hover:bg-slate-100 transition-all shadow-sm">Lihat Semua Artikel</button>
+                    </div>
+                </div>
+                <div id="pubArticleGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </section>
+
+        <section id="ulasan_sec" class="bg-white py-24 border-b border-slate-200">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
                     <p class="text-brand font-bold tracking-widest text-xs uppercase mb-3">Apa Kata Mereka</p>
@@ -303,42 +352,52 @@
 
     <div id="postModal" class="fixed inset-0 z-[200] hidden bg-white/98 backdrop-blur-md overflow-y-auto">
         <div class="max-w-4xl mx-auto p-6 md:p-12 pt-24 relative min-h-screen flex flex-col bg-white shadow-2xl">
-            <button onclick="closePost()" class="absolute top-6 right-6 bg-slate-100 hover:bg-red-500 hover:text-white text-slate-800 px-5 py-2.5 rounded-full text-sm font-bold transition-colors shadow-sm flex items-center gap-2">✕ Tutup Artikel</button>
-            <div id="postContentArea" class="content-formatted text-slate-700 leading-relaxed mb-10 w-full"></div>
-            <h4 class="font-serif font-bold text-slate-900 mb-6 border-b pb-3 text-2xl">Galeri Pengerjaan</h4>
-            <div id="postGalleryArea" class="grid grid-cols-2 md:grid-cols-3 gap-6 pb-20"></div>
+            <button onclick="closePost()" class="absolute top-6 right-6 bg-slate-100 hover:bg-red-500 hover:text-white text-slate-800 px-5 py-2.5 rounded-full text-sm font-bold transition-colors shadow-sm flex items-center gap-2">✕ Tutup</button>
+            <div id="postCoverArea" class="w-full h-[300px] rounded-3xl overflow-hidden mb-10 hidden shadow-md">
+                <img id="postCoverImg" src="" class="w-full h-full object-cover">
+            </div>
+            <div id="postContentArea" class="content-formatted text-slate-700 leading-relaxed w-full"></div>
+            
+            <div id="postGalleryContainer" class="hidden mt-12 border-t border-slate-100 pt-8">
+                <h4 class="font-serif font-bold text-slate-900 mb-6 text-2xl">Galeri Pengerjaan</h4>
+                <div id="postGalleryArea" class="grid grid-cols-2 md:grid-cols-3 gap-6 pb-20"></div>
+            </div>
         </div>
     </div>
+
     <div id="imageModal" class="fixed inset-0 z-[300] hidden bg-black/95 flex items-center justify-center p-4 cursor-pointer transition-opacity duration-300 opacity-0" onclick="closeModal()">
         <img id="modalImage" src="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl scale-95 transition-transform duration-300">
         <p class="absolute bottom-10 text-white/50 text-sm font-medium">Klik sembarang area untuk menutup</p>
     </div>
-    <button onclick="openWaOrder()" class="fixed bottom-6 right-6 bg-brand text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 z-50">
-        <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.614-.087-.112-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.098.824z"></path></svg>
+    
+    <button onclick="openWaOrder()" class="floating-wa fixed bottom-6 right-6 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 z-50">
+        <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.282-.878-.63-1.473-1.408-1.646-1.705-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     </button>
 
     <div id="adminView" class="hidden min-h-screen bg-slate-50 relative z-[150] pb-24">
-        
         <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 fixed top-0 w-full z-50">
             <div class="flex items-center gap-3">
                 <button id="btnLogout" class="text-red-400 hover:text-red-600 bg-red-50 p-2 rounded-full transition-colors" title="Logout"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></button>
                 <h1 class="text-lg font-bold text-slate-800">Admin Panel</h1>
             </div>
-            <button id="btnUpdateData" class="px-4 py-1.5 md:px-5 md:py-2 bg-brand hover:bg-teal-700 text-white text-xs md:text-sm font-bold rounded-full shadow-md transition-all flex items-center gap-2">
+            
+            <button id="btnUpdateData" disabled class="px-4 py-1.5 md:px-5 md:py-2 bg-brand text-white text-xs md:text-sm font-bold rounded-full shadow-md transition-all flex items-center gap-2 opacity-50 cursor-not-allowed">
                 <svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                <span class="hidden md:inline">Simpan Update Website</span>
-                <span class="md:hidden">Simpan</span>
+                <span class="hidden md:inline" id="btnUpdateText">Memuat Data...</span>
+                <span class="md:hidden">Memuat...</span>
             </button>
         </header>
 
         <div class="flex pt-16 h-screen">
-            <aside class="hidden md:flex flex-col w-64 bg-white border-r h-full overflow-y-auto pb-20">
+            <aside class="hidden md:flex flex-col w-64 bg-white border-r h-full overflow-y-auto pb-20 custom-scrollbar">
                 <div class="p-4 space-y-1">
                     <p class="px-4 text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-2 mt-4">Menu Utama</p>
                     <button data-tab="tabAwal" onclick="switchTab('tabAwal')" class="desktop-tab-btn active bg-teal-50 text-brand w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Dasar</button>
+                    <button data-tab="tabOmzet" onclick="switchTab('tabOmzet')" class="desktop-tab-btn text-slate-500 hover:bg-slate-50 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold"><svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Laporan Omzet</button>
                     <button data-tab="tabUtama" onclick="switchTab('tabUtama')" class="desktop-tab-btn text-slate-500 hover:bg-slate-50 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg> Profil</button>
                     <button data-tab="tabJasa" onclick="switchTab('tabJasa')" class="desktop-tab-btn text-slate-500 hover:bg-slate-50 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg> Jasa</button>
                     <button data-tab="tabProyek" onclick="switchTab('tabProyek')" class="desktop-tab-btn text-slate-500 hover:bg-slate-50 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Proyek</button>
+                    <button data-tab="tabArtikel" onclick="switchTab('tabArtikel')" class="desktop-tab-btn text-slate-500 hover:bg-slate-50 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold"><svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg> Artikel SEO</button>
                     
                     <p class="px-4 text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-2 mt-6 border-t pt-4">Operasional & Marketing</p>
                     <button data-tab="tabInvoice" onclick="switchTab('tabInvoice')" class="desktop-tab-btn text-slate-500 hover:bg-slate-50 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold"><svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Kuitansi PDF</button>
@@ -352,12 +411,13 @@
 
             <main class="flex-1 p-6 md:p-10 pb-24 md:pb-10 overflow-y-auto w-full md:w-[calc(100%-16rem)]" onclick="closeMoreMenu()">
                 <div class="max-w-4xl mx-auto">
+                    
                     <div id="tabAwal" class="admin-tab-content block space-y-6 animate-[fadeIn_0.3s]">
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center"><p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Proyek Selesai</p><h3 class="text-3xl font-black text-brand" id="statProj">0</h3></div>
                             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center"><p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Layanan Aktif</p><h3 class="text-3xl font-black text-brand" id="statSvc">0</h3></div>
                             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center"><p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Total Ulasan</p><h3 class="text-3xl font-black text-brand" id="statRev">0</h3></div>
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center"><p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Kuitansi Dibuat</p><h3 class="text-3xl font-black text-brand" id="statInv">0</h3></div>
+                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center"><p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Kuitansi DB</p><h3 class="text-3xl font-black text-brand" id="statInv">0</h3></div>
                         </div>
 
                         <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
@@ -370,6 +430,51 @@
                                 <div><label class="text-[11px] font-bold text-slate-500 uppercase">Nomor WA Admin</label><input type="text" id="formWaNumber" placeholder="Contoh: 628..." class="mt-1 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand text-sm"></div>
                             </div>
                             <p class="text-xs text-slate-400 mt-4">Nomor WA ini akan digunakan sebagai tujuan penerima pesanan dari form otomatis di halaman depan.</p>
+                        </div>
+                    </div>
+
+                    <div id="tabOmzet" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800">Dashboard Omzet</h3>
+                                <p class="text-xs text-slate-500 mt-1">Ringkasan pendapatan dari kuitansi yang tercatat dalam sistem.</p>
+                            </div>
+                            <button onclick="exportOmzetToExcel()" class="w-full md:w-auto px-5 py-2.5 bg-emerald-600 text-white font-bold rounded-xl shadow-md hover:bg-emerald-700 transition-all flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                Export Excel (CSV)
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                                <p class="text-[11px] text-slate-500 font-bold uppercase tracking-wider mb-2">Total Omzet Keseluruhan</p>
+                                <h3 class="text-3xl font-black text-brand" id="omzetTotal">Rp 0</h3>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                                <p class="text-[11px] text-slate-500 font-bold uppercase tracking-wider mb-2">Omzet (Status Selesai)</p>
+                                <h3 class="text-3xl font-black text-emerald-500" id="omzetSelesai">Rp 0</h3>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                                <p class="text-[11px] text-slate-500 font-bold uppercase tracking-wider mb-2">Potensi (Pending)</p>
+                                <h3 class="text-3xl font-black text-amber-500" id="omzetPending">Rp 0</h3>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse" id="tableOmzet">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-b border-slate-200 text-[11px] uppercase tracking-wider text-slate-500">
+                                            <th class="p-4 font-bold">No. Invoice</th>
+                                            <th class="p-4 font-bold">Tanggal</th>
+                                            <th class="p-4 font-bold">Pelanggan</th>
+                                            <th class="p-4 font-bold">Status</th>
+                                            <th class="p-4 font-bold text-right">Total Akhir</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="omzetTableBody" class="text-sm divide-y divide-slate-100"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
@@ -412,7 +517,7 @@
 
                     <div id="tabProyek" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                            <p class="text-sm text-slate-500">Kelola portofolio pekerjaan. Checklist pada fitur <b>"Tampil"</b> untuk menampilkan proyek tersebut di halaman depan (Maks. 6 proyek direkomendasikan).</p>
+                            <p class="text-sm text-slate-500">Kelola portofolio pekerjaan. Checklist pada fitur <b>"Tampil"</b> untuk menampilkan proyek tersebut di halaman depan.</p>
                         </div>
                         <div id="adminProjectListArea" class="space-y-4">
                             <div id="adminProjectListContainer" class="flex flex-col gap-4"></div>
@@ -424,6 +529,23 @@
                                 <button onclick="closeEditProj()" class="px-5 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-slate-200 shadow-sm transition-colors">← Kembali ke List</button>
                             </div>
                             <div id="adminProjectEditForm"></div>
+                        </div>
+                    </div>
+
+                    <div id="tabArtikel" class="admin-tab-content hidden space-y-6 animate-[fadeIn_0.3s]">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                            <p class="text-sm text-slate-500">Buat artikel informatif / SEO friendly. Ini akan muncul di halaman utama bagian Artikel.</p>
+                        </div>
+                        <div id="adminArticleListArea" class="space-y-4">
+                            <div id="adminArticleListContainer" class="flex flex-col gap-4"></div>
+                            <button onclick="addArticle()" class="mt-4 px-6 py-3 bg-orange-500 text-white font-bold rounded-xl shadow-md hover:bg-orange-600 transition-all">+ Tulis Artikel Baru</button>
+                        </div>
+                        <div id="adminArticleEditArea" class="hidden bg-white p-8 rounded-2xl border border-slate-200 shadow-xl relative animate-[fadeIn_0.3s]">
+                            <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                                <h3 class="text-xl font-bold text-slate-800">Edit Artikel</h3>
+                                <button onclick="closeEditArticle()" class="px-5 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-slate-200 shadow-sm transition-colors">← Kembali ke List</button>
+                            </div>
+                            <div id="adminArticleEditForm"></div>
                         </div>
                     </div>
 
@@ -450,8 +572,8 @@
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
                                 <div>
-                                    <h3 class="text-lg font-bold text-slate-800">Manajemen Kuitansi (PDF)</h3>
-                                    <p class="text-xs text-slate-500">Ubah status pesanan agar bisa dilacak oleh pelanggan.</p>
+                                    <h3 class="text-lg font-bold text-slate-800">Manajemen Kuitansi & PPN</h3>
+                                    <p class="text-xs text-slate-500">Kelola tagihan, hitung PPN otomatis, dan status tracking.</p>
                                 </div>
                             </div>
                         </div>
@@ -459,7 +581,7 @@
                             <div id="adminInvListContainer" class="flex flex-col gap-4"></div>
                             <button onclick="addInv()" class="mt-4 px-6 py-3 bg-slate-800 text-white font-bold rounded-xl shadow-md hover:bg-slate-900 transition-all">+ Buat Kuitansi Baru</button>
                         </div>
-                        <div id="adminInvEditArea" class="hidden bg-white p-8 rounded-2xl border border-slate-200 shadow-xl relative animate-[fadeIn_0.3s]">
+                        <div id="adminInvEditArea" class="hidden bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-xl relative animate-[fadeIn_0.3s]">
                             <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
                                 <h3 class="text-xl font-bold text-slate-800">Form Kuitansi</h3>
                                 <button onclick="closeEditInv()" class="px-5 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-slate-200 shadow-sm transition-colors">← Kembali ke List</button>
@@ -541,36 +663,34 @@
         </div>
 
         <div id="moreAdminMenu" class="md:hidden hidden fixed bottom-24 right-4 bg-white rounded-xl shadow-2xl border border-slate-200 p-2 flex flex-col w-56 z-[200]">
-            <button data-tab="tabInvoice" onclick="switchTab('tabInvoice'); closeMoreMenu()" class="floating-menu-btn"><svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Kuitansi PDF</button>
+            <button data-tab="tabArtikel" onclick="switchTab('tabArtikel'); closeMoreMenu()" class="floating-menu-btn text-left p-2 hover:bg-slate-50 rounded-lg text-sm text-orange-500 font-bold flex gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg> Artikel SEO</button>
             <div class="h-px bg-slate-100 my-1"></div>
-            <button data-tab="tabUlasan" onclick="switchTab('tabUlasan'); closeMoreMenu()" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg> Testimoni</button>
-            <button data-tab="tabLegal" onclick="switchTab('tabLegal'); closeMoreMenu()" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Legalitas</button>
-            <button data-tab="tabOrganisasi" onclick="switchTab('tabOrganisasi'); closeMoreMenu()" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tim & Banner</button>
-            <button data-tab="tabFooter" onclick="switchTab('tabFooter'); closeMoreMenu()" class="floating-menu-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Kontak Footer</button>
+            <button data-tab="tabOmzet" onclick="switchTab('tabOmzet'); closeMoreMenu()" class="floating-menu-btn text-left p-2 hover:bg-slate-50 rounded-lg text-sm text-emerald-600 font-bold flex gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Laporan Omzet</button>
+            <button data-tab="tabInvoice" onclick="switchTab('tabInvoice'); closeMoreMenu()" class="floating-menu-btn text-left p-2 hover:bg-slate-50 rounded-lg text-sm text-slate-600 flex gap-2"><svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Kuitansi PDF</button>
             <div class="h-px bg-slate-100 my-1"></div>
-            <button data-tab="tabIntegrasi" onclick="switchTab('tabIntegrasi'); closeMoreMenu()" class="floating-menu-btn"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg> Google Tags</button>
+            <button data-tab="tabUlasan" onclick="switchTab('tabUlasan'); closeMoreMenu()" class="floating-menu-btn text-left p-2 hover:bg-slate-50 rounded-lg text-sm text-slate-600 flex gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg> Testimoni</button>
+            <button data-tab="tabLegal" onclick="switchTab('tabLegal'); closeMoreMenu()" class="floating-menu-btn text-left p-2 hover:bg-slate-50 rounded-lg text-sm text-slate-600 flex gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Legalitas</button>
+            <button data-tab="tabOrganisasi" onclick="switchTab('tabOrganisasi'); closeMoreMenu()" class="floating-menu-btn text-left p-2 hover:bg-slate-50 rounded-lg text-sm text-slate-600 flex gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> Tim & Banner</button>
+            <button data-tab="tabFooter" onclick="switchTab('tabFooter'); closeMoreMenu()" class="floating-menu-btn text-left p-2 hover:bg-slate-50 rounded-lg text-sm text-slate-600 flex gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Kontak Footer</button>
+            <div class="h-px bg-slate-100 my-1"></div>
+            <button data-tab="tabIntegrasi" onclick="switchTab('tabIntegrasi'); closeMoreMenu()" class="floating-menu-btn text-left p-2 hover:bg-slate-50 rounded-lg text-sm text-slate-600 flex gap-2"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg> Google Tags</button>
         </div>
 
         <nav class="md:hidden fixed bottom-0 w-full bg-white/95 backdrop-blur-md border-t border-slate-200 flex justify-between px-4 sm:justify-center sm:gap-6 z-[160] shadow-[0_-5px_15px_rgba(0,0,0,0.02)]">
             <button data-tab="tabAwal" onclick="switchTab('tabAwal')" class="mobile-tab-btn active flex flex-col items-center justify-center w-[64px] h-[64px] text-slate-400 hover:text-brand">
                 <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> 
-                <span class="text-[10px] whitespace-nowrap tracking-wide">Dasar</span>
-            </button>
-            <button data-tab="tabUtama" onclick="switchTab('tabUtama')" class="mobile-tab-btn flex flex-col items-center justify-center w-[64px] h-[64px] text-slate-400 hover:text-brand">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="text-[10px] whitespace-nowrap tracking-wide">Profil</span>
             </button>
             <button data-tab="tabJasa" onclick="switchTab('tabJasa')" class="mobile-tab-btn flex flex-col items-center justify-center w-[64px] h-[64px] text-slate-400 hover:text-brand">
                 <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg>
-                <span class="text-[10px] whitespace-nowrap tracking-wide">Jasa</span>
             </button>
             <button data-tab="tabProyek" onclick="switchTab('tabProyek')" class="mobile-tab-btn flex flex-col items-center justify-center w-[64px] h-[64px] text-slate-400 hover:text-brand">
                 <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                <span class="text-[10px] whitespace-nowrap tracking-wide">Proyek</span>
+            </button>
+            <button data-tab="tabArtikel" onclick="switchTab('tabArtikel')" class="mobile-tab-btn flex flex-col items-center justify-center w-[64px] h-[64px] text-slate-400 hover:text-brand">
+                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
             </button>
             <button onclick="toggleMoreMenu(event)" id="btnMoreMenu" class="mobile-tab-btn flex flex-col items-center justify-center w-[64px] h-[64px] text-slate-400 hover:text-brand">
                 <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                <span class="text-[10px] whitespace-nowrap tracking-wide">Lainnya</span>
             </button>
         </nav>
     </div>
@@ -585,7 +705,6 @@
         import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // SVG Icons untuk Sosmed (JANGAN DIHAPUS)
         const svgFb = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" /></svg>`;
         const svgIg = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.058 3.252.148 4.771 1.691 4.919 4.919.046 1.265.058 1.646.058 4.85s-.012 3.584-.058 4.85c-.148 3.227-1.664 4.771-4.919 4.919-1.266.046-1.646.058-4.85.058s-3.584-.012-4.85-.058c-3.254-.148-4.771-1.691-4.919-4.919-.046-1.265-.058-1.646-.058-4.85s.012-3.584.058-4.85c.148-3.227 1.664-4.771 4.919-4.919 1.266-.046 1.646-.058 4.85-.058zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
         const svgTt = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 2.22-.76 4.41-2.11 6.14-1.4 1.83-3.43 3.03-5.74 3.32-2.22.28-4.52-.07-6.38-1.3-1.84-1.22-3.13-3.15-3.52-5.33-.39-2.18-.08-4.49 1.1-6.4 1.25-2.02 3.34-3.41 5.71-3.83 2.05-.36 4.19-.07 6.07.87v4.11c-1.41-.83-3.21-1.04-4.75-.49-1.48.53-2.6 1.82-3.03 3.34-.41 1.44-.19 3.05.69 4.29 1.05 1.48 2.94 2.15 4.67 1.78 1.63-.35 2.89-1.57 3.34-3.18.15-.55.2-1.12.2-1.69V.02z"/></svg>`;
@@ -603,9 +722,11 @@
         const db = getDatabase(app);
         const auth = getAuth(app); 
 
-        let adminSvc = [], adminLegal = [], adminTeam = [], adminProj = [], adminRev = [], adminInv = [];
-        let showAllProjectsPublic = false; 
-        let editingProjIndex = -1; let editingSvcIndex = -1; let editingRevIndex = -1; let editingInvIndex = -1;
+        // State variables
+        let adminSvc = [], adminLegal = [], adminTeam = [], adminProj = [], adminRev = [], adminInv = [], adminArticles = [];
+        let showAllProjectsPublic = false, showAllArticlesPublic = false; 
+        let editingProjIndex = -1, editingSvcIndex = -1, editingRevIndex = -1, editingInvIndex = -1, editingArticleIndex = -1;
+        let isDataLoaded = false; // PENGAMAN: Mencegah tombol simpan jika data gagal dimuat
 
         const safeSetVal = (id, v) => { try { const el = document.getElementById(id); if(el) el.value = v || ''; } catch(e){} };
         const safeSetText = (id, v) => { try { const el = document.getElementById(id); if(el) el.innerText = v || ''; } catch(e){} };
@@ -640,6 +761,60 @@
             safeSetText('statInv', adminInv.length);
         }
 
+        function renderOmzetDashboard() {
+            const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' });
+            let total = 0, selesai = 0, pending = 0;
+            let tableHtml = '';
+
+            adminInv.forEach(inv => {
+                const hrg = parseFloat(inv.harga) || 0;
+                total += hrg;
+                if (inv.status === 'Selesai') selesai += hrg;
+                else pending += hrg;
+
+                let statusBadge = '';
+                if(inv.status === 'Selesai') statusBadge = '<span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md text-[10px] font-bold border border-emerald-200">Selesai</span>';
+                else statusBadge = `<span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-md text-[10px] font-bold border border-amber-200">${inv.status||'Pending'}</span>`;
+
+                tableHtml += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-4 font-mono font-bold text-slate-700">${inv.no}</td>
+                        <td class="p-4 text-slate-500">${inv.tgl}</td>
+                        <td class="p-4 font-semibold text-slate-800">${inv.nama}</td>
+                        <td class="p-4">${statusBadge}</td>
+                        <td class="p-4 text-right font-bold text-brand">${formatter.format(hrg)}</td>
+                    </tr>
+                `;
+            });
+
+            safeSetText('omzetTotal', formatter.format(total));
+            safeSetText('omzetSelesai', formatter.format(selesai));
+            safeSetText('omzetPending', formatter.format(pending));
+            safeSetHtml('omzetTableBody', tableHtml || '<tr><td colspan="5" class="p-8 text-center text-slate-500 font-medium">Belum ada data kuitansi yang tercatat.</td></tr>');
+        }
+
+        window.exportOmzetToExcel = () => {
+            if (adminInv.length === 0) return Swal.fire({icon: 'warning', title: 'Data Kosong', text: 'Tidak ada data kuitansi untuk diexport.'});
+            let csvContent = "data:text/csv;charset=utf-8,\ufeff";
+            csvContent += "No. Invoice,Tanggal,Nama Pelanggan,Layanan,Status,Harga Akhir (Rp)\n";
+
+            adminInv.forEach(inv => {
+                let safeNama = (inv.nama || '').replace(/,/g, " ");
+                let safeLayanan = (inv.layanan || '').replace(/,/g, " | ").replace(/\n/g, " ");
+                let harga = inv.harga || 0;
+                let row = `${inv.no},${inv.tgl},${safeNama},${safeLayanan},${inv.status || 'Menunggu Jadwal'},${harga}`;
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Laporan_Omzet_Rumah_Mampet_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
         let gaInjected = false;
         function injectGoogleTags(gaId, gtmId) {
             if (gaId && gaId.trim() !== "" && !gaInjected) { const scriptGA = document.createElement('script'); scriptGA.async = true; scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`; document.head.appendChild(scriptGA); window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', gaId); gaInjected = true; }
@@ -649,10 +824,8 @@
         onAuthStateChanged(auth, (user) => {
             const isAdmHash = window.location.hash === '#admin';
             if (user) {
-                // Clear search dummy inputs on login success
                 document.getElementById('secretSearchDesktop').value = '';
                 document.getElementById('secretSearchMobile').value = '';
-                
                 if (isAdmHash) { document.getElementById('publicNavbar').classList.add('hidden'); document.getElementById('publicView').classList.add('hidden'); document.getElementById('adminView').classList.remove('hidden'); }
                 closeLoginModal();
             } else {
@@ -691,7 +864,6 @@
             Swal.fire({ title:'Keluar Admin?', text: "Anda akan dikembalikan ke halaman depan.", icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', cancelButtonColor:'#64748b', confirmButtonText:'Ya, Keluar' }).then((res) => { if (res.isConfirmed) { signOut(auth).then(() => { window.location.hash = ''; }); } });
         };
 
-        // UI Tabs Logic Terupdate (Desktop + Mobile)
         window.toggleMoreMenu = (e) => { if(e) e.stopPropagation(); document.getElementById('moreAdminMenu').classList.toggle('hidden'); };
         window.closeMoreMenu = () => { document.getElementById('moreAdminMenu').classList.add('hidden'); };
 
@@ -705,6 +877,8 @@
                     el.classList.add('text-slate-500', 'hover:bg-slate-50');
                 } else if(el.classList.contains('mobile-tab-btn')) {
                     el.classList.add('text-slate-400');
+                } else if(el.classList.contains('floating-menu-btn')) {
+                    el.classList.remove('text-slate-800');
                 }
             });
             
@@ -721,18 +895,16 @@
             });
         };
 
-        // --- PUBLIC RENDERERS ---
         window.renderPublicProjects = () => {
             const frontProjects = adminProj.filter(p => p.showOnFront !== false); 
-            // Default show only 3 so the button is visible earlier
             const displayedProjects = showAllProjectsPublic ? frontProjects : frontProjects.slice(0, 3);
             safeSetHtml('pubProjectGrid', displayedProjects.map((p, i)=>`
                 <div data-aos="fade-up" data-aos-delay="${i * 100}" class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col">
-                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openPost(${i})"><img src="${fixD(p.coverImg)}" class="w-full h-full object-cover img-hover-zoom"></div>
+                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openPost('proyek', ${i})"><img src="${fixD(p.coverImg)}" class="w-full h-full object-cover img-hover-zoom"></div>
                     <div class="p-6 flex-1 flex flex-col">
-                        <h4 class="font-bold text-slate-800 text-lg mb-2 cursor-pointer hover:text-brand transition-colors font-serif" onclick="openPost(${i})">${p.title}</h4>
+                        <h4 class="font-bold text-slate-800 text-lg mb-2 cursor-pointer hover:text-brand transition-colors font-serif" onclick="openPost('proyek', ${i})">${p.title}</h4>
                         <p class="text-[13px] text-slate-500 line-clamp-2 mb-6 leading-relaxed">${p.shortDesc}</p>
-                        <button onclick="openPost(${i})" class="mt-auto text-[11px] font-bold text-slate-400 text-left hover:text-brand transition-colors uppercase tracking-widest flex items-center gap-1">Read More <span class="text-lg leading-none">→</span></button>
+                        <button onclick="openPost('proyek', ${i})" class="mt-auto text-[11px] font-bold text-slate-400 text-left hover:text-brand transition-colors uppercase tracking-widest flex items-center gap-1">Read More <span class="text-lg leading-none">→</span></button>
                     </div>
                 </div>`).join(''));
             
@@ -746,38 +918,93 @@
         };
         window.toggleAllProjects = () => { showAllProjectsPublic = !showAllProjectsPublic; window.renderPublicProjects(); setTimeout(() => { if(typeof AOS !== 'undefined') AOS.refresh(); }, 100); };
 
+        window.renderPublicArticles = () => {
+            const frontArticles = adminArticles; 
+            const displayedArticles = showAllArticlesPublic ? frontArticles : frontArticles.slice(0, 3);
+            safeSetHtml('pubArticleGrid', displayedArticles.map((p, i)=>`
+                <div data-aos="fade-up" data-aos-delay="${i * 100}" class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col">
+                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openPost('artikel', ${i})"><img src="${fixD(p.coverImg)}" class="w-full h-full object-cover img-hover-zoom"></div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <p class="text-[10px] text-orange-500 font-bold mb-2 uppercase tracking-widest">${p.date || 'Update Terbaru'}</p>
+                        <h4 class="font-bold text-slate-800 text-lg mb-2 cursor-pointer hover:text-brand transition-colors font-serif" onclick="openPost('artikel', ${i})">${p.title}</h4>
+                        <p class="text-[13px] text-slate-500 line-clamp-3 mb-6 leading-relaxed">${p.shortDesc}</p>
+                        <button onclick="openPost('artikel', ${i})" class="mt-auto text-[11px] font-bold text-slate-400 text-left hover:text-brand transition-colors uppercase tracking-widest flex items-center gap-1">Baca Selengkapnya <span class="text-lg leading-none">→</span></button>
+                    </div>
+                </div>`).join(''));
+            
+            const btnContainer = document.getElementById('pubArticleBtnContainer');
+            if (frontArticles.length > 3) { 
+                btnContainer.classList.remove('hidden'); 
+                btnContainer.innerHTML = showAllArticlesPublic ? `<button onclick="toggleAllArticles()" class="text-sm font-semibold text-slate-600 bg-white border border-slate-200 px-6 py-2.5 rounded-full hover:bg-slate-100 transition-all shadow-sm">Sembunyikan</button>` : `<button onclick="toggleAllArticles()" class="text-sm font-semibold text-slate-600 bg-white border border-slate-200 px-6 py-2.5 rounded-full hover:bg-slate-100 transition-all shadow-sm">Lihat Semua Artikel</button>`; 
+            } else { 
+                btnContainer.classList.add('hidden'); 
+            }
+        };
+        window.toggleAllArticles = () => { showAllArticlesPublic = !showAllArticlesPublic; window.renderPublicArticles(); setTimeout(() => { if(typeof AOS !== 'undefined') AOS.refresh(); }, 100); };
+
         window.openModal = function(src) { const m = document.getElementById('imageModal'); const mImg = document.getElementById('modalImage'); if(mImg) mImg.src = src; if(m) { m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); mImg.classList.remove('scale-95'); mImg.classList.add('scale-100'); }, 10); } }
         window.closeModal = function() { const m = document.getElementById('imageModal'); const mImg = document.getElementById('modalImage'); if(m) m.classList.add('opacity-0'); if(mImg) { mImg.classList.remove('scale-100'); mImg.classList.add('scale-95'); } setTimeout(() => { if(m) m.classList.add('hidden'); }, 300); }
 
-        window.openPost = (i) => {
-            const p = adminProj[i]; if(!p) return; const modal = document.getElementById('postModal'); document.body.style.overflow = 'hidden';
+        window.openPost = (type, i) => {
+            let p;
+            if (type === 'proyek') p = adminProj[i];
+            else if (type === 'artikel') p = adminArticles[i];
+            if(!p) return; 
+            
+            const modal = document.getElementById('postModal'); document.body.style.overflow = 'hidden';
+            
+            const coverArea = document.getElementById('postCoverArea');
+            if(p.coverImg) {
+                document.getElementById('postCoverImg').src = fixD(p.coverImg);
+                coverArea.classList.remove('hidden');
+            } else {
+                coverArea.classList.add('hidden');
+            }
+
             const htmlContent = (p.content||"").split('\n').filter(l => l.trim() !== '').map(l => `<p>${l}</p>`).join('');
             safeSetHtml('postContentArea', `<h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-8 border-b border-slate-100 pb-6">${p.title}</h2>${htmlContent}`);
-            const links = (p.gallery || "").split(',').map(l => l.trim()).filter(Boolean);
-            safeSetHtml('postGalleryArea', links.map(l => `<div onclick="openModal('${fixD(l)}')" class="aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all border border-slate-100"><img src="${fixD(l)}" class="w-full h-full object-cover"></div>`).join(''));
+            
+            const galleryContainer = document.getElementById('postGalleryContainer');
+            if (type === 'proyek' && p.gallery && p.gallery.trim() !== '') {
+                const links = p.gallery.split(',').map(l => l.trim()).filter(Boolean);
+                safeSetHtml('postGalleryArea', links.map(l => `<div onclick="openModal('${fixD(l)}')" class="aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all border border-slate-100"><img src="${fixD(l)}" class="w-full h-full object-cover"></div>`).join(''));
+                galleryContainer.classList.remove('hidden');
+            } else {
+                galleryContainer.classList.add('hidden');
+            }
             modal?.classList.remove('hidden');
         };
         window.closePost = () => { document.getElementById('postModal')?.classList.add('hidden'); document.body.style.overflow = 'auto'; };
 
-        // --- SMART WA FORM LOGIC ---
         window.openWaOrder = () => {
             document.getElementById('waOrderModal').classList.remove('hidden'); document.body.style.overflow = 'hidden';
-            const sel = document.getElementById('waOrderService');
-            let opts = '<option value="Konsultasi / Lainnya">Konsultasi / Lainnya</option>';
-            adminSvc.forEach(s => { if(s.title) opts += `<option value="${s.title.replace(/"/g, '"')}">${s.title}</option>`; });
+            const sel = document.getElementById('waOrderServiceList');
+            let opts = `<label class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-brand transition-colors"><input type="checkbox" value="Konsultasi / Lainnya" class="wa-service-cb w-4 h-4 text-brand rounded focus:ring-brand"><span class="text-sm font-medium text-slate-700">Konsultasi / Lainnya</span></label>`;
+            adminSvc.forEach(s => { 
+                if(s.title) {
+                    opts += `<label class="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-brand transition-colors"><input type="checkbox" value="${s.title.replace(/"/g, '"')}" class="wa-service-cb w-4 h-4 text-brand rounded focus:ring-brand"><span class="text-sm font-medium text-slate-700">${s.title}</span></label>`;
+                }
+            });
             sel.innerHTML = opts;
         };
         window.closeWaOrder = () => { document.getElementById('waOrderModal').classList.add('hidden'); document.body.style.overflow = 'auto'; };
+        
         window.submitWaOrder = () => {
-            const name = document.getElementById('waOrderName').value; const address = document.getElementById('waOrderAddress').value; const service = document.getElementById('waOrderService').value; const issue = document.getElementById('waOrderIssue').value;
+            const name = document.getElementById('waOrderName').value; 
+            const address = document.getElementById('waOrderAddress').value; 
+            const issue = document.getElementById('waOrderIssue').value;
+            
+            let selectedServices = [];
+            document.querySelectorAll('.wa-service-cb:checked').forEach(cb => selectedServices.push(cb.value));
+            const serviceText = selectedServices.length > 0 ? selectedServices.map((s,i) => `%0A  ${i+1}. ${s}`).join('') : '%0A  Belum memilih layanan';
+
             if(!name || !address) { return Swal.fire({icon: 'warning', title: 'Data belum lengkap', text: 'Tolong isi Nama dan Alamat Lengkap Anda.'}); }
-            const text = `Halo Admin PT. Rumah Mampet Indonesia,%0A%0ASaya ingin memesan layanan dengan detail berikut:%0A%0A*Nama:* ${name}%0A*Alamat:* ${address}%0A*Layanan:* ${service}%0A*Keluhan:* ${issue || '-'}%0A%0AMohon direspons ya, Terima kasih.`;
+            const text = `Halo Admin PT. Rumah Mampet Indonesia,%0A%0ASaya ingin memesan layanan dengan detail berikut:%0A%0A*Nama:* ${name}%0A*Alamat:* ${address}%0A*Layanan:* ${serviceText}%0A*Keluhan:* ${issue || '-'}%0A%0AMohon direspons ya, Terima kasih.`;
             const waNum = document.getElementById('formWaNumber').value || '6289606357045'; 
             window.open(`https://wa.me/${waNum}?text=${text}`, '_blank');
             closeWaOrder();
         };
 
-        // --- LIVE TRACKING LOGIC ---
         window.lacakInvoice = () => {
             const no = document.getElementById('cekInvoiceNo').value.trim();
             if(!no) return Swal.fire({icon:'warning', title:'Oops', text:'Silakan masukkan nomor invoice Anda terlebih dahulu.'});
@@ -798,8 +1025,10 @@
                 return;
             }
 
+            const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' });
             const steps = ['Menunggu Jadwal', 'Teknisi Menuju Lokasi', 'Sedang Dikerjakan', 'Selesai'];
             const curIdx = steps.indexOf(inv.status || 'Menunggu Jadwal');
+            const items = inv.items || [{nama: inv.layanan || '-', harga: inv.harga || 0}];
             
             let html = `
                 <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
@@ -810,9 +1039,14 @@
                     <span class="bg-teal-50 text-brand px-3 py-1 rounded-lg text-xs font-bold border border-teal-100">${inv.status || 'Menunggu Jadwal'}</span>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-6 text-sm mb-10 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <div><p class="text-slate-400 text-xs mb-1">Nama Pelanggan</p><p class="font-bold text-slate-700">${inv.nama}</p></div>
-                    <div><p class="text-slate-400 text-xs mb-1">Layanan Dipesan</p><p class="font-bold text-slate-700">${inv.layanan || '-'}</p></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm mb-10 bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <div><p class="text-slate-400 text-xs mb-1 uppercase tracking-widest">Nama Pelanggan</p><p class="font-bold text-slate-700 text-base">${inv.nama}</p></div>
+                    <div>
+                        <p class="text-slate-400 text-xs mb-2 uppercase tracking-widest">Layanan Dipesan</p>
+                        <div class="space-y-1.5">
+                            ${items.map((itm, idx) => `<div class="flex items-start gap-2 text-sm"><span class="text-slate-400 font-bold text-xs mt-0.5">${idx+1}.</span><span class="font-bold text-slate-700 leading-tight">${itm.nama}</span></div>`).join('')}
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="relative pt-2 pb-6 px-4 md:px-12">
@@ -830,12 +1064,46 @@
                         `).join('')}
                     </div>
                 </div>
+                <div class="mt-6 text-center border-t border-slate-100 pt-6">
+                    <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Total Tagihan Final</p>
+                    <p class="text-2xl font-black text-brand">${formatter.format(inv.harga || 0)}</p>
+                </div>
             `;
             resArea.innerHTML = html;
             resArea.classList.remove('hidden');
-        }
+        };
 
-        // --- RENDER INVOICE KUITANSI (ADMIN) ---
+        window.addInvItemRow = () => {
+            const container = document.getElementById('editInvItemsArea');
+            const idx = container.children.length + 1;
+            const div = document.createElement('div');
+            div.className = 'flex gap-2 items-start inv-item-row group animate-[fadeIn_0.3s]';
+            div.innerHTML = `
+                <span class="mt-2.5 text-xs font-bold text-slate-400 w-5 text-center idx-label">${idx}.</span>
+                <input type="text" class="inv-item-nama flex-1 p-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand" placeholder="Nama Layanan / Barang">
+                <input type="number" class="inv-item-harga w-28 md:w-40 p-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand" placeholder="Harga" oninput="calcTotalInv()">
+                <button type="button" onclick="this.parentElement.remove(); updateInvIdx(); calcTotalInv()" class="mt-1 text-red-400 p-2 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors opacity-50 group-hover:opacity-100" title="Hapus Baris">✕</button>
+            `;
+            container.appendChild(div);
+        };
+
+        window.updateInvIdx = () => {
+            document.querySelectorAll('#editInvItemsArea .idx-label').forEach((el, i) => { el.innerText = (i + 1) + '.'; });
+        };
+
+        window.calcTotalInv = () => {
+            let subtotal = 0;
+            document.querySelectorAll('.inv-item-harga').forEach(el => { subtotal += parseFloat(el.value) || 0; });
+            const ppnPercent = parseFloat(document.getElementById('editInvPpn').value) || 0;
+            const ppnAmount = subtotal * (ppnPercent / 100);
+            const total = subtotal + ppnAmount;
+
+            const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' });
+            document.getElementById('editInvSubtotalDisplay').innerText = formatter.format(subtotal);
+            document.getElementById('editInvPpnDisplay').innerText = `+ ${formatter.format(ppnAmount)}`;
+            document.getElementById('editInvTotalDisplay').innerText = formatter.format(total);
+        };
+
         function renderInvList() {
             document.getElementById('adminInvListArea').classList.remove('hidden'); document.getElementById('adminInvEditArea').classList.add('hidden');
             const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' });
@@ -849,25 +1117,34 @@
                         <p class="text-xs text-slate-500">${v.no} • ${v.tgl} • <span class="font-bold text-brand">${formatter.format(v.harga||0)}</span></p>
                     </div>
                     <div class="flex items-center gap-3">
-                        <button onclick="cetakInvoice(${i})" class="px-4 py-1.5 bg-slate-800 text-white rounded-lg text-xs font-bold hover:bg-slate-900 transition-colors flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg> Cetak</button>
+                        <button onclick="cetakInvoice(${i})" class="px-4 py-1.5 bg-slate-800 text-white rounded-lg text-xs font-bold hover:bg-slate-900 transition-colors flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 00-2-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg> Cetak</button>
                         <button onclick="openEditInv(${i})" class="px-4 py-1.5 bg-teal-50 text-brand rounded-lg text-xs font-bold hover:bg-teal-100 transition-colors">Edit</button>
                         <button onclick="remInv(${i})" class="px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors">Hapus</button>
                     </div>
                 </div>`).join(''));
             updateDashboardStats();
+            renderOmzetDashboard(); 
         }
         
         window.openEditInv = (i) => {
             editingInvIndex = i; const v = adminInv[i];
             const safeNo = (v.no || '').replace(/"/g, '"'); const safeNama = (v.nama || '').replace(/"/g, '"'); const safeTgl = (v.tgl || '').replace(/"/g, '"');
             document.getElementById('adminInvListArea').classList.add('hidden'); document.getElementById('adminInvEditArea').classList.remove('hidden');
-            
             const sts = v.status || 'Menunggu Jadwal';
+            const ppnVal = v.ppn || 0;
             
+            let items = v.items || [];
+            if (items.length === 0 && (v.layanan || v.harga)) { items.push({ nama: v.layanan || '', harga: v.harga || 0 }); }
+            if (items.length === 0) { items.push({ nama: '', harga: 0 }); }
+
             safeSetHtml('adminInvEditForm', `
-                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                <div class="grid md:grid-cols-2 gap-4 mt-2">
                     <div><label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">No. Invoice</label><input type="text" id="editInvNo" value="${safeNo}" class="mt-1 w-full p-3 border border-slate-200 rounded-xl font-bold font-mono bg-slate-50 outline-none focus:ring-1 focus:ring-brand"></div>
                     <div><label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Tanggal</label><input type="text" id="editInvTgl" value="${safeTgl}" class="mt-1 w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:ring-1 focus:ring-brand"></div>
+                </div>
+                <div class="mt-4">
+                    <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Nama Pelanggan (Wajib)</label>
+                    <input type="text" id="editInvNama" value="${safeNama}" class="mt-1 w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand">
                 </div>
                 <div class="mt-4">
                     <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest text-brand">Status Pengerjaan (Live Tracking)</label>
@@ -878,30 +1155,133 @@
                         <option value="Selesai" ${sts === 'Selesai' ? 'selected' : ''}>Selesai</option>
                     </select>
                 </div>
-                <div class="mt-4"><label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Nama Pelanggan (Wajib)</label><input type="text" id="editInvNama" value="${safeNama}" class="mt-1 w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand"></div>
-                <div class="mt-4"><label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Deskripsi Layanan</label><textarea id="editInvLayanan" class="mt-1 w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-brand" rows="2">${v.layanan||''}</textarea></div>
-                <div class="mt-4"><label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Total Harga (Rp)</label><input type="number" id="editInvHarga" value="${v.harga||''}" class="mt-1 w-full p-3 border border-slate-200 rounded-xl font-bold text-brand bg-slate-50 outline-none focus:ring-1 focus:ring-brand"></div>
-                <button onclick="document.getElementById('btnUpdateData').click()" class="mt-6 w-full py-3 bg-brand text-white font-bold text-sm rounded-xl shadow-md hover:bg-teal-700 transition-all flex justify-center items-center gap-2">
+                
+                <div class="mt-6 border border-slate-200 rounded-xl p-5 bg-white shadow-sm">
+                    <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-3 block">Daftar Layanan (Bisa Multi Jasa)</label>
+                    <div id="editInvItemsArea" class="space-y-3">
+                        ${items.map((item, idx) => `
+                            <div class="flex gap-2 items-start inv-item-row group">
+                                <span class="mt-2.5 text-xs font-bold text-slate-400 w-5 text-center idx-label">${idx+1}.</span>
+                                <input type="text" class="inv-item-nama flex-1 p-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand" placeholder="Nama Layanan / Barang" value="${item.nama.replace(/"/g, '"')}">
+                                <input type="number" class="inv-item-harga w-28 md:w-40 p-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand" placeholder="Harga" value="${item.harga}" oninput="calcTotalInv()">
+                                <button type="button" onclick="this.parentElement.remove(); updateInvIdx(); calcTotalInv()" class="mt-1 text-red-400 p-2 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors opacity-50 group-hover:opacity-100" title="Hapus Baris">✕</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button type="button" onclick="addInvItemRow()" class="mt-4 text-xs font-bold text-brand bg-teal-50 hover:bg-teal-100 transition-colors px-4 py-2 rounded-lg flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Tambah Baris Layanan</button>
+                </div>
+                
+                <div class="mt-4 bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-3">
+                    <div class="flex justify-between items-center text-sm">
+                        <label class="font-bold text-slate-500 uppercase tracking-widest text-[11px]">Subtotal Tagihan</label>
+                        <div class="font-semibold text-slate-700" id="editInvSubtotalDisplay">Rp 0</div>
+                    </div>
+                    <div class="flex justify-between items-center text-sm border-b border-slate-200 pb-3">
+                        <label class="font-bold text-slate-500 uppercase tracking-widest text-[11px] flex items-center gap-2">
+                            PPN (%) 
+                            <input type="number" id="editInvPpn" value="${ppnVal}" min="0" class="w-16 p-1.5 border border-slate-200 rounded-lg text-center bg-white outline-none focus:ring-1 focus:ring-brand text-xs" oninput="calcTotalInv()">
+                        </label>
+                        <div class="font-semibold text-slate-600" id="editInvPpnDisplay">+ Rp 0</div>
+                    </div>
+                    <div class="flex justify-between items-end pt-1">
+                        <label class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Total Grand Final</label>
+                        <div class="text-2xl font-black text-brand" id="editInvTotalDisplay">Rp 0</div>
+                    </div>
+                </div>
+
+                <button onclick="document.getElementById('btnUpdateData').click()" class="mt-8 w-full py-3.5 bg-brand text-white font-bold text-sm rounded-xl shadow-md hover:bg-teal-700 transition-all flex justify-center items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
                     Simpan Perubahan ke Database
                 </button>
             `);
+            calcTotalInv();
         };
         window.closeEditInv = () => { if (editingInvIndex !== -1 && (!adminInv[editingInvIndex].nama || adminInv[editingInvIndex].nama.trim() === "")) { adminInv.splice(editingInvIndex, 1); } editingInvIndex = -1; renderInvList(); };
         window.remInv = (i) => { Swal.fire({ title:'Hapus Kuitansi?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', confirmButtonText:'Ya, Hapus!' }).then((res) => { if (res.isConfirmed) { adminInv.splice(i,1); renderInvList(); } }); };
-        window.addInv = () => { adminInv.unshift({no: 'INV-'+Date.now(), tgl: new Date().toLocaleDateString('id-ID'), nama:"", layanan:"", harga: "", status: "Menunggu Jadwal"}); openEditInv(0); };
+        window.addInv = () => { adminInv.unshift({no: 'INV-'+Date.now(), tgl: new Date().toLocaleDateString('id-ID'), nama:"", layanan:"", harga: 0, ppn: 0, status: "Menunggu Jadwal", items: []}); openEditInv(0); };
 
         window.cetakInvoice = (i) => {
             const v = adminInv[i];
             const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' });
-            document.getElementById('printInvNo').innerText = v.no || '-'; document.getElementById('printInvNama').innerText = v.nama || '-'; document.getElementById('printInvTgl').innerText = v.tgl || '-'; document.getElementById('printInvLayanan').innerText = v.layanan || '-'; document.getElementById('printInvHarga').innerText = formatter.format(v.harga || 0);
+            
+            document.getElementById('printInvNo').innerText = v.no || '-'; 
+            document.getElementById('printInvNama').innerText = v.nama || '-'; 
+            document.getElementById('printInvTgl').innerText = v.tgl || '-'; 
+            
+            const items = v.items || [{nama: v.layanan || '-', harga: v.harga || 0}];
+            let tbodyHtml = '';
+            let subtotal = 0;
+
+            items.forEach((item, idx) => {
+                const harga = parseFloat(item.harga) || 0;
+                subtotal += harga;
+                tbodyHtml += `
+                    <tr>
+                        <td class="p-4 border-b border-slate-200 text-center text-slate-500 font-medium border-r border-slate-300">${idx + 1}</td>
+                        <td class="p-4 border-b border-slate-200 text-slate-800 whitespace-pre-wrap border-r border-slate-300 font-medium">${item.nama}</td>
+                        <td class="p-4 border-b border-slate-200 text-right font-medium text-slate-700">${formatter.format(harga)}</td>
+                    </tr>
+                `;
+            });
+            
+            const ppnPercent = v.ppn || 0;
+            const ppnAmount = subtotal * (ppnPercent / 100);
+            
+            document.getElementById('printInvTableBody').innerHTML = tbodyHtml;
+            document.getElementById('printInvSubtotal').innerText = formatter.format(subtotal);
+            
+            if (ppnPercent > 0) {
+                document.getElementById('printInvPpnRow').classList.remove('hidden');
+                document.getElementById('printInvPpnPercent').innerText = ppnPercent;
+                document.getElementById('printInvPpnAmount').innerText = formatter.format(ppnAmount);
+            } else {
+                document.getElementById('printInvPpnRow').classList.add('hidden');
+            }
+
+            document.getElementById('printInvGrandTotal').innerText = formatter.format(v.harga || 0);
+            
             const printArea = document.getElementById('invoicePrintArea');
             printArea.classList.remove('hidden'); document.body.classList.add('printing');
             window.print();
             document.body.classList.remove('printing'); printArea.classList.add('hidden');
         };
 
-        // --- RENDER ULASAN PELANGGAN (ADMIN) ---
+        function renderArticleList() {
+            document.getElementById('adminArticleListArea').classList.remove('hidden'); document.getElementById('adminArticleEditArea').classList.add('hidden');
+            safeSetHtml('adminArticleListContainer', adminArticles.map((p,i)=>`
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between shadow-sm gap-4">
+                    <div class="flex items-center gap-4">
+                        <img src="${fixD(p.coverImg)}" class="w-16 h-16 object-cover rounded-xl bg-slate-100 border border-slate-100">
+                        <div><h4 class="font-bold text-slate-800 text-sm">${p.title || '<span class="text-red-500 font-bold">Judul Kosong!</span>'}</h4><p class="text-xs text-slate-500 line-clamp-1 max-w-xs">${p.shortDesc || '-'}</p></div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="openEditArticle(${i})" class="px-4 py-1.5 bg-orange-50 text-orange-600 rounded-lg text-xs font-bold hover:bg-orange-100 transition-colors">Edit</button>
+                        <button onclick="remArticle(${i})" class="px-4 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors">Hapus</button>
+                    </div>
+                </div>`).join(''));
+        }
+        window.remArticle = (i) => { Swal.fire({ title:'Hapus Artikel?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', confirmButtonText:'Ya, Hapus!' }).then((res) => { if (res.isConfirmed) { adminArticles.splice(i,1); renderArticleList(); } }); };
+        window.openEditArticle = (i) => {
+            editingArticleIndex = i; const p = adminArticles[i];
+            const safeTitle = (p.title || '').replace(/"/g, '"'); const safeCover = (p.coverImg || '').replace(/"/g, '"');
+            document.getElementById('adminArticleListArea').classList.add('hidden'); document.getElementById('adminArticleEditArea').classList.remove('hidden');
+            safeSetHtml('adminArticleEditForm', `
+                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                    <input type="text" id="editArtTitle" value="${safeTitle}" placeholder="Judul Artikel SEO (Wajib)" class="w-full p-3 border border-slate-200 rounded-xl font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-orange-500">
+                    <input type="text" id="editArtCover" value="${safeCover}" placeholder="Link Cover Image" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:ring-1 focus:ring-orange-500">
+                </div>
+                <textarea id="editArtDesc" placeholder="Deskripsi Singkat (Muncul di luar)" class="w-full p-3 border border-slate-200 rounded-xl mt-4 bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-orange-500" rows="2">${p.shortDesc||''}</textarea>
+                <label class="block text-[11px] font-bold text-slate-500 mt-5 mb-2 uppercase">Konten Lengkap Artikel (Gunakan Tag HTML untuk paragraf/tebal dll)</label>
+                <textarea id="editArtContent" class="w-full p-4 border border-slate-200 rounded-xl bg-slate-50 outline-none text-sm focus:ring-1 focus:ring-orange-500 leading-relaxed" rows="8">${p.content||''}</textarea>
+                <button onclick="document.getElementById('btnUpdateData').click()" class="mt-6 w-full py-3 bg-orange-500 text-white font-bold text-sm rounded-xl shadow-md hover:bg-orange-600 transition-all flex justify-center items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                    Simpan Perubahan Artikel
+                </button>
+            `);
+        };
+        window.closeEditArticle = () => { if (editingArticleIndex !== -1 && (!adminArticles[editingArticleIndex].title || adminArticles[editingArticleIndex].title.trim() === "")) { adminArticles.splice(editingArticleIndex, 1); } editingArticleIndex = -1; renderArticleList(); };
+        window.addArticle = () => { adminArticles.unshift({title:"", shortDesc:"", coverImg:"", content:"", date: new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}); openEditArticle(0); };
+
         function renderRevList() {
             document.getElementById('adminRevListArea').classList.remove('hidden'); document.getElementById('adminRevEditArea').classList.add('hidden');
             safeSetHtml('adminRevListContainer', adminRev.map((r,i)=>`
@@ -946,7 +1326,6 @@
         window.remRev = (i) => { Swal.fire({ title:'Hapus Ulasan?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', confirmButtonText:'Ya, Hapus!' }).then((res) => { if (res.isConfirmed) { adminRev.splice(i,1); renderRevList(); } }); };
         window.addRev = () => { adminRev.unshift({name:"", role:"", img:"", comment:"", rating: 5, showOnFront: true}); openEditRev(0); };
 
-        // --- RENDER JASA (ADMIN) ---
         function renderSvcList() {
             document.getElementById('adminSvcListArea').classList.remove('hidden'); document.getElementById('adminSvcEditArea').classList.add('hidden');
             safeSetHtml('adminServicesContainer', adminSvc.map((s,i)=>`
@@ -982,7 +1361,6 @@
         window.remSvc = (i) => { Swal.fire({ title:'Hapus Jasa?', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444', confirmButtonText:'Ya, Hapus!' }).then((res) => { if (res.isConfirmed) { adminSvc.splice(i,1); renderSvcList(); } }); };
         window.addSvc = () => { adminSvc.unshift({title:"", desc:"", img:""}); openEditSvc(0); };
 
-        // --- RENDER PROYEK (ADMIN) ---
         function renderProjList() {
             document.getElementById('adminProjectListArea').classList.remove('hidden'); document.getElementById('adminProjectEditArea').classList.add('hidden');
             safeSetHtml('adminProjectListContainer', adminProj.map((p,i)=>`
@@ -1024,7 +1402,6 @@
         window.closeEditProj = () => { if (editingProjIndex !== -1 && (!adminProj[editingProjIndex].title || adminProj[editingProjIndex].title.trim() === "")) { adminProj.splice(editingProjIndex, 1); } editingProjIndex = -1; renderProjList(); };
         window.addProject = () => { adminProj.unshift({title:"", shortDesc:"", coverImg:"", content:"", gallery:"", showOnFront: true}); openEditProj(0); };
 
-        // --- RENDER LEGAL & TEAM ---
         window.remLegal = (i) => { adminLegal.splice(i,1); renderLegal(); };
         function renderLegal() { safeSetHtml('adminLegalContainer', adminLegal.map((l,i)=>`<div class="bg-white p-5 rounded-2xl border border-slate-200 relative shadow-sm group"><button onclick="remLegal(${i})" class="absolute -top-3 -right-3 bg-red-100 text-red-600 w-8 h-8 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white shadow-md">✕</button><input type="text" id="aLglImg_${i}" value="${l.img||''}" placeholder="Link Gambar" class="w-full p-2.5 border border-slate-200 mb-3 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand"><input type="text" id="aLglT_${i}" value="${l.title||''}" placeholder="Nama Dokumen" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand"></div>`).join('')); }
         window.addLegal = () => { adminLegal.push({title:"",img:""}); renderLegal(); };
@@ -1033,14 +1410,24 @@
         function renderTeam() { safeSetHtml('adminTeamContainer', adminTeam.map((t,i)=>`<div class="bg-white p-5 rounded-2xl border border-slate-200 relative shadow-sm group"><button onclick="remTeam(${i})" class="absolute -top-3 -right-3 bg-red-100 text-red-600 w-8 h-8 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white shadow-md">✕</button><input type="text" id="aTmImg_${i}" value="${t.img||''}" placeholder="Link Foto" class="w-full p-2.5 border border-slate-200 mb-3 rounded-xl text-sm bg-slate-50 outline-none focus:ring-1 focus:ring-brand"><input type="text" id="aTmN_${i}" value="${t.name||''}" placeholder="Nama" class="w-full p-2.5 border border-slate-200 mb-3 rounded-xl text-sm font-bold bg-slate-50 outline-none focus:ring-1 focus:ring-brand"><input type="text" id="aTmR_${i}" value="${t.role||''}" placeholder="Jabatan" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 outline-none text-brand focus:ring-1 focus:ring-brand"></div>`).join('')); }
         window.addTeam = () => { adminTeam.push({name:"",role:"",img:""}); renderTeam(); };
 
-        // --- MAIN FETCH DATA ---
+
+        // --- PENGEMBALIAN FUNGSI LOAD DATA FULL SEPERTI SEMULA + PENGAMAN ---
         async function loadData() {
             try {
+                // Semua ngumpul ditarik dari "website/content"
                 const snap = await get(child(ref(db), 'website/content'));
                 let data = snap.exists() ? snap.val() : {};
 
-                const safeSvc = parseFBList(data.services); const safeLegal = parseFBList(data.legal); const safeTeam = parseFBList(data.team); const safeProj = parseFBList(data.proyek); const safeRev = parseFBList(data.reviews); const safeInv = parseFBList(data.invoices);
-                safeProj.forEach(p => { if(p.showOnFront === undefined) p.showOnFront = true; }); safeRev.forEach(r => { if(r.showOnFront === undefined) r.showOnFront = true; });
+                const safeSvc = parseFBList(data.services); 
+                const safeLegal = parseFBList(data.legal); 
+                const safeTeam = parseFBList(data.team); 
+                const safeProj = parseFBList(data.proyek); 
+                const safeRev = parseFBList(data.reviews); 
+                const safeArts = parseFBList(data.articles);
+                const safeInv = parseFBList(data.invoices); // Kuitansi ditarik bareng lagi
+
+                safeProj.forEach(p => { if(p.showOnFront === undefined) p.showOnFront = true; }); 
+                safeRev.forEach(r => { if(r.showOnFront === undefined) r.showOnFront = true; });
 
                 injectGoogleTags(data.gaId, data.gtmId);
 
@@ -1063,9 +1450,11 @@
                 } catch(e){}
 
                 try { const logo = fixD(data.logoImg); if (logo) { safeSetImg('pubLogoImg', logo); document.getElementById('pubLogoImg')?.classList.remove('hidden'); document.getElementById('fallbackLogo')?.classList.add('hidden'); } else { document.getElementById('pubLogoImg')?.classList.add('hidden'); document.getElementById('fallbackLogo')?.classList.remove('hidden'); } } catch(e){}
-                try { safeSetText('pubHeroTitle', data.heroTitle || "PT. Rumah Mampet Indonesia"); safeSetText('pubHeroDesc', data.heroDesc || "Layanan plumbing dan cleaning profesional."); const hImg = fixD(data.heroImg); if(hImg) safeSetImg('pubHeroImg', hImg); } catch(e){}
+                try { safeSetText('pubHeroTitle', data.heroTitle || "PT. Rumah Mampet Indonesia"); safeSetText('pubHeroDesc', data.heroDesc || "Layanan plumbing dan cleaning profesional terpercaya."); const hImg = fixD(data.heroImg); if(hImg) safeSetImg('pubHeroImg', hImg); } catch(e){}
                 try { safeSetText('pubSvcMainTitle', data.svcMainTitle || "Layanan Kami"); safeSetText('pubSvcSubTitle', data.svcSubTitle || "Berbagai solusi untuk Anda"); safeSetHtml('pubServicesGrid', safeSvc.map((s,i)=>`<div data-aos="fade-up" data-aos-delay="${i*100}" class="bg-white p-8 rounded-[2.5rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group"><img src="${fixD(s.img)}" class="h-28 w-28 object-contain mb-8 drop-shadow-md img-hover-zoom"><h3 class="text-xl font-bold text-slate-800 mb-4 font-serif">${s.title}</h3><p class="text-sm text-slate-500 leading-relaxed">${s.desc}</p></div>`).join('')); } catch(e){}
+                
                 try { adminProj = safeProj; window.renderPublicProjects(); } catch(e){}
+                try { adminArticles = safeArts; window.renderPublicArticles(); renderArticleList(); } catch(e){}
                 
                 try { 
                     safeSetText('pubRevMainTitle', data.revMainTitle || "Ulasan Pelanggan"); safeSetText('pubRevSubTitle', data.revSubTitle || "Kepercayaan Anda adalah prioritas kami"); 
@@ -1086,12 +1475,10 @@
                 try { safeSetText('pubOrgTitle', data.orgTitle || "Struktur Organisasi"); safeSetText('pubOrgSub', data.orgSub || "Berikut adalah tim kami"); safeSetHtml('pubTeamGrid', safeTeam.map((t,i)=>`<div data-aos="fade-up" data-aos-delay="${i*100}" class="flex flex-col items-center text-center group"><div class="w-full aspect-[3/4] bg-white rounded-[2.5rem] mb-6 overflow-hidden shadow-md border border-slate-100 flex items-center justify-center p-2 relative"><img src="${fixD(t.img)}" class="max-w-full max-h-full object-contain img-hover-zoom"></div><p class="text-[11px] font-bold text-brand uppercase tracking-widest mb-1">${t.role}</p><h4 class="text-xl font-serif font-bold text-slate-800">${t.name}</h4></div>`).join('')); } catch(e){}
                 try { safeSetText('pubAboutTitle', data.aboutTitle || "Profil Perusahaan"); safeSetText('pubAboutAddress', data.aboutAddress || "Alamat belum diisi"); const al = document.getElementById('pubAboutMapLink'); if(al) al.href = data.aboutMapLink || "#"; safeSetHtml('pubAboutContent', data.aboutContent || "<p>Silakan isi profil di admin.</p>"); } catch(e){}
                 try {
-                    const waNum = data.waNumber || "6289606357045"; const waMsg = encodeURIComponent(data.waMessage || "Halo Rumah Mampet"); const waLnk = `https://wa.me/${waNum}?text=${waMsg}`;
                     safeSetHtml('pubFooterAbout', data.footerAbout || ""); safeSetText('pubFooterPhone', data.footerPhone || ""); safeSetText('pubFooterEmail', data.footerEmail || ""); const fm = document.getElementById('pubFooterMap'); if(fm) fm.src = data.footerMapEmbed || "";
                     safeSetHtml('pubFooterSosmed', `<a href="${data.linkFb||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="Facebook">${svgFb}</a><a href="${data.linkIg||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="Instagram">${svgIg}</a><a href="${data.linkTt||'#'}" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-brand hover:text-white transition-colors" title="TikTok">${svgTt}</a>`);
                 } catch(e){}
 
-                // Populate Admin Forms
                 safeSetVal('formLogoImg', data.logoImg); safeSetVal('formWaNumber', data.waNumber); safeSetVal('formWaMessage', data.waMessage);
                 safeSetVal('formHeroTitle', data.heroTitle); safeSetVal('formHeroDesc', data.heroDesc); safeSetVal('formHeroImg', data.heroImg);
                 safeSetVal('formSvcMainTitle', data.svcMainTitle); safeSetVal('formSvcSubTitle', data.svcSubTitle);
@@ -1104,43 +1491,95 @@
                 safeSetVal('formLinkFb', data.linkFb); safeSetVal('formLinkIg', data.linkIg); safeSetVal('formLinkTt', data.linkTt);
                 safeSetVal('formGaId', data.gaId); safeSetVal('formGtmId', data.gtmId);
 
+                // Tarik semuanya sekaligus seperti sedia kala
                 adminSvc = safeSvc; adminLegal = safeLegal; adminTeam = safeTeam; adminRev = safeRev; adminProj = safeProj; adminInv = safeInv;
-                renderSvcList(); renderProjList(); renderLegal(); renderTeam(); renderRevList(); renderInvList();
-                updateDashboardStats(); // Refresh visual stats
                 
-                // PENTING: Refresh AOS setelah konten dinamis selesai dimuat
+                renderSvcList(); renderProjList(); renderLegal(); renderTeam(); renderRevList(); renderInvList();
+                updateDashboardStats(); 
+                
                 setTimeout(() => { if(typeof AOS !== 'undefined') AOS.refresh(); }, 500);
 
+                // PENGAMAN: Izinkan tombol simpan diklik
+                isDataLoaded = true;
+                const btnU = document.getElementById('btnUpdateData');
+                if(btnU) {
+                    btnU.disabled = false;
+                    btnU.classList.remove('opacity-50', 'cursor-not-allowed');
+                    document.getElementById('btnUpdateText').innerText = "Simpan Update Website";
+                }
+
             } catch (error) { 
-                console.error("Critical Load Error:", error); safeSetText('pubHeroDesc', "Terjadi kesalahan sistem memuat data.");
+                console.error("Load Error (Fallback activated):", error);
+                safeSetText('pubHeroTitle', "PT. Rumah Mampet Indonesia");
+                safeSetText('pubHeroDesc', "Sistem kami siap melayani kebutuhan sanitasi Anda.");
+                window.renderPublicProjects(); 
+                window.renderPublicArticles();
+                
+                // JIKA ERROR, TOMBOL SIMPAN TETAP TERKUNCI!
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Koneksi Database Gagal',
+                    text: 'Gagal memuat data dari server. Tombol Simpan dimatikan demi keamanan agar data tidak tertimpa.'
+                });
             }
         }
 
         const btnU = document.getElementById('btnUpdateData');
         if(btnU) {
             btnU.onclick = async () => {
-                // FLUSH DOM TO STATE
+                // PENGAMAN KE DUA
+                if (!isDataLoaded) {
+                    return Swal.fire({ icon: 'error', title: 'Data Belum Siap', text: 'Tidak bisa menyimpan karena data belum termuat sempurna dari server.' });
+                }
+
                 if (editingProjIndex !== -1 && adminProj[editingProjIndex]) { adminProj[editingProjIndex].title = document.getElementById('editProjTitle')?.value || ''; adminProj[editingProjIndex].coverImg = document.getElementById('editProjCover')?.value || ''; adminProj[editingProjIndex].shortDesc = document.getElementById('editProjDesc')?.value || ''; adminProj[editingProjIndex].content = document.getElementById('editProjContent')?.value || ''; adminProj[editingProjIndex].gallery = document.getElementById('editProjGallery')?.value || ''; }
                 if (editingSvcIndex !== -1 && adminSvc[editingSvcIndex]) { adminSvc[editingSvcIndex].title = document.getElementById('editSvcTitle')?.value || ''; adminSvc[editingSvcIndex].img = document.getElementById('editSvcImg')?.value || ''; adminSvc[editingSvcIndex].desc = document.getElementById('editSvcDesc')?.value || ''; }
                 if (editingRevIndex !== -1 && adminRev[editingRevIndex]) { adminRev[editingRevIndex].name = document.getElementById('editRevName')?.value || ''; adminRev[editingRevIndex].role = document.getElementById('editRevRole')?.value || ''; adminRev[editingRevIndex].img = document.getElementById('editRevImg')?.value || ''; adminRev[editingRevIndex].rating = parseInt(document.getElementById('editRevRating')?.value || 5); adminRev[editingRevIndex].comment = document.getElementById('editRevComment')?.value || ''; }
-                if (editingInvIndex !== -1 && adminInv[editingInvIndex]) { adminInv[editingInvIndex].no = document.getElementById('editInvNo')?.value || ''; adminInv[editingInvIndex].tgl = document.getElementById('editInvTgl')?.value || ''; adminInv[editingInvIndex].nama = document.getElementById('editInvNama')?.value || ''; adminInv[editingInvIndex].layanan = document.getElementById('editInvLayanan')?.value || ''; adminInv[editingInvIndex].harga = document.getElementById('editInvHarga')?.value || ''; adminInv[editingInvIndex].status = document.getElementById('editInvStatus')?.value || 'Menunggu Jadwal'; }
+                if (editingArticleIndex !== -1 && adminArticles[editingArticleIndex]) { adminArticles[editingArticleIndex].title = document.getElementById('editArtTitle')?.value || ''; adminArticles[editingArticleIndex].coverImg = document.getElementById('editArtCover')?.value || ''; adminArticles[editingArticleIndex].shortDesc = document.getElementById('editArtDesc')?.value || ''; adminArticles[editingArticleIndex].content = document.getElementById('editArtContent')?.value || ''; }
+                
+                if (editingInvIndex !== -1 && adminInv[editingInvIndex]) { 
+                    adminInv[editingInvIndex].no = document.getElementById('editInvNo')?.value || ''; 
+                    adminInv[editingInvIndex].tgl = document.getElementById('editInvTgl')?.value || ''; 
+                    adminInv[editingInvIndex].nama = document.getElementById('editInvNama')?.value || ''; 
+                    adminInv[editingInvIndex].status = document.getElementById('editInvStatus')?.value || 'Menunggu Jadwal'; 
+                    adminInv[editingInvIndex].ppn = parseFloat(document.getElementById('editInvPpn')?.value) || 0;
+                    
+                    let newItems = [];
+                    let subtotal = 0;
+                    let names = [];
+                    document.querySelectorAll('.inv-item-row').forEach(row => {
+                        const n = row.querySelector('.inv-item-nama').value.trim();
+                        const h = parseFloat(row.querySelector('.inv-item-harga').value) || 0;
+                        if(n) {
+                            newItems.push({nama: n, harga: h});
+                            subtotal += h;
+                            names.push(n);
+                        }
+                    });
+                    const totalHarga = subtotal + (subtotal * adminInv[editingInvIndex].ppn / 100);
 
-                // GHOST DRAFT BUSTER
+                    adminInv[editingInvIndex].items = newItems;
+                    adminInv[editingInvIndex].harga = totalHarga; 
+                    adminInv[editingInvIndex].layanan = names.join(', '); 
+                }
+
                 adminProj = adminProj.filter(p => !( (p.title||'').trim() === '' && (p.shortDesc||'').trim() === '' && (p.content||'').trim() === '' && (p.coverImg||'').trim() === '' ) );
                 adminSvc = adminSvc.filter(s => !( (s.title||'').trim() === '' && (s.desc||'').trim() === '' && (s.img||'').trim() === '' ) );
                 adminRev = adminRev.filter(r => !( (r.name||'').trim() === '' && (r.comment||'').trim() === '' ) );
                 adminInv = adminInv.filter(v => !( (v.nama||'').trim() === '' && (v.layanan||'').trim() === '' ) );
+                adminArticles = adminArticles.filter(a => !( (a.title||'').trim() === '' && (a.shortDesc||'').trim() === '' && (a.content||'').trim() === '' ) );
 
                 const invalidProj = adminProj.some(p => (!p.title || p.title.trim() === ""));
                 const invalidSvc = adminSvc.some(s => (!s.title || s.title.trim() === ""));
                 const invalidRev = adminRev.some(r => (!r.name || r.name.trim() === ""));
                 const invalidInv = adminInv.some(v => (!v.nama || v.nama.trim() === ""));
+                const invalidArt = adminArticles.some(a => (!a.title || a.title.trim() === ""));
                 
-                if (invalidProj || invalidSvc || invalidRev || invalidInv) { Swal.fire({ icon: 'warning', title: 'Data Belum Lengkap', text: 'Terdapat Form Proyek, Jasa, Ulasan, atau Kuitansi yang LUPA dikasih judul/nama. Tolong lengkapi form tersebut atau tekan Hapus.' }); return; }
+                if (invalidProj || invalidSvc || invalidRev || invalidInv || invalidArt) { Swal.fire({ icon: 'warning', title: 'Data Belum Lengkap', text: 'Ada Form yang LUPA dikasih judul/nama. Tolong lengkapi form tersebut atau tekan Hapus.' }); return; }
 
                 btnU.innerHTML = `Menyimpan...`; btnU.classList.add('cursor-wait', 'opacity-80');
                 try {
-                    const payload = {
+                    const payloadContent = {
                         logoImg: getVal('formLogoImg'), waNumber: getVal('formWaNumber'), waMessage: getVal('formWaMessage'),
                         heroTitle: getVal('formHeroTitle'), heroDesc: getVal('formHeroDesc'), heroImg: getVal('formHeroImg'),
                         aboutTitle: getVal('formAboutTitle'), aboutAddress: getVal('formAboutAddress'), aboutMapLink: getVal('formAboutMapLink'), aboutContent: getVal('formAboutContent'),
@@ -1151,21 +1590,22 @@
                         orgTitle: getVal('formOrgTitle'), orgSub: getVal('formOrgSub'),
                         footerAbout: getVal('formFooterAbout'), footerPhone: getVal('formFooterPhone'), footerEmail: getVal('formFooterEmail'), footerMapEmbed: getVal('formFooterMapEmbed'), linkFb: getVal('formLinkFb'), linkIg: getVal('formLinkIg'), linkTt: getVal('formLinkTt'),
                         gaId: getVal('formGaId'), gtmId: getVal('formGtmId'),
-                        services: adminSvc, reviews: adminRev, invoices: adminInv,
+                        services: adminSvc, reviews: adminRev, articles: adminArticles, invoices: adminInv, // <- DATA NGUMPUL LAGI
                         legal: adminLegal.map((_, i) => ({ img: getVal(`aLglImg_${i}`), title: getVal(`aLglT_${i}`) })).filter(l => l.title !== ""),
                         team: adminTeam.map((_, i) => ({ img: getVal(`aTmImg_${i}`), name: getVal(`aTmN_${i}`), role: getVal(`aTmR_${i}`) })).filter(t => t.name !== ""),
                         proyek: adminProj
                     };
 
-                    await set(ref(db, 'website/content'), payload);
+                    await set(ref(db, 'website/content'), payloadContent);
+
                     Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Semua perubahan telah disimpan ke Cloud.', confirmButtonColor: '#0f766e', timer: 2000, showConfirmButton: false });
                     
-                    // TUTUP SEMUA FORM EDIT SECARA OTOMATIS JIKA SUKSES
-                    editingProjIndex = -1; editingSvcIndex = -1; editingRevIndex = -1; editingInvIndex = -1;
+                    editingProjIndex = -1; editingSvcIndex = -1; editingRevIndex = -1; editingInvIndex = -1; editingArticleIndex = -1;
                     document.getElementById('adminProjectEditArea')?.classList.add('hidden'); document.getElementById('adminProjectListArea')?.classList.remove('hidden');
                     document.getElementById('adminSvcEditArea')?.classList.add('hidden'); document.getElementById('adminSvcListArea')?.classList.remove('hidden');
                     document.getElementById('adminRevEditArea')?.classList.add('hidden'); document.getElementById('adminRevListArea')?.classList.remove('hidden');
                     document.getElementById('adminInvEditArea')?.classList.add('hidden'); document.getElementById('adminInvListArea')?.classList.remove('hidden');
+                    document.getElementById('adminArticleEditArea')?.classList.add('hidden'); document.getElementById('adminArticleListArea')?.classList.remove('hidden');
 
                     await loadData();
                 } catch (e) {
